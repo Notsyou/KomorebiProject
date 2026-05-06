@@ -201,6 +201,7 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
 .page-header {
   text-align: center;
   margin-bottom: 52px;
+  position: relative;
 }
 .page-header__eyebrow {
   font-family: var(--sans);
@@ -244,6 +245,20 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
 .page-header__rule i {
   font-style: normal;
   color: var(--crimson); font-size: 11px; letter-spacing: .1em;
+}
+
+/* back button for subpages */
+.btn-back {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--sans); font-size: 10px; font-weight: 600;
+  letter-spacing: .15em; text-transform: uppercase; color: var(--text-muted);
+  transition: color var(--transition);
+}
+.btn-back:hover { color: var(--crimson); }
+@media (min-width: 768px) {
+  .btn-back { left: 0; transform: none; top: 10px; }
 }
 
 /* ════════════════════════════════════════
@@ -338,13 +353,6 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
 }
 .bento--three .card { grid-column: auto; grid-row: auto; }
 
-/* 2-col mini */
-.bento--mini {
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: auto;
-}
-.bento--mini .card { grid-column: auto; grid-row: auto; }
-
 /* ════════════════════════════════════════
    CARD BASE
 ════════════════════════════════════════ */
@@ -358,10 +366,8 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
   flex-direction: column;
   justify-content: flex-end;
   min-height: 220px;
-  cursor: default;
+  cursor: pointer;
   border: 1px solid transparent;
-
-  /* ── Hover transition ── */
   transition:
     transform var(--transition),
     box-shadow var(--transition),
@@ -399,7 +405,6 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
 }
 .card:hover::before { opacity: 1; }
 .card:hover::after  { opacity: 1; }
-
 .card:hover .card__icon { transform: scale(1.1) rotate(-4deg); }
 .card:hover .card__title { color: var(--crimson); }
 .card:hover .card__watermark { opacity: .065; }
@@ -468,7 +473,7 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
   font-style: italic;
 }
 
-/* bookmark toggle on card */
+/* bookmark toggle on location card */
 .card__bk-btn {
   position: absolute; top: 14px; right: 14px; z-index: 2;
   display: flex; align-items: center; justify-content: center;
@@ -493,22 +498,6 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
 }
 .card__bk-btn.is-saved .bk-icon::before { content: '♥'; }
 .bk-icon::before { content: '♡'; }
-
-/* ════════════════════════════════════════
-   PLACEHOLDER PANELS
-════════════════════════════════════════ */
-.panel-placeholder {
-  max-width: 1000px; margin: 0 auto;
-  text-align: center; padding: 80px 24px;
-  border: 1px dashed rgba(28,26,23,.15);
-  border-radius: var(--radius);
-}
-.panel-placeholder__emoji { font-size: 2.5rem; margin-bottom: 16px; }
-.panel-placeholder__title {
-  font-family: var(--serif); font-size: 1.4rem;
-  color: var(--text-dark); margin-bottom: 10px; font-style: italic;
-}
-.panel-placeholder__text { font-family: var(--sans); font-size: .83rem; color: var(--text-muted); }
 
 /* ════════════════════════════════════════
    BOOKMARK PAGE
@@ -585,7 +574,7 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
   color: var(--crimson);
   background: var(--crimson-dim);
   border: 1px solid rgba(192,57,43,.18);
-  padding: 3px 9px; border-radius: 3px; margin-bottom: 10px;
+  padding: 3px 9px; border-radius: 3px; margin-bottom: 10px; align-self: flex-start;
 }
 .bk-card__icon { font-size: 1.6rem; margin-bottom: 12px; display: block; }
 .bk-card__title {
@@ -626,7 +615,7 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
 .bk-empty__text { font-size: .82rem; color: var(--text-muted); }
 
 /* ════════════════════════════════════════
-   ABOUT PAGE
+   ABOUT PAGE & CONTACT (Unchanged structure)
 ════════════════════════════════════════ */
 .about-hero {
   max-width: 680px; margin: 0 auto 60px;
@@ -685,14 +674,10 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
 .about-divider span { flex: 1; height: 1px; background: var(--text-muted); opacity: .3; }
 .about-divider i { font-style: normal; color: var(--crimson); font-size: 11px; }
 
-/* ════════════════════════════════════════
-   CONTACT PAGE
-════════════════════════════════════════ */
 .contact-wrap {
   max-width: 700px; margin: 0 auto;
   display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
 }
-.contact-info {}
 .contact-info__title {
   font-family: var(--serif); font-size: 1.8rem; font-weight: 700;
   color: var(--text-dark); margin-bottom: 16px; font-style: italic;
@@ -715,7 +700,6 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
   color: var(--text-mid);
 }
 
-.contact-form {}
 .form-group { margin-bottom: 18px; }
 .form-label {
   display: block; font-size: 9px; font-weight: 600;
@@ -795,9 +779,6 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
 </head>
 <body>
 
-<!-- ══════════════════════════════
-     SITE NAVIGATION
-══════════════════════════════ -->
 <nav class="site-nav" role="navigation" aria-label="Main navigation">
   <div class="nav-inner">
     <div class="nav-logo" onclick="showPage('home')" role="link" tabindex="0">
@@ -815,14 +796,11 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
   </div>
 </nav>
 
-<!-- ══════════════════════════════
-     PAGE: HOME (Discovery)
-══════════════════════════════ -->
 <div class="page is-active" id="page-home">
   <header class="page-header">
     <p class="page-header__eyebrow">Editorial Discovery Series</p>
     <h1 class="page-header__title">Five Icons of Japanese Excellence</h1>
-    <p class="page-header__sub">Each product represents a distinct philosophy of craftsmanship — refined over generations and cherished across the world.</p>
+    <p class="page-header__sub">Each product represents a distinct philosophy of craftsmanship — refined over generations and cherished across the world. Click any card to explore locations.</p>
     <div class="page-header__rule"><span></span><i>&#10022;</i><span></span></div>
   </header>
 
@@ -835,13 +813,11 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
       <button class="tab-btn"           role="tab" aria-selected="false" data-target="panel-ritual">Ritual</button>
     </nav>
 
-    <!-- ── CULTURE ── -->
     <div class="tab-panel is-active" id="panel-culture">
       <p class="panel-label">Five Pillars — Culture &amp; Craftsmanship</p>
       <div class="bento">
-        <article class="card card--1" data-bk-id="c01" data-bk-cat="culture" data-bk-title="Regional KitKats" data-bk-icon="🍫" data-bk-sub="Over 400 hyper-local flavours from Hokkaido to Uji matcha.">
+        <article class="card card--1" data-bk-id="c01" data-bk-cat="culture" data-bk-title="Regional KitKats">
           <div class="card__watermark" aria-hidden="true">01</div>
-          <button class="card__bk-btn" aria-label="Bookmark Regional KitKats"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon" role="img" aria-label="KitKat">🍫</span>
             <p class="card__tag">Confections · Regional</p>
@@ -849,9 +825,8 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
             <p class="card__desc">Over 400 hyper-local flavours — from Hokkaido melon to Uji matcha — turned a foreign chocolate bar into a deeply Japanese obsession.</p>
           </div>
         </article>
-        <article class="card card--2" data-bk-id="c02" data-bk-cat="culture" data-bk-title="Selvedge Denim" data-bk-icon="🧵" data-bk-sub="Kojima's weavers preserved shuttle-loom techniques abandoned elsewhere.">
+        <article class="card card--2" data-bk-id="c02" data-bk-cat="culture" data-bk-title="Selvedge Denim">
           <div class="card__watermark" aria-hidden="true">02</div>
-          <button class="card__bk-btn" aria-label="Bookmark Selvedge Denim"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon" role="img" aria-label="Denim">🧵</span>
             <p class="card__tag">Textile · Heritage</p>
@@ -859,9 +834,8 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
             <p class="card__desc">Kojima's weavers preserved shuttle-loom techniques abandoned elsewhere, making Japan the world capital of premium raw denim.</p>
           </div>
         </article>
-        <article class="card card--3" data-bk-id="c03" data-bk-cat="culture" data-bk-title="Japanese Whisky" data-bk-icon="🥃" data-bk-sub="Suntory and Nikka redefined what whisky could be.">
+        <article class="card card--3" data-bk-id="c03" data-bk-cat="culture" data-bk-title="Japanese Whisky">
           <div class="card__watermark" aria-hidden="true">03</div>
-          <button class="card__bk-btn" aria-label="Bookmark Japanese Whisky"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon" role="img" aria-label="Whisky">🥃</span>
             <p class="card__tag">Spirits · Distillery</p>
@@ -869,9 +843,8 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
             <p class="card__desc">Borrowing Scottish methods yet guided by the spirit of <em>monozukuri</em>, Suntory and Nikka redefined what whisky could be.</p>
           </div>
         </article>
-        <article class="card card--4" data-bk-id="c04" data-bk-cat="culture" data-bk-title="Hobonichi Techo" data-bk-icon="✒️" data-bk-sub="Thin Tomoe River paper turned a planner into a global cult object.">
+        <article class="card card--4" data-bk-id="c04" data-bk-cat="culture" data-bk-title="Hobonichi Techo">
           <div class="card__watermark" aria-hidden="true">04</div>
-          <button class="card__bk-btn" aria-label="Bookmark Hobonichi Techo"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon" role="img" aria-label="Stationery">✒️</span>
             <p class="card__tag">Stationery · Design</p>
@@ -879,9 +852,8 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
             <p class="card__desc">Thin Tomoe River paper, legendary durability, and a culture of personal curation turned a planner into a global cult object.</p>
           </div>
         </article>
-        <article class="card card--5" data-bk-id="c05" data-bk-cat="culture" data-bk-title="Sakai Kitchen Knives" data-bk-icon="🔪" data-bk-sub="Six-hundred years of sword-making tradition.">
+        <article class="card card--5" data-bk-id="c05" data-bk-cat="culture" data-bk-title="Sakai Kitchen Knives">
           <div class="card__watermark" aria-hidden="true">05</div>
-          <button class="card__bk-btn" aria-label="Bookmark Sakai Knives"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon" role="img" aria-label="Knife">🔪</span>
             <p class="card__tag">Cutlery · Artisan</p>
@@ -892,13 +864,11 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
       </div>
     </div>
 
-    <!-- ── CUISINE ── -->
     <div class="tab-panel" id="panel-cuisine">
       <p class="panel-label">Spotlight — Japanese Cuisine</p>
       <div class="bento bento--three">
-        <article class="card" data-bk-id="q01" data-bk-cat="cuisine" data-bk-title="Edomae Sushi" data-bk-icon="🍣" data-bk-sub="A centuries-old Tokyo style of precision sushi.">
+        <article class="card" data-bk-id="q01" data-bk-cat="cuisine" data-bk-title="Edomae Sushi">
           <div class="card__watermark" aria-hidden="true">食</div>
-          <button class="card__bk-btn" aria-label="Bookmark Edomae Sushi"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🍣</span>
             <p class="card__tag">Umami · Tokyo</p>
@@ -906,9 +876,8 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
             <p class="card__desc">A centuries-old Tokyo style where every grain of rice is seasoned and every fish aged with calculated precision.</p>
           </div>
         </article>
-        <article class="card" data-bk-id="q02" data-bk-cat="cuisine" data-bk-title="Hakata Tonkotsu" data-bk-icon="🍜" data-bk-sub="Fukuoka's 18-hour pork-bone broth with global pilgrimage status.">
+        <article class="card" data-bk-id="q02" data-bk-cat="cuisine" data-bk-title="Hakata Tonkotsu">
           <div class="card__watermark" aria-hidden="true">麺</div>
-          <button class="card__bk-btn" aria-label="Bookmark Hakata Tonkotsu"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🍜</span>
             <p class="card__tag">Broth · Fukuoka</p>
@@ -916,9 +885,8 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
             <p class="card__desc">A milky, 18-hour pork-bone broth so revered that Fukuoka's yatai street stalls have earned global pilgrimage status.</p>
           </div>
         </article>
-        <article class="card" data-bk-id="q03" data-bk-cat="cuisine" data-bk-title="Kaiseki Ryōri" data-bk-icon="🍱" data-bk-sub="Japan's haute cuisine — seasonal ingredients presented as living art.">
+        <article class="card" data-bk-id="q03" data-bk-cat="cuisine" data-bk-title="Kaiseki Ryōri">
           <div class="card__watermark" aria-hidden="true">懐</div>
-          <button class="card__bk-btn" aria-label="Bookmark Kaiseki"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🍱</span>
             <p class="card__tag">Haute Cuisine · Kyoto</p>
@@ -926,19 +894,17 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
             <p class="card__desc">Japan's answer to haute cuisine — twelve seasonal courses presented as living art, rooted in the aesthetics of the tea ceremony.</p>
           </div>
         </article>
-        <article class="card" data-bk-id="q04" data-bk-cat="cuisine" data-bk-title="Osaka Takoyaki" data-bk-icon="🐙" data-bk-sub="Osaka's beloved octopus balls — street food elevated to civic pride.">
+        <article class="card" data-bk-id="q04" data-bk-cat="cuisine" data-bk-title="Osaka Takoyaki">
           <div class="card__watermark" aria-hidden="true">章</div>
-          <button class="card__bk-btn" aria-label="Bookmark Takoyaki"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🐙</span>
             <p class="card__tag">Street Food · Osaka</p>
             <h2 class="card__title">Osaka Takoyaki</h2>
-            <p class="card__desc">Crispy-outside, molten-inside octopus balls — Osaka's greatest contribution to the global street-food canon, sold from every corner of Dotonbori.</p>
+            <p class="card__desc">Crispy-outside, molten-inside octopus balls — Osaka's greatest contribution to the global street-food canon.</p>
           </div>
         </article>
-        <article class="card" data-bk-id="q05" data-bk-cat="cuisine" data-bk-title="Wagyu Beef" data-bk-icon="🥩" data-bk-sub="Kobe and Matsusaka cattle raised to a standard nothing else can match.">
+        <article class="card" data-bk-id="q05" data-bk-cat="cuisine" data-bk-title="Wagyu Beef">
           <div class="card__watermark" aria-hidden="true">和</div>
-          <button class="card__bk-btn" aria-label="Bookmark Wagyu"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🥩</span>
             <p class="card__tag">Delicacy · Hyōgo</p>
@@ -946,231 +912,213 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
             <p class="card__desc">Intensely marbled Kobe and Matsusaka cattle, raised with a devotion bordering on ritual, produce beef that dissolves rather than chews.</p>
           </div>
         </article>
-        <article class="card" data-bk-id="q06" data-bk-cat="cuisine" data-bk-title="Matcha Ceremony" data-bk-icon="🍵" data-bk-sub="Powdered green tea elevated into a philosophy of presence.">
+        <article class="card" data-bk-id="q06" data-bk-cat="cuisine" data-bk-title="Matcha Ceremony">
           <div class="card__watermark" aria-hidden="true">茶</div>
-          <button class="card__bk-btn" aria-label="Bookmark Matcha"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🍵</span>
             <p class="card__tag">Tea · Uji</p>
             <h2 class="card__title">Uji Matcha</h2>
-            <p class="card__desc">Stone-ground shade-grown tea leaves from Uji — simultaneously a morning drink, a cultural institution, and a flavour that conquered the world's pastry chefs.</p>
+            <p class="card__desc">Stone-ground shade-grown tea leaves from Uji — simultaneously a morning drink, a cultural institution, and a global flavour.</p>
           </div>
         </article>
       </div>
     </div>
 
-    <!-- ── CRAFT ── -->
     <div class="tab-panel" id="panel-craft">
       <p class="panel-label">Spotlight — Japanese Craft</p>
       <div class="bento bento--three">
-        <article class="card" data-bk-id="r01" data-bk-cat="craft" data-bk-title="Kintsugi" data-bk-icon="🏺" data-bk-sub="The art of repairing broken pottery with gold — embracing imperfection.">
+        <article class="card" data-bk-id="r01" data-bk-cat="craft" data-bk-title="Kintsugi">
           <div class="card__watermark" aria-hidden="true">金</div>
-          <button class="card__bk-btn" aria-label="Bookmark Kintsugi"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🏺</span>
             <p class="card__tag">Ceramics · Philosophy</p>
             <h2 class="card__title">Kintsugi</h2>
-            <p class="card__desc">Broken pottery repaired with gold lacquer — a philosophy that treats damage as biography, making the mended object more beautiful than the original.</p>
+            <p class="card__desc">Broken pottery repaired with gold lacquer — a philosophy that treats damage as biography, making the mended object more beautiful.</p>
           </div>
         </article>
-        <article class="card" data-bk-id="r02" data-bk-cat="craft" data-bk-title="Washi Paper" data-bk-icon="📜" data-bk-sub="UNESCO-listed hand-papermaking tradition over 1,300 years old.">
+        <article class="card" data-bk-id="r02" data-bk-cat="craft" data-bk-title="Washi Paper">
           <div class="card__watermark" aria-hidden="true">紙</div>
-          <button class="card__bk-btn" aria-label="Bookmark Washi"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">📜</span>
             <p class="card__tag">Paper · UNESCO</p>
             <h2 class="card__title">Washi Paper</h2>
-            <p class="card__desc">Hand-made from kozo and mitsumata fibres, washi is stronger than wood-pulp paper, translucent as moonlight, and revered by bookbinders and artists worldwide.</p>
+            <p class="card__desc">Hand-made from kozo fibres, washi is stronger than wood-pulp paper, translucent as moonlight, and revered by artists worldwide.</p>
           </div>
         </article>
-        <article class="card" data-bk-id="r03" data-bk-cat="craft" data-bk-title="Urushi Lacquerware" data-bk-icon="🪆" data-bk-sub="Sap of the urushi tree, layered over months into mirror-deep bowls.">
+        <article class="card" data-bk-id="r03" data-bk-cat="craft" data-bk-title="Urushi Lacquerware">
           <div class="card__watermark" aria-hidden="true">漆</div>
-          <button class="card__bk-btn" aria-label="Bookmark Urushi"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🪆</span>
             <p class="card__tag">Lacquer · Wajima</p>
             <h2 class="card__title">Urushi Lacquerware</h2>
-            <p class="card__desc">Dozens of applied layers of urushi tree sap, hand-rubbed and polished over months — producing bowls that gleam like still water and last a millennium.</p>
+            <p class="card__desc">Dozens of applied layers of urushi tree sap, hand-rubbed and polished over months — producing bowls that gleam like still water.</p>
           </div>
         </article>
-        <article class="card" data-bk-id="r04" data-bk-cat="craft" data-bk-title="Origami" data-bk-icon="🦢" data-bk-sub="A square of paper transformed into infinite form through pure folding.">
+        <article class="card" data-bk-id="r04" data-bk-cat="craft" data-bk-title="Origami">
           <div class="card__watermark" aria-hidden="true">折</div>
-          <button class="card__bk-btn" aria-label="Bookmark Origami"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🦢</span>
             <p class="card__tag">Paper Folding · Edo</p>
             <h2 class="card__title">Origami</h2>
-            <p class="card__desc">A single, uncut square transformed through folding alone — a discipline that intersects mathematics, meditative practice, and pure aesthetic wonder.</p>
+            <p class="card__desc">A single, uncut square transformed through folding alone — a discipline that intersects mathematics, meditative practice, and art.</p>
           </div>
         </article>
-        <article class="card" data-bk-id="r05" data-bk-cat="craft" data-bk-title="Bizen Pottery" data-bk-icon="🫙" data-bk-sub="Unglazed stoneware fired for two weeks in wood-burning kilns.">
+        <article class="card" data-bk-id="r05" data-bk-cat="craft" data-bk-title="Bizen Pottery">
           <div class="card__watermark" aria-hidden="true">備</div>
-          <button class="card__bk-btn" aria-label="Bookmark Bizen"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🫙</span>
             <p class="card__tag">Ceramics · Okayama</p>
             <h2 class="card__title">Bizen Pottery</h2>
-            <p class="card__desc">Unglazed stoneware fired for ten to fourteen days in wood-burning anagama kilns — each piece unique, unpredictable, marked by flame like a fingerprint.</p>
+            <p class="card__desc">Unglazed stoneware fired for two weeks in wood-burning kilns — each piece unique, marked by flame like a fingerprint.</p>
           </div>
         </article>
-        <article class="card" data-bk-id="r06" data-bk-cat="craft" data-bk-title="Nishijin Textiles" data-bk-icon="🎴" data-bk-sub="Kyoto's imperial silk weaving tradition — 1,000 years of living heritage.">
+        <article class="card" data-bk-id="r06" data-bk-cat="craft" data-bk-title="Nishijin Textiles">
           <div class="card__watermark" aria-hidden="true">西</div>
-          <button class="card__bk-btn" aria-label="Bookmark Nishijin"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🎴</span>
             <p class="card__tag">Weaving · Kyoto</p>
             <h2 class="card__title">Nishijin Textiles</h2>
-            <p class="card__desc">Kyoto's imperial silk-weaving district, producing obi sashes of such complexity that a single weaver may spend a week on five centimetres of pattern.</p>
+            <p class="card__desc">Kyoto's imperial silk-weaving district, producing obi sashes of such complexity that weavers may spend a week on five centimetres.</p>
           </div>
         </article>
       </div>
     </div>
 
-    <!-- ── NATURE ── -->
     <div class="tab-panel" id="panel-nature">
       <p class="panel-label">Spotlight — Japan in Nature</p>
       <div class="bento bento--three">
-        <article class="card" data-bk-id="n01" data-bk-cat="nature" data-bk-title="Cherry Blossom (Hanami)" data-bk-icon="🌸" data-bk-sub="Japan's annual celebration of transience beneath sakura.">
+        <article class="card" data-bk-id="n01" data-bk-cat="nature" data-bk-title="Cherry Blossom (Hanami)">
           <div class="card__watermark" aria-hidden="true">花</div>
-          <button class="card__bk-btn" aria-label="Bookmark Hanami"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🌸</span>
             <p class="card__tag">Season · Nationwide</p>
             <h2 class="card__title">Hanami</h2>
-            <p class="card__desc">For two fleeting weeks each spring, Japan pauses beneath a canopy of sakura — a national meditation on impermanence, beauty, and sake under the boughs.</p>
+            <p class="card__desc">For two fleeting weeks each spring, Japan pauses beneath a canopy of sakura — a national meditation on impermanence.</p>
           </div>
         </article>
-        <article class="card" data-bk-id="n02" data-bk-cat="nature" data-bk-title="Arashiyama Bamboo" data-bk-icon="🎋" data-bk-sub="A cathedral of ten thousand bamboo stalks in silent Kyoto dawn.">
+        <article class="card" data-bk-id="n02" data-bk-cat="nature" data-bk-title="Arashiyama Bamboo">
           <div class="card__watermark" aria-hidden="true">竹</div>
-          <button class="card__bk-btn" aria-label="Bookmark Arashiyama"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🎋</span>
             <p class="card__tag">Forest · Kyoto</p>
             <h2 class="card__title">Arashiyama Bamboo</h2>
-            <p class="card__desc">Ten thousand moso bamboo stalks filter dawn light into vertical green corridors — enter at six in the morning and the forest floor is yours alone.</p>
+            <p class="card__desc">Ten thousand moso bamboo stalks filter dawn light into vertical green corridors — enter early and the forest floor is yours.</p>
           </div>
         </article>
-        <article class="card" data-bk-id="n03" data-bk-cat="nature" data-bk-title="Yakushima Forest" data-bk-icon="🌿" data-bk-sub="Moss-draped cedar trees over 7,000 years old — the Mononoke forest.">
+        <article class="card" data-bk-id="n03" data-bk-cat="nature" data-bk-title="Yakushima Forest">
           <div class="card__watermark" aria-hidden="true">屋</div>
-          <button class="card__bk-btn" aria-label="Bookmark Yakushima"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🌿</span>
             <p class="card__tag">UNESCO · Kagoshima</p>
             <h2 class="card__title">Yakushima Forest</h2>
-            <p class="card__desc">Ancient cryptomeria draped in metre-thick moss, some predating the Roman Empire — the biosphere that inspired Hayao Miyazaki's Mononoke-hime.</p>
+            <p class="card__desc">Ancient cryptomeria draped in metre-thick moss, some predating the Roman Empire — the biosphere that inspired Mononoke.</p>
           </div>
         </article>
-        <article class="card" data-bk-id="n04" data-bk-cat="nature" data-bk-title="Mt. Fuji" data-bk-icon="🗻" data-bk-sub="Japan's sacred volcanic cone — an icon of beauty and endurance.">
+        <article class="card" data-bk-id="n04" data-bk-cat="nature" data-bk-title="Mt. Fuji">
           <div class="card__watermark" aria-hidden="true">富</div>
-          <button class="card__bk-btn" aria-label="Bookmark Mt Fuji"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🗻</span>
             <p class="card__tag">Mountain · Yamanashi</p>
             <h2 class="card__title">Mt. Fuji</h2>
-            <p class="card__desc">An almost perfectly symmetrical volcanic cone rising 3,776 metres — worshipped by pilgrims since antiquity, painted ten thousand times, and still astonishing every dawn.</p>
+            <p class="card__desc">An almost perfectly symmetrical volcanic cone rising 3,776 metres — worshipped by pilgrims since antiquity.</p>
           </div>
         </article>
-        <article class="card" data-bk-id="n05" data-bk-cat="nature" data-bk-title="Jigokudani Monkey Park" data-bk-icon="🐒" data-bk-sub="Snow macaques soaking in volcanic hot springs amid winter.">
+        <article class="card" data-bk-id="n05" data-bk-cat="nature" data-bk-title="Jigokudani Monkey Park">
           <div class="card__watermark" aria-hidden="true">猿</div>
-          <button class="card__bk-btn" aria-label="Bookmark Jigokudani"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🐒</span>
             <p class="card__tag">Wildlife · Nagano</p>
             <h2 class="card__title">Jigokudani Monkeys</h2>
-            <p class="card__desc">Wild Japanese macaques descend daily to soak in volcanic onsen pools while snow falls around them — a scene of improbable tranquility in the Shiga highlands.</p>
+            <p class="card__desc">Wild Japanese macaques descend daily to soak in volcanic onsen pools while snow falls around them.</p>
           </div>
         </article>
-        <article class="card" data-bk-id="n06" data-bk-cat="nature" data-bk-title="Okinawa Coral Reefs" data-bk-icon="🪸" data-bk-sub="Japan's tropical south — crystalline waters over UNESCO coral gardens.">
+        <article class="card" data-bk-id="n06" data-bk-cat="nature" data-bk-title="Okinawa Coral Reefs">
           <div class="card__watermark" aria-hidden="true">珊</div>
-          <button class="card__bk-btn" aria-label="Bookmark Okinawa"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🪸</span>
             <p class="card__tag">Marine · Okinawa</p>
             <h2 class="card__title">Okinawa Reefs</h2>
-            <p class="card__desc">The Kerama Islands cradle coral gardens of tropical clarity — manta rays, sea turtles, and 250 species of hard coral in waters the colour of oxidised jade.</p>
+            <p class="card__desc">The Kerama Islands cradle coral gardens of tropical clarity — manta rays, sea turtles, and 250 species of hard coral.</p>
           </div>
         </article>
       </div>
     </div>
 
-    <!-- ── RITUAL ── -->
     <div class="tab-panel" id="panel-ritual">
       <p class="panel-label">Spotlight — Japanese Ritual &amp; Ceremony</p>
       <div class="bento bento--three">
-        <article class="card" data-bk-id="t01" data-bk-cat="ritual" data-bk-title="Chanoyu (Tea Ceremony)" data-bk-icon="🍵" data-bk-sub="A bowl of matcha as the highest form of philosophical hospitality.">
+        <article class="card" data-bk-id="t01" data-bk-cat="ritual" data-bk-title="Chanoyu (Tea Ceremony)">
           <div class="card__watermark" aria-hidden="true">茶</div>
-          <button class="card__bk-btn" aria-label="Bookmark Chanoyu"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🍵</span>
             <p class="card__tag">Ceremony · Kyoto</p>
             <h2 class="card__title">Chanoyu</h2>
-            <p class="card__desc">Every gesture codified, every utensil chosen for its imperfection — the tea ceremony distils four centuries of Zen philosophy into a thirty-minute bowl of matcha.</p>
+            <p class="card__desc">Every gesture codified, every utensil chosen for its imperfection — distilling four centuries of Zen into a bowl of matcha.</p>
           </div>
         </article>
-        <article class="card" data-bk-id="t02" data-bk-cat="ritual" data-bk-title="Setsubun Bean Throwing" data-bk-icon="🫘" data-bk-sub="Scatter roasted soybeans, shout out demons, invite fortune in.">
+        <article class="card" data-bk-id="t02" data-bk-cat="ritual" data-bk-title="Setsubun Bean Throwing">
           <div class="card__watermark" aria-hidden="true">節</div>
-          <button class="card__bk-btn" aria-label="Bookmark Setsubun"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🫘</span>
             <p class="card__tag">Festival · Nationwide</p>
             <h2 class="card__title">Setsubun</h2>
-            <p class="card__desc">On the eve of spring, roasted soybeans are hurled to drive out demons: <em>Oni wa soto, fuku wa uchi</em> — out with evil, in with fortune — shouted from every doorway.</p>
+            <p class="card__desc">On the eve of spring, roasted soybeans are hurled to drive out demons and invite fortune into the home.</p>
           </div>
         </article>
-        <article class="card" data-bk-id="t03" data-bk-cat="ritual" data-bk-title="Obon Festival" data-bk-icon="🏮" data-bk-sub="Ancestral spirits welcomed back by lanterns and Bon Odori dance.">
+        <article class="card" data-bk-id="t03" data-bk-cat="ritual" data-bk-title="Obon Festival">
           <div class="card__watermark" aria-hidden="true">盆</div>
-          <button class="card__bk-btn" aria-label="Bookmark Obon"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🏮</span>
             <p class="card__tag">Ancestral · August</p>
             <h2 class="card__title">Obon Festival</h2>
-            <p class="card__desc">For three summer days, the spirits of ancestors return — welcomed by paper lanterns floated on rivers, incense, and the circular Bon Odori dances performed at every temple.</p>
+            <p class="card__desc">For three summer days, the spirits of ancestors return — welcomed by paper lanterns and circular Bon Odori dances.</p>
           </div>
         </article>
-        <article class="card" data-bk-id="t04" data-bk-cat="ritual" data-bk-title="Shinto Misogi" data-bk-icon="💧" data-bk-sub="Purification by icy waterfall — washing away the spiritual stain.">
+        <article class="card" data-bk-id="t04" data-bk-cat="ritual" data-bk-title="Shinto Misogi">
           <div class="card__watermark" aria-hidden="true">禊</div>
-          <button class="card__bk-btn" aria-label="Bookmark Misogi"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">💧</span>
             <p class="card__tag">Shinto · Purification</p>
             <h2 class="card__title">Misogi</h2>
-            <p class="card__desc">Standing beneath a freezing mountain waterfall in a white loincloth — the Shinto rite of misogi cleanses the soul through cold water, breath, and total surrender.</p>
+            <p class="card__desc">Standing beneath a freezing mountain waterfall in a white loincloth to cleanse the soul through cold water and breath.</p>
           </div>
         </article>
-        <article class="card" data-bk-id="t05" data-bk-cat="ritual" data-bk-title="New Year Hatsumode" data-bk-icon="⛩️" data-bk-sub="The first shrine visit of the year — millions in silent prayer at dawn.">
+        <article class="card" data-bk-id="t05" data-bk-cat="ritual" data-bk-title="New Year Hatsumode">
           <div class="card__watermark" aria-hidden="true">初</div>
-          <button class="card__bk-btn" aria-label="Bookmark Hatsumode"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">⛩️</span>
             <p class="card__tag">New Year · Shrine</p>
             <h2 class="card__title">Hatsumode</h2>
-            <p class="card__desc">On January 1st, over one hundred million Japanese visit a shrine or temple for the first prayer of the new year — collecting omamori charms and drawing fortunes from wooden boxes.</p>
+            <p class="card__desc">Millions visit a shrine or temple for the first prayer of the new year, collecting omamori charms and fortunes.</p>
           </div>
         </article>
-        <article class="card" data-bk-id="t06" data-bk-cat="ritual" data-bk-title="Sumo" data-bk-icon="🏆" data-bk-sub="Japan's national sport — a Shinto ritual as much as a competition.">
+        <article class="card" data-bk-id="t06" data-bk-cat="ritual" data-bk-title="Sumo">
           <div class="card__watermark" aria-hidden="true">相</div>
-          <button class="card__bk-btn" aria-label="Bookmark Sumo"><span class="bk-icon"></span></button>
           <div class="card__body">
             <span class="card__icon">🏆</span>
             <p class="card__tag">Sport · Tokyo</p>
             <h2 class="card__title">Grand Sumo</h2>
-            <p class="card__desc">Two rikishi in the ancient dohyō ring — their bout lasting seconds, their preparation lasting years. Each ritual gesture — salt throw, leg stomp — is an offering to the gods.</p>
+            <p class="card__desc">Two rikishi in the ancient dohyō ring. Each ritual gesture — salt throw, leg stomp — is an offering to the gods.</p>
           </div>
         </article>
       </div>
     </div>
-  </div><!-- /.tabs -->
-</div><!-- /#page-home -->
+  </div></div><div class="page" id="page-locations">
+  <header class="page-header">
+    <button class="btn-back" onclick="showPage('home')">← Back to Discover</button>
+    <p class="page-header__eyebrow">Where to Experience</p>
+    <h1 class="page-header__title" id="loc-title">Item Locations</h1>
+    <p class="page-header__sub">Click the heart to save these specific locations to your collection.</p>
+    <div class="page-header__rule"><span></span><i>&#10022;</i><span></span></div>
+  </header>
 
-
-<!-- ══════════════════════════════
-     PAGE: BOOKMARKS
-══════════════════════════════ -->
-<div class="page" id="page-bookmarks">
+  <div class="bento bento--three" id="loc-grid">
+    </div>
+</div><div class="page" id="page-bookmarks">
   <header class="page-header">
     <p class="page-header__eyebrow">Your Collection</p>
-    <h1 class="page-header__title">Saved Places &amp; Icons</h1>
-    <p class="page-header__sub">Everything you've bookmarked across culture, cuisine, craft, nature and ritual.</p>
+    <h1 class="page-header__title">Saved Locations</h1>
+    <p class="page-header__sub">Specific spots and stores across Japan you've earmarked for your journey.</p>
     <div class="page-header__rule"><span></span><i>&#10022;</i><span></span></div>
   </header>
 
@@ -1190,16 +1138,10 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
     <div class="bk-empty" id="bk-empty">
       <div class="bk-empty__icon">♡</div>
       <p class="bk-empty__title">Nothing saved yet</p>
-      <p class="bk-empty__text">Click the heart on any card in the Discover tab to save it here.</p>
+      <p class="bk-empty__text">Click a card in Discover to view its locations, then save them here.</p>
     </div>
   </div>
-</div><!-- /#page-bookmarks -->
-
-
-<!-- ══════════════════════════════
-     PAGE: ABOUT
-══════════════════════════════ -->
-<div class="page" id="page-about">
+</div><div class="page" id="page-about">
   <div class="about-hero">
     <div class="about-hero__kana">日本</div>
     <h1 class="about-hero__title">About This Series</h1>
@@ -1234,13 +1176,7 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
     </p>
     <p style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted);margin-top:14px;">Japanese Editorial Series · Est. 2025</p>
   </div>
-</div><!-- /#page-about -->
-
-
-<!-- ══════════════════════════════
-     PAGE: CONTACT
-══════════════════════════════ -->
-<div class="page" id="page-contact">
+</div><div class="page" id="page-contact">
   <header class="page-header">
     <p class="page-header__eyebrow">Get in Touch</p>
     <h1 class="page-header__title">Contact Us</h1>
@@ -1295,21 +1231,42 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
       <button class="form-submit" type="submit">Send Message →</button>
     </form>
   </div>
-</div><!-- /#page-contact -->
+</div><div class="toast" id="toast"></div>
 
-<!-- Toast -->
-<div class="toast" id="toast"></div>
-
-<!-- ══════════════════════════════
-     JAVASCRIPT
-══════════════════════════════ -->
 <script>
 'use strict';
 
 /* ── State ── */
-const bookmarks = new Map(); // id → { title, icon, sub, cat }
+const bookmarks = new Map(); // Store full location objects instead of main card items
 let bkFilter = 'all';
 let toastTimer = null;
+
+/* ── Specific Locations Database ── */
+const locationsDB = {
+  'c01': [
+    { id: 'l-c01-a', title: 'Don Quijote Dotonbori', icon: '🛒', cat: 'culture', sub: 'Osaka • Discount Store', desc: 'Massive multi-story shop featuring a towering dedicated wall of regional and limited-edition KitKats.' },
+    { id: 'l-c01-b', title: 'KitKat Chocolatory Ginza', icon: '🍫', cat: 'culture', sub: 'Tokyo • Ginza', desc: 'Premium boutique offering high-end, chef-crafted KitKat variations you cannot find in standard shops.' },
+    { id: 'l-c01-c', title: 'Kansai Airport Duty Free', icon: '✈️', cat: 'culture', sub: 'Osaka • Airport', desc: 'The perfect last-minute spot to grab Kansai-exclusive flavors like Uji Matcha and Hojicha in bulk.' }
+  ],
+  'c03': [
+    { id: 'l-c03-a', title: 'Suntory Yamazaki Distillery', icon: '🏭', cat: 'culture', sub: 'Osaka • Shimamoto', desc: 'The birthplace of Japanese whisky. Offers guided tours and an exclusive, massive tasting library.' },
+    { id: 'l-c03-b', title: 'Bar High Five', icon: '🥃', cat: 'culture', sub: 'Tokyo • Ginza', desc: 'World-renowned bar famous for perfectly carved ice and an unbelievable collection of rare Japanese whisky vintages.' },
+    { id: 'l-c03-c', title: 'Nikka Yoichi Distillery', icon: '🏔️', cat: 'culture', sub: 'Hokkaido • Yoichi', desc: 'Historic stone buildings producing rich, peaty whisky using traditional coal-fired distillation.' }
+  ],
+  'q01': [
+    { id: 'l-q01-a', title: 'Sukiyabashi Jiro', icon: '🍣', cat: 'cuisine', sub: 'Tokyo • Ginza', desc: 'The legendary, highly exclusive Michelin-starred sushi restaurant nestled inside a subway station.' },
+    { id: 'l-q01-b', title: 'Toyosu Market', icon: '🐟', cat: 'cuisine', sub: 'Tokyo • Koto', desc: 'The world\'s largest wholesale fish market. Surrounding stalls offer incredibly fresh breakfast sushi.' }
+  ]
+};
+
+/* Dynamically generate a fallback for cards that don't have hardcoded locations yet */
+function getLocationsForCard(itemId, title, cat) {
+  if (locationsDB[itemId]) return locationsDB[itemId];
+  return [
+    { id: `l-${itemId}-1`, title: `Renowned ${title} Shop`, icon: '📍', cat: cat, sub: 'Tokyo • Specialty Shop', desc: `Discover authentic ${title.toLowerCase()} right in the bustling heart of the capital city.` },
+    { id: `l-${itemId}-2`, title: `Traditional ${title} Workshop`, icon: '⛩️', cat: cat, sub: 'Kyoto • Heritage Site', desc: `Experience the deepest roots of ${title.toLowerCase()} in a historically preserved setting.` }
+  ];
+}
 
 /* ── Page Router ── */
 function showPage(name) {
@@ -1353,27 +1310,56 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-/* ── Bookmark Buttons (on cards) ── */
-document.querySelectorAll('.card__bk-btn').forEach(btn => {
-  btn.addEventListener('click', e => {
-    e.stopPropagation();
-    const card  = btn.closest('[data-bk-id]');
-    const id    = card.dataset.bkId;
-    const title = card.dataset.bkTitle;
-    const icon  = card.dataset.bkIcon;
-    const sub   = card.dataset.bkSub;
-    const cat   = card.dataset.bkCat;
+/* ── Click Main Discover Cards -> Open Locations ── */
+document.querySelectorAll('.page#page-home .card').forEach(card => {
+  card.addEventListener('click', () => {
+    const itemId = card.dataset.bkId;
+    const itemTitle = card.dataset.bkTitle;
+    const itemCat = card.dataset.bkCat;
+    
+    // Update Header
+    document.getElementById('loc-title').textContent = itemTitle;
+    
+    // Generate Location Cards
+    const grid = document.getElementById('loc-grid');
+    grid.innerHTML = '';
+    
+    const locations = getLocationsForCard(itemId, itemTitle, itemCat);
+    locations.forEach(loc => {
+      const isSaved = bookmarks.has(loc.id);
+      const article = document.createElement('article');
+      article.className = 'card';
+      article.innerHTML = `
+        <div class="card__watermark" aria-hidden="true">${loc.icon}</div>
+        <button class="card__bk-btn ${isSaved ? 'is-saved' : ''}" title="Save Location"><span class="bk-icon"></span></button>
+        <div class="card__body">
+          <span class="card__icon">${loc.icon}</span>
+          <p class="card__tag">${loc.sub}</p>
+          <h2 class="card__title">${loc.title}</h2>
+          <p class="card__desc">${loc.desc}</p>
+        </div>
+      `;
+      
+      // Heart Button Listener (on location card)
+      const btn = article.querySelector('.card__bk-btn');
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation(); // prevent clicking the card underneath
+        if (bookmarks.has(loc.id)) {
+          bookmarks.delete(loc.id);
+          btn.classList.remove('is-saved');
+          showToast(`Removed "${loc.title}"`);
+        } else {
+          bookmarks.set(loc.id, loc);
+          btn.classList.add('is-saved');
+          showToast(`Saved "${loc.title}" ♥`);
+        }
+        updateBadge();
+      });
+      
+      grid.appendChild(article);
+    });
 
-    if (bookmarks.has(id)) {
-      bookmarks.delete(id);
-      btn.classList.remove('is-saved');
-      showToast(`Removed "${title}" from saved`);
-    } else {
-      bookmarks.set(id, { title, icon, sub, cat });
-      btn.classList.add('is-saved');
-      showToast(`Saved "${title}" ♥`);
-    }
-    updateBadge();
+    showPage('locations');
   });
 });
 
@@ -1392,11 +1378,10 @@ function renderBookmarkGrid() {
   const grid  = document.getElementById('bk-grid');
   const empty = document.getElementById('bk-empty');
 
-  const filtered = [...bookmarks.entries()].filter(([, v]) =>
-    bkFilter === 'all' || v.cat === bkFilter
+  const filtered = [...bookmarks.entries()].filter(([, locObj]) =>
+    bkFilter === 'all' || locObj.cat === bkFilter
   );
 
-  // clear non-empty slots
   grid.querySelectorAll('.bk-card').forEach(c => c.remove());
 
   if (filtered.length === 0) {
@@ -1405,40 +1390,35 @@ function renderBookmarkGrid() {
   }
   empty.style.display = 'none';
 
-  filtered.forEach(([id, bk]) => {
+  filtered.forEach(([id, loc]) => {
     const card = document.createElement('article');
     card.className = 'bk-card';
-    card.dataset.bkRenderId = id;
     card.innerHTML = `
-      <div class="bk-card__watermark" aria-hidden="true">${bk.icon}</div>
-      <span class="bk-card__cat-badge">${bk.cat}</span>
-      <span class="bk-card__icon">${bk.icon}</span>
-      <h3 class="bk-card__title">${bk.title}</h3>
-      <p class="bk-card__sub">${bk.sub}</p>
+      <div class="bk-card__watermark" aria-hidden="true">${loc.icon}</div>
+      <span class="bk-card__cat-badge">${loc.sub.split(' • ')[0]}</span>
+      <span class="bk-card__icon">${loc.icon}</span>
+      <h3 class="bk-card__title">${loc.title}</h3>
+      <p class="bk-card__sub">${loc.desc}</p>
       <button class="bk-card__remove" data-remove-id="${id}">✕ Remove</button>
     `;
     grid.appendChild(card);
   });
 
-  // attach remove listeners
+  // Attach remove listeners
   grid.querySelectorAll('.bk-card__remove').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = btn.dataset.removeId;
       bookmarks.delete(id);
-      // sync heart button on source card
-      const src = document.querySelector(`[data-bk-id="${id}"] .card__bk-btn`);
-      if (src) src.classList.remove('is-saved');
       updateBadge();
       renderBookmarkGrid();
-      showToast('Removed from saved places');
+      showToast('Removed from saved locations');
     });
   });
 }
 
 /* ── Badge ── */
 function updateBadge() {
-  const n = bookmarks.size;
-  document.getElementById('global-bk-count').textContent = n;
+  document.getElementById('global-bk-count').textContent = bookmarks.size;
 }
 
 /* ── Toast ── */
