@@ -1,789 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Five Icons of Japanese Excellence</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-
-<style>
-/* ════════════════════════════════════════
-   RESET & VARIABLES
-════════════════════════════════════════ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-
-:root {
-  --page-bg:      #f5f1eb;
-  --card-bg:      #ede8e0;
-  --card-bg-alt:  #e8e2d8;
-  --card-hover:   #e2dbd0;
-  --text-dark:    #1c1a17;
-  --text-mid:     #5a5249;
-  --text-muted:   #9a9087;
-  --text-faint:   #c4bdb4;
-  --crimson:      #c0392b;
-  --crimson-soft: #d4503e;
-  --crimson-dim:  rgba(192,57,43,.08);
-  --crimson-glow: rgba(192,57,43,.18);
-  --gap:          12px;
-  --radius:       8px;
-  --serif:        'Playfair Display', Georgia, serif;
-  --italic:       'Cormorant Garamond', Georgia, serif;
-  --sans:         'DM Sans', system-ui, sans-serif;
-  --nav-h:        62px;
-  --transition:   .28s cubic-bezier(.4,0,.2,1);
-}
-
-body {
-  background: var(--page-bg);
-  color: var(--text-dark);
-  font-family: var(--sans);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-button { cursor: pointer; font-family: inherit; border: none; background: none; outline: none; }
-button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; border-radius: 4px; }
-
-/* ════════════════════════════════════════
-   SITE NAVIGATION
-════════════════════════════════════════ */
-.site-nav {
-  position: sticky;
-  top: 0;
-  z-index: 200;
-  height: var(--nav-h);
-  background: rgba(245,241,235,.92);
-  backdrop-filter: blur(18px) saturate(1.3);
-  -webkit-backdrop-filter: blur(18px) saturate(1.3);
-  border-bottom: 1px solid rgba(28,26,23,.09);
-  display: flex;
-  align-items: center;
-}
-
-.nav-inner {
-  width: 100%;
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 0 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-}
-
-.nav-logo {
-  font-family: var(--serif);
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--text-dark);
-  letter-spacing: -.01em;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.nav-logo-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border: 1.5px solid var(--crimson);
-  border-radius: 4px;
-  color: var(--crimson);
-  font-size: 11px;
-  letter-spacing: .04em;
-  font-family: var(--sans);
-  font-weight: 600;
-  transition: background var(--transition), color var(--transition);
-}
-.nav-logo:hover .nav-logo-mark {
-  background: var(--crimson);
-  color: #fff;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.nav-link {
-  font-family: var(--sans);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  padding: 8px 14px;
-  border-radius: var(--radius);
-  transition: color var(--transition), background var(--transition);
-  cursor: pointer;
-  position: relative;
-}
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: 4px;
-  left: 50%;
-  width: 0;
-  height: 1.5px;
-  background: var(--crimson);
-  border-radius: 2px;
-  transform: translateX(-50%);
-  transition: width var(--transition);
-}
-
-.nav-link:hover { color: var(--text-dark); }
-.nav-link:hover::after { width: 60%; }
-.nav-link.is-active { color: var(--text-dark); }
-.nav-link.is-active::after { width: 60%; }
-
-/* bookmark icon nav button */
-.nav-bookmark-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  border-radius: var(--radius);
-  border: 1.5px solid rgba(192,57,43,.3);
-  background: var(--crimson-dim);
-  color: var(--crimson);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  transition: background var(--transition), border-color var(--transition), transform var(--transition);
-  cursor: pointer;
-}
-.nav-bookmark-btn:hover {
-  background: var(--crimson-glow);
-  border-color: rgba(192,57,43,.5);
-  transform: translateY(-1px);
-}
-.nav-bookmark-btn .bk-count {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 4px;
-  border-radius: 9px;
-  background: var(--crimson);
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  line-height: 1;
-  transition: transform var(--transition);
-}
-
-/* ════════════════════════════════════════
-   PAGES (SPA routing)
-════════════════════════════════════════ */
-.page { display: none; padding: 48px 24px 80px; }
-.page.is-active { display: block; animation: pageIn .4s ease both; }
-
-@keyframes pageIn {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ════════════════════════════════════════
-   PAGE HEADER
-════════════════════════════════════════ */
-.page-header {
-  text-align: center;
-  margin-bottom: 52px;
-  position: relative;
-}
-.page-header__eyebrow {
-  font-family: var(--sans);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--crimson);
-  margin-bottom: 18px;
-}
-.page-header__title {
-  font-family: var(--serif);
-  font-size: clamp(2rem, 5vw, 3.4rem);
-  font-weight: 700;
-  color: var(--text-dark);
-  line-height: 1.15;
-  margin-bottom: 20px;
-  letter-spacing: -.01em;
-}
-.page-header__sub {
-  font-family: var(--italic);
-  font-size: clamp(.95rem, 2vw, 1.1rem);
-  font-weight: 300;
-  font-style: italic;
-  color: var(--text-mid);
-  max-width: 560px;
-  margin: 0 auto;
-  line-height: 1.8;
-}
-.page-header__rule {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  max-width: 280px;
-  margin: 28px auto 0;
-}
-.page-header__rule span {
-  flex: 1; height: 1px;
-  background: var(--text-muted); opacity: .4;
-}
-.page-header__rule i {
-  font-style: normal;
-  color: var(--crimson); font-size: 11px; letter-spacing: .1em;
-}
-
-/* back button for subpages */
-.btn-back {
-  position: absolute;
-  top: 0; left: 50%;
-  transform: translateX(-50%);
-  font-family: var(--sans); font-size: 10px; font-weight: 600;
-  letter-spacing: .15em; text-transform: uppercase; color: var(--text-muted);
-  transition: color var(--transition);
-}
-.btn-back:hover { color: var(--crimson); }
-@media (min-width: 768px) {
-  .btn-back { left: 0; transform: none; top: 10px; }
-}
-
-/* ════════════════════════════════════════
-   TAB NAVIGATION
-════════════════════════════════════════ */
-.tabs { max-width: 1000px; margin: 0 auto 36px; }
-
-.tabs__nav {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-bottom: 1px solid rgba(28,26,23,.12);
-  margin-bottom: 40px;
-  flex-wrap: wrap;
-  gap: 0;
-}
-
-.tab-btn {
-  position: relative;
-  background: none; border: none;
-  cursor: pointer;
-  font-family: var(--sans);
-  font-size: 10.5px; font-weight: 500;
-  letter-spacing: .2em; text-transform: uppercase;
-  color: var(--text-muted);
-  padding: 14px 24px 16px;
-  transition: color var(--transition);
-  outline: none;
-}
-.tab-btn::after {
-  content: '';
-  position: absolute; bottom: -1px; left: 50%;
-  transform: translateX(-50%) scaleX(0);
-  width: 80%; height: 2px;
-  background: var(--crimson);
-  border-radius: 2px 2px 0 0;
-  transition: transform .3s cubic-bezier(.4,0,.2,1);
-}
-.tab-btn::before {
-  content: '';
-  position: absolute; top: 8px; left: 50%;
-  transform: translateX(-50%) scale(0);
-  width: 4px; height: 4px; border-radius: 50%;
-  background: var(--crimson);
-  transition: transform .25s ease;
-}
-.tab-btn:hover { color: var(--text-dark); }
-.tab-btn.is-active { color: var(--text-dark); }
-.tab-btn.is-active::after { transform: translateX(-50%) scaleX(1); }
-.tab-btn.is-active::before { transform: translateX(-50%) scale(1); }
-
-/* ════════════════════════════════════════
-   TAB PANELS
-════════════════════════════════════════ */
-.tab-panel { display: none; }
-.tab-panel.is-active { display: block; animation: fadeUp .4s ease both; }
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.panel-label {
-  font-family: var(--sans);
-  font-size: 9px; font-weight: 500;
-  letter-spacing: .25em; text-transform: uppercase;
-  color: var(--text-muted);
-  text-align: center; margin-bottom: 28px;
-}
-
-/* ════════════════════════════════════════
-   BENTO GRID
-════════════════════════════════════════ */
-.bento {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto auto;
-  gap: var(--gap);
-  max-width: 1000px;
-  margin: 0 auto;
-}
-.card--1 { grid-column: 1; grid-row: 1 / 3; }
-.card--2 { grid-column: 2; grid-row: 1; }
-.card--3 { grid-column: 3; grid-row: 1; }
-.card--4 { grid-column: 2; grid-row: 2; }
-.card--5 { grid-column: 3; grid-row: 2; }
-
-/* 3-col for cuisine/craft panels */
-.bento--three {
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto;
-}
-.bento--three .card { grid-column: auto; grid-row: auto; }
-
-/* ════════════════════════════════════════
-   CARD BASE
-════════════════════════════════════════ */
-.card {
-  position: relative;
-  background: var(--card-bg);
-  border-radius: var(--radius);
-  overflow: hidden;
-  padding: 32px 28px 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  min-height: 220px;
-  cursor: pointer;
-  border: 1px solid transparent;
-  transition:
-    transform var(--transition),
-    box-shadow var(--transition),
-    background var(--transition),
-    border-color var(--transition);
-}
-
-.card:nth-child(even) { background: var(--card-bg-alt); }
-
-/* grain texture */
-.card::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
-  opacity: .6; pointer-events: none; z-index: 0;
-  transition: opacity var(--transition);
-}
-
-/* crimson shimmer on hover */
-.card::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse 80% 60% at 50% 110%, rgba(192,57,43,.1) 0%, transparent 70%);
-  opacity: 0;
-  pointer-events: none; z-index: 0;
-  transition: opacity var(--transition);
-}
-
-/* ── HOVER STATE ── */
-.card:hover {
-  transform: translateY(-5px) scale(1.012);
-  box-shadow: 0 20px 50px rgba(28,26,23,.14), 0 2px 8px rgba(28,26,23,.06);
-  background: var(--card-hover);
-  border-color: rgba(192,57,43,.2);
-}
-.card:hover::before { opacity: 1; }
-.card:hover::after  { opacity: 1; }
-.card:hover .card__icon { transform: scale(1.1) rotate(-4deg); }
-.card:hover .card__title { color: var(--crimson); }
-.card:hover .card__watermark { opacity: .065; }
-
-/* tall card */
-.card--1 {
-  min-height: 460px;
-  justify-content: flex-end;
-  border-left: 2px solid transparent;
-  transition:
-    transform var(--transition),
-    box-shadow var(--transition),
-    background var(--transition),
-    border-color var(--transition),
-    border-left-color var(--transition);
-}
-.card--1:hover { border-left-color: var(--crimson); }
-
-/* watermark */
-.card__watermark {
-  position: absolute; top: -8px; right: 12px;
-  font-family: var(--serif);
-  font-size: clamp(7rem, 14vw, 10rem);
-  font-weight: 700;
-  color: var(--text-dark);
-  opacity: .045;
-  line-height: 1;
-  user-select: none; pointer-events: none; z-index: 0;
-  transition: opacity var(--transition);
-}
-
-.card__body { position: relative; z-index: 1; }
-
-.card__icon {
-  font-size: 2rem; margin-bottom: 18px;
-  display: block; filter: saturate(.85);
-  transition: transform .35s cubic-bezier(.34,1.56,.64,1);
-  will-change: transform;
-}
-
-.card__tag {
-  font-family: var(--sans);
-  font-size: 9px; font-weight: 500;
-  letter-spacing: .22em; text-transform: uppercase;
-  color: var(--crimson-soft); margin-bottom: 10px;
-}
-
-.card__title {
-  font-family: var(--serif);
-  font-size: clamp(1.1rem, 2.2vw, 1.5rem);
-  font-weight: 600;
-  color: var(--text-dark);
-  line-height: 1.25; margin-bottom: 12px;
-  transition: color var(--transition);
-}
-
-.card__desc {
-  font-family: var(--sans);
-  font-size: .82rem; font-weight: 300;
-  color: var(--text-mid);
-  line-height: 1.7; max-width: 28ch;
-}
-
-.card--1 .card__title {
-  font-size: clamp(1.4rem, 3vw, 2rem);
-  font-style: italic;
-}
-
-/* bookmark toggle on location card */
-.card__bk-btn {
-  position: absolute; top: 14px; right: 14px; z-index: 2;
-  display: flex; align-items: center; justify-content: center;
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  background: rgba(245,241,235,.75);
-  border: 1px solid rgba(28,26,23,.12);
-  font-size: 14px; color: var(--text-muted);
-  opacity: 0;
-  transform: scale(.8) translateY(-4px);
-  transition: opacity var(--transition), transform var(--transition),
-              background var(--transition), color var(--transition);
-  cursor: pointer;
-  backdrop-filter: blur(6px);
-}
-.card:hover .card__bk-btn { opacity: 1; transform: scale(1) translateY(0); }
-.card__bk-btn:hover { background: #fff; color: var(--crimson); border-color: rgba(192,57,43,.3); }
-.card__bk-btn.is-saved {
-  opacity: 1; transform: scale(1) translateY(0);
-  background: var(--crimson-dim); color: var(--crimson);
-  border-color: rgba(192,57,43,.35);
-}
-.card__bk-btn.is-saved .bk-icon::before { content: '♥'; }
-.bk-icon::before { content: '♡'; }
-
-/* ════════════════════════════════════════
-   BOOKMARK PAGE
-════════════════════════════════════════ */
-.bk-filter-bar {
-  display: flex; align-items: center; gap: 8px;
-  flex-wrap: wrap; margin-bottom: 32px;
-  max-width: 1000px; margin-left: auto; margin-right: auto;
-}
-.bk-filter-label {
-  font-size: 10px; font-weight: 500;
-  letter-spacing: .18em; text-transform: uppercase;
-  color: var(--text-muted); margin-right: 4px;
-  white-space: nowrap;
-}
-.bk-filter-btn {
-  padding: 7px 16px;
-  border-radius: 20px;
-  border: 1px solid rgba(28,26,23,.16);
-  background: var(--card-bg);
-  font-family: var(--sans); font-size: 11px;
-  font-weight: 500; letter-spacing: .1em;
-  text-transform: uppercase; color: var(--text-muted);
-  transition: background var(--transition), color var(--transition),
-              border-color var(--transition), transform var(--transition);
-  cursor: pointer;
-}
-.bk-filter-btn:hover {
-  background: var(--card-bg-alt); color: var(--text-dark);
-  transform: translateY(-1px);
-}
-.bk-filter-btn.is-active {
-  background: var(--crimson); color: #fff;
-  border-color: var(--crimson);
-  box-shadow: 0 4px 14px rgba(192,57,43,.3);
-}
-
-/* saved cards grid */
-.bk-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--gap);
-  max-width: 1000px; margin: 0 auto;
-}
-
-/* bookmark card variant */
-.bk-card {
-  position: relative;
-  background: var(--card-bg);
-  border-radius: var(--radius);
-  overflow: hidden; padding: 28px 24px 24px;
-  display: flex; flex-direction: column;
-  min-height: 200px;
-  border: 1px solid transparent;
-  transition: transform var(--transition), box-shadow var(--transition),
-              background var(--transition), border-color var(--transition);
-}
-.bk-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 40px rgba(28,26,23,.12);
-  border-color: rgba(192,57,43,.18);
-}
-.bk-card__watermark {
-  position: absolute; top: -4px; right: 8px;
-  font-family: var(--serif);
-  font-size: 5.5rem; font-weight: 700;
-  color: var(--text-dark); opacity: .04;
-  line-height: 1; user-select: none; pointer-events: none;
-}
-.bk-card__cat-badge {
-  display: inline-block;
-  font-size: 8.5px; font-weight: 600;
-  letter-spacing: .2em; text-transform: uppercase;
-  color: var(--crimson);
-  background: var(--crimson-dim);
-  border: 1px solid rgba(192,57,43,.18);
-  padding: 3px 9px; border-radius: 3px; margin-bottom: 10px; align-self: flex-start;
-}
-.bk-card__icon { font-size: 1.6rem; margin-bottom: 12px; display: block; }
-.bk-card__title {
-  font-family: var(--serif); font-size: 1.1rem; font-weight: 600;
-  color: var(--text-dark); line-height: 1.3; margin-bottom: 8px;
-}
-.bk-card__sub {
-  font-family: var(--sans); font-size: .78rem; font-weight: 300;
-  color: var(--text-muted); line-height: 1.6; flex: 1;
-}
-.bk-card__remove {
-  display: inline-flex; align-items: center; gap: 5px;
-  margin-top: 14px; padding-top: 12px;
-  border-top: 1px solid rgba(28,26,23,.1);
-  font-size: 10px; font-weight: 500;
-  letter-spacing: .1em; text-transform: uppercase;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: color var(--transition);
-  background: none; border-left: none; border-right: none; border-bottom: none;
-  width: 100%; text-align: left;
-}
-.bk-card__remove:hover { color: var(--crimson); }
-
-/* empty bookmark state */
-.bk-empty {
-  grid-column: 1 / -1;
-  text-align: center; padding: 80px 24px;
-  border: 1.5px dashed rgba(28,26,23,.14);
-  border-radius: var(--radius);
-}
-.bk-empty__icon { font-size: 3rem; margin-bottom: 16px; opacity: .5; }
-.bk-empty__title {
-  font-family: var(--serif); font-style: italic;
-  font-size: 1.35rem; color: var(--text-mid);
-  margin-bottom: 10px;
-}
-.bk-empty__text { font-size: .82rem; color: var(--text-muted); }
-
-/* ════════════════════════════════════════
-   ABOUT PAGE & CONTACT (Unchanged structure)
-════════════════════════════════════════ */
-.about-hero {
-  max-width: 680px; margin: 0 auto 60px;
-  text-align: center;
-}
-.about-hero__kana {
-  font-family: var(--serif); font-size: 4rem;
-  color: var(--crimson); opacity: .2; line-height: 1;
-  margin-bottom: 20px; letter-spacing: .1em;
-}
-.about-hero__title {
-  font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.8rem);
-  font-weight: 700; color: var(--text-dark);
-  margin-bottom: 20px; letter-spacing: -.01em; line-height: 1.2;
-}
-.about-hero__desc {
-  font-family: var(--italic); font-size: 1.05rem;
-  font-weight: 300; font-style: italic;
-  color: var(--text-mid); line-height: 1.85;
-}
-
-.about-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--gap); max-width: 1000px; margin: 0 auto 60px;
-}
-.about-card {
-  background: var(--card-bg); border-radius: var(--radius);
-  padding: 32px 28px;
-  border: 1px solid transparent;
-  transition: transform var(--transition), box-shadow var(--transition),
-              border-color var(--transition);
-}
-.about-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 40px rgba(28,26,23,.1);
-  border-color: rgba(192,57,43,.18);
-}
-.about-card__num {
-  font-family: var(--serif); font-size: 2.4rem; font-weight: 700;
-  color: var(--crimson); opacity: .3; line-height: 1; margin-bottom: 14px;
-}
-.about-card__title {
-  font-family: var(--serif); font-size: 1.2rem; font-weight: 600;
-  color: var(--text-dark); margin-bottom: 12px;
-}
-.about-card__text {
-  font-family: var(--sans); font-size: .82rem; font-weight: 300;
-  color: var(--text-mid); line-height: 1.7;
-}
-
-.about-divider {
-  max-width: 280px; margin: 0 auto 60px;
-  display: flex; align-items: center; gap: 14px;
-}
-.about-divider span { flex: 1; height: 1px; background: var(--text-muted); opacity: .3; }
-.about-divider i { font-style: normal; color: var(--crimson); font-size: 11px; }
-
-.contact-wrap {
-  max-width: 700px; margin: 0 auto;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
-}
-.contact-info__title {
-  font-family: var(--serif); font-size: 1.8rem; font-weight: 700;
-  color: var(--text-dark); margin-bottom: 16px; font-style: italic;
-}
-.contact-info__text {
-  font-family: var(--sans); font-size: .83rem; font-weight: 300;
-  color: var(--text-mid); line-height: 1.75; margin-bottom: 28px;
-}
-.contact-detail {
-  display: flex; align-items: flex-start; gap: 12px;
-  margin-bottom: 16px;
-}
-.contact-detail__icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
-.contact-detail__label {
-  font-size: 9px; font-weight: 600; letter-spacing: .18em;
-  text-transform: uppercase; color: var(--crimson); margin-bottom: 2px;
-}
-.contact-detail__val {
-  font-family: var(--sans); font-size: .82rem;
-  color: var(--text-mid);
-}
-
-.form-group { margin-bottom: 18px; }
-.form-label {
-  display: block; font-size: 9px; font-weight: 600;
-  letter-spacing: .18em; text-transform: uppercase;
-  color: var(--text-muted); margin-bottom: 8px;
-}
-.form-input, .form-textarea {
-  width: 100%; padding: 12px 14px;
-  background: var(--card-bg);
-  border: 1px solid rgba(28,26,23,.15);
-  border-radius: var(--radius);
-  font-family: var(--sans); font-size: .83rem; font-weight: 300;
-  color: var(--text-dark);
-  transition: border-color var(--transition), box-shadow var(--transition);
-  resize: none; outline: none;
-}
-.form-input:focus, .form-textarea:focus {
-  border-color: var(--crimson);
-  box-shadow: 0 0 0 3px rgba(192,57,43,.12);
-}
-.form-textarea { height: 100px; }
-.form-submit {
-  width: 100%; padding: 13px 20px;
-  background: var(--text-dark); color: var(--page-bg);
-  border-radius: var(--radius);
-  font-family: var(--sans); font-size: 11px;
-  font-weight: 600; letter-spacing: .18em;
-  text-transform: uppercase;
-  transition: background var(--transition), transform var(--transition);
-  cursor: pointer; border: none;
-}
-.form-submit:hover {
-  background: var(--crimson);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(192,57,43,.28);
-}
-
-/* ════════════════════════════════════════
-   TOAST
-════════════════════════════════════════ */
-.toast {
-  position: fixed; bottom: 28px; left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background: var(--text-dark); color: var(--page-bg);
-  font-family: var(--sans); font-size: 12.5px; font-weight: 500;
-  padding: 11px 22px; border-radius: var(--radius);
-  pointer-events: none; opacity: 0;
-  transition: opacity .3s ease, transform .3s ease;
-  z-index: 999; white-space: nowrap;
-  box-shadow: 0 8px 32px rgba(28,26,23,.25);
-}
-.toast.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-/* ════════════════════════════════════════
-   RESPONSIVE
-════════════════════════════════════════ */
-@media (max-width: 780px) {
-  .bento, .bento--three { grid-template-columns: repeat(2, 1fr); }
-  .card--1 { grid-column: 1 / -1; grid-row: auto; min-height: 300px; }
-  .card--2, .card--3, .card--4, .card--5 { grid-column: auto; grid-row: auto; }
-  .bk-grid { grid-template-columns: repeat(2, 1fr); }
-  .about-grid { grid-template-columns: repeat(2, 1fr); }
-  .contact-wrap { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 560px) {
-  .page { padding: 32px 16px 64px; }
-  .nav-inner { padding: 0 16px; }
-  .bento, .bento--three, .bento--mini, .bk-grid, .about-grid {
-    grid-template-columns: 1fr;
-  }
-  .card--1 { min-height: 280px; }
-  .tab-btn { padding: 12px 14px 14px; font-size: 9.5px; letter-spacing: .15em; }
-  .bk-filter-btn { font-size: 10px; padding: 6px 13px; }
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Komorebi Maps — Icons of Japanese Excellence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
+<!-- ═══════════════════════════════════════
+     NAVIGATION
+═══════════════════════════════════════ -->
 <nav class="site-nav" role="navigation" aria-label="Main navigation">
   <div class="nav-inner">
     <div class="nav-logo" onclick="showPage('home')" role="link" tabindex="0">
       <span class="nav-logo-mark">JP</span>
-      Icons of Excellence
+      Komorebi Maps
     </div>
     <div class="nav-links">
       <button class="nav-link is-active" data-page="home" onclick="showPage('home')">Discover</button>
@@ -792,15 +29,22 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
       <button class="nav-bookmark-btn" onclick="showPage('bookmarks')">
         ♥ Saved <span class="bk-count" id="global-bk-count">0</span>
       </button>
+      <!-- Auth button — changes state after login -->
+      <button class="nav-auth-btn" id="nav-auth-btn" onclick="openAuthModal()">
+        <span class="auth-btn-label">Login</span>
+      </button>
     </div>
   </div>
 </nav>
 
+<!-- ═══════════════════════════════════════
+     PAGE: HOME / DISCOVER
+═══════════════════════════════════════ -->
 <div class="page is-active" id="page-home">
   <header class="page-header">
     <p class="page-header__eyebrow">Editorial Discovery Series</p>
     <h1 class="page-header__title">Five Icons of Japanese Excellence</h1>
-    <p class="page-header__sub">Each product represents a distinct philosophy of craftsmanship — refined over generations and cherished across the world. Click any card to explore locations.</p>
+    <p class="page-header__sub">Each product represents a distinct philosophy of craftsmanship — refined over generations and cherished across the world.</p>
     <div class="page-header__rule"><span></span><i>&#10022;</i><span></span></div>
   </header>
 
@@ -819,7 +63,7 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
         <article class="card card--1" data-bk-id="c01" data-bk-cat="culture" data-bk-title="Regional KitKats">
           <div class="card__watermark" aria-hidden="true">01</div>
           <div class="card__body">
-            <span class="card__icon" role="img" aria-label="KitKat">🍫</span>
+            <span class="card__icon">🍫</span>
             <p class="card__tag">Confections · Regional</p>
             <h2 class="card__title">Regional KitKats</h2>
             <p class="card__desc">Over 400 hyper-local flavours — from Hokkaido melon to Uji matcha — turned a foreign chocolate bar into a deeply Japanese obsession.</p>
@@ -828,7 +72,7 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
         <article class="card card--2" data-bk-id="c02" data-bk-cat="culture" data-bk-title="Selvedge Denim">
           <div class="card__watermark" aria-hidden="true">02</div>
           <div class="card__body">
-            <span class="card__icon" role="img" aria-label="Denim">🧵</span>
+            <span class="card__icon">🧵</span>
             <p class="card__tag">Textile · Heritage</p>
             <h2 class="card__title">Selvedge Denim</h2>
             <p class="card__desc">Kojima's weavers preserved shuttle-loom techniques abandoned elsewhere, making Japan the world capital of premium raw denim.</p>
@@ -837,28 +81,28 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
         <article class="card card--3" data-bk-id="c03" data-bk-cat="culture" data-bk-title="Japanese Whisky">
           <div class="card__watermark" aria-hidden="true">03</div>
           <div class="card__body">
-            <span class="card__icon" role="img" aria-label="Whisky">🥃</span>
+            <span class="card__icon">🥃</span>
             <p class="card__tag">Spirits · Distillery</p>
             <h2 class="card__title">Japanese Whisky</h2>
-            <p class="card__desc">Borrowing Scottish methods yet guided by the spirit of <em>monozukuri</em>, Suntory and Nikka redefined what whisky could be.</p>
+            <p class="card__desc">Borrowing Scottish methods yet guided by <em>monozukuri</em>, Suntory and Nikka redefined what whisky could be.</p>
           </div>
         </article>
         <article class="card card--4" data-bk-id="c04" data-bk-cat="culture" data-bk-title="Hobonichi Techo">
           <div class="card__watermark" aria-hidden="true">04</div>
           <div class="card__body">
-            <span class="card__icon" role="img" aria-label="Stationery">✒️</span>
+            <span class="card__icon">✒️</span>
             <p class="card__tag">Stationery · Design</p>
             <h2 class="card__title">Hobonichi Techo</h2>
-            <p class="card__desc">Thin Tomoe River paper, legendary durability, and a culture of personal curation turned a planner into a global cult object.</p>
+            <p class="card__desc">Thin Tomoe River paper and a culture of personal curation turned a planner into a global cult object.</p>
           </div>
         </article>
         <article class="card card--5" data-bk-id="c05" data-bk-cat="culture" data-bk-title="Sakai Kitchen Knives">
           <div class="card__watermark" aria-hidden="true">05</div>
           <div class="card__body">
-            <span class="card__icon" role="img" aria-label="Knife">🔪</span>
+            <span class="card__icon">🔪</span>
             <p class="card__tag">Cutlery · Artisan</p>
             <h2 class="card__title">Sakai Kitchen Knives</h2>
-            <p class="card__desc">Six-hundred years of sword-making tradition channelled into blades so precise they reshaped professional kitchens worldwide.</p>
+            <p class="card__desc">Six-hundred years of sword-making tradition channelled into blades that reshaped professional kitchens worldwide.</p>
           </div>
         </article>
       </div>
@@ -869,57 +113,27 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
       <div class="bento bento--three">
         <article class="card" data-bk-id="q01" data-bk-cat="cuisine" data-bk-title="Edomae Sushi">
           <div class="card__watermark" aria-hidden="true">食</div>
-          <div class="card__body">
-            <span class="card__icon">🍣</span>
-            <p class="card__tag">Umami · Tokyo</p>
-            <h2 class="card__title">Edomae Sushi</h2>
-            <p class="card__desc">A centuries-old Tokyo style where every grain of rice is seasoned and every fish aged with calculated precision.</p>
-          </div>
+          <div class="card__body"><span class="card__icon">🍣</span><p class="card__tag">Umami · Tokyo</p><h2 class="card__title">Edomae Sushi</h2><p class="card__desc">A centuries-old Tokyo style where every grain of rice is seasoned and every fish aged with calculated precision.</p></div>
         </article>
         <article class="card" data-bk-id="q02" data-bk-cat="cuisine" data-bk-title="Hakata Tonkotsu">
           <div class="card__watermark" aria-hidden="true">麺</div>
-          <div class="card__body">
-            <span class="card__icon">🍜</span>
-            <p class="card__tag">Broth · Fukuoka</p>
-            <h2 class="card__title">Hakata Tonkotsu</h2>
-            <p class="card__desc">A milky, 18-hour pork-bone broth so revered that Fukuoka's yatai street stalls have earned global pilgrimage status.</p>
-          </div>
+          <div class="card__body"><span class="card__icon">🍜</span><p class="card__tag">Broth · Fukuoka</p><h2 class="card__title">Hakata Tonkotsu</h2><p class="card__desc">A milky, 18-hour pork-bone broth so revered that Fukuoka's yatai stalls have earned global pilgrimage status.</p></div>
         </article>
         <article class="card" data-bk-id="q03" data-bk-cat="cuisine" data-bk-title="Kaiseki Ryōri">
           <div class="card__watermark" aria-hidden="true">懐</div>
-          <div class="card__body">
-            <span class="card__icon">🍱</span>
-            <p class="card__tag">Haute Cuisine · Kyoto</p>
-            <h2 class="card__title">Kaiseki Ryōri</h2>
-            <p class="card__desc">Japan's answer to haute cuisine — twelve seasonal courses presented as living art, rooted in the aesthetics of the tea ceremony.</p>
-          </div>
+          <div class="card__body"><span class="card__icon">🍱</span><p class="card__tag">Haute Cuisine · Kyoto</p><h2 class="card__title">Kaiseki Ryōri</h2><p class="card__desc">Japan's answer to haute cuisine — seasonal courses presented as living art, rooted in tea ceremony aesthetics.</p></div>
         </article>
         <article class="card" data-bk-id="q04" data-bk-cat="cuisine" data-bk-title="Osaka Takoyaki">
           <div class="card__watermark" aria-hidden="true">章</div>
-          <div class="card__body">
-            <span class="card__icon">🐙</span>
-            <p class="card__tag">Street Food · Osaka</p>
-            <h2 class="card__title">Osaka Takoyaki</h2>
-            <p class="card__desc">Crispy-outside, molten-inside octopus balls — Osaka's greatest contribution to the global street-food canon.</p>
-          </div>
+          <div class="card__body"><span class="card__icon">🐙</span><p class="card__tag">Street Food · Osaka</p><h2 class="card__title">Osaka Takoyaki</h2><p class="card__desc">Crispy-outside, molten-inside octopus balls — Osaka's greatest contribution to the global street-food canon.</p></div>
         </article>
         <article class="card" data-bk-id="q05" data-bk-cat="cuisine" data-bk-title="Wagyu Beef">
           <div class="card__watermark" aria-hidden="true">和</div>
-          <div class="card__body">
-            <span class="card__icon">🥩</span>
-            <p class="card__tag">Delicacy · Hyōgo</p>
-            <h2 class="card__title">Wagyu Beef</h2>
-            <p class="card__desc">Intensely marbled Kobe and Matsusaka cattle, raised with a devotion bordering on ritual, produce beef that dissolves rather than chews.</p>
-          </div>
+          <div class="card__body"><span class="card__icon">🥩</span><p class="card__tag">Delicacy · Hyōgo</p><h2 class="card__title">Wagyu Beef</h2><p class="card__desc">Intensely marbled Kobe cattle, raised with devotion bordering on ritual, produce beef that dissolves rather than chews.</p></div>
         </article>
-        <article class="card" data-bk-id="q06" data-bk-cat="cuisine" data-bk-title="Matcha Ceremony">
+        <article class="card" data-bk-id="q06" data-bk-cat="cuisine" data-bk-title="Uji Matcha">
           <div class="card__watermark" aria-hidden="true">茶</div>
-          <div class="card__body">
-            <span class="card__icon">🍵</span>
-            <p class="card__tag">Tea · Uji</p>
-            <h2 class="card__title">Uji Matcha</h2>
-            <p class="card__desc">Stone-ground shade-grown tea leaves from Uji — simultaneously a morning drink, a cultural institution, and a global flavour.</p>
-          </div>
+          <div class="card__body"><span class="card__icon">🍵</span><p class="card__tag">Tea · Uji</p><h2 class="card__title">Uji Matcha</h2><p class="card__desc">Stone-ground shade-grown tea leaves — simultaneously a morning drink, a cultural institution, and a global flavour.</p></div>
         </article>
       </div>
     </div>
@@ -927,201 +141,68 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
     <div class="tab-panel" id="panel-craft">
       <p class="panel-label">Spotlight — Japanese Craft</p>
       <div class="bento bento--three">
-        <article class="card" data-bk-id="r01" data-bk-cat="craft" data-bk-title="Kintsugi">
-          <div class="card__watermark" aria-hidden="true">金</div>
-          <div class="card__body">
-            <span class="card__icon">🏺</span>
-            <p class="card__tag">Ceramics · Philosophy</p>
-            <h2 class="card__title">Kintsugi</h2>
-            <p class="card__desc">Broken pottery repaired with gold lacquer — a philosophy that treats damage as biography, making the mended object more beautiful.</p>
-          </div>
-        </article>
-        <article class="card" data-bk-id="r02" data-bk-cat="craft" data-bk-title="Washi Paper">
-          <div class="card__watermark" aria-hidden="true">紙</div>
-          <div class="card__body">
-            <span class="card__icon">📜</span>
-            <p class="card__tag">Paper · UNESCO</p>
-            <h2 class="card__title">Washi Paper</h2>
-            <p class="card__desc">Hand-made from kozo fibres, washi is stronger than wood-pulp paper, translucent as moonlight, and revered by artists worldwide.</p>
-          </div>
-        </article>
-        <article class="card" data-bk-id="r03" data-bk-cat="craft" data-bk-title="Urushi Lacquerware">
-          <div class="card__watermark" aria-hidden="true">漆</div>
-          <div class="card__body">
-            <span class="card__icon">🪆</span>
-            <p class="card__tag">Lacquer · Wajima</p>
-            <h2 class="card__title">Urushi Lacquerware</h2>
-            <p class="card__desc">Dozens of applied layers of urushi tree sap, hand-rubbed and polished over months — producing bowls that gleam like still water.</p>
-          </div>
-        </article>
-        <article class="card" data-bk-id="r04" data-bk-cat="craft" data-bk-title="Origami">
-          <div class="card__watermark" aria-hidden="true">折</div>
-          <div class="card__body">
-            <span class="card__icon">🦢</span>
-            <p class="card__tag">Paper Folding · Edo</p>
-            <h2 class="card__title">Origami</h2>
-            <p class="card__desc">A single, uncut square transformed through folding alone — a discipline that intersects mathematics, meditative practice, and art.</p>
-          </div>
-        </article>
-        <article class="card" data-bk-id="r05" data-bk-cat="craft" data-bk-title="Bizen Pottery">
-          <div class="card__watermark" aria-hidden="true">備</div>
-          <div class="card__body">
-            <span class="card__icon">🫙</span>
-            <p class="card__tag">Ceramics · Okayama</p>
-            <h2 class="card__title">Bizen Pottery</h2>
-            <p class="card__desc">Unglazed stoneware fired for two weeks in wood-burning kilns — each piece unique, marked by flame like a fingerprint.</p>
-          </div>
-        </article>
-        <article class="card" data-bk-id="r06" data-bk-cat="craft" data-bk-title="Nishijin Textiles">
-          <div class="card__watermark" aria-hidden="true">西</div>
-          <div class="card__body">
-            <span class="card__icon">🎴</span>
-            <p class="card__tag">Weaving · Kyoto</p>
-            <h2 class="card__title">Nishijin Textiles</h2>
-            <p class="card__desc">Kyoto's imperial silk-weaving district, producing obi sashes of such complexity that weavers may spend a week on five centimetres.</p>
-          </div>
-        </article>
+        <article class="card" data-bk-id="r01" data-bk-cat="craft" data-bk-title="Kintsugi"><div class="card__watermark" aria-hidden="true">金</div><div class="card__body"><span class="card__icon">🏺</span><p class="card__tag">Ceramics · Philosophy</p><h2 class="card__title">Kintsugi</h2><p class="card__desc">Broken pottery repaired with gold lacquer — a philosophy that treats damage as biography.</p></div></article>
+        <article class="card" data-bk-id="r02" data-bk-cat="craft" data-bk-title="Washi Paper"><div class="card__watermark" aria-hidden="true">紙</div><div class="card__body"><span class="card__icon">📜</span><p class="card__tag">Paper · UNESCO</p><h2 class="card__title">Washi Paper</h2><p class="card__desc">Hand-made from kozo fibres, washi is stronger than wood-pulp paper and revered by artists worldwide.</p></div></article>
+        <article class="card" data-bk-id="r03" data-bk-cat="craft" data-bk-title="Urushi Lacquerware"><div class="card__watermark" aria-hidden="true">漆</div><div class="card__body"><span class="card__icon">🪆</span><p class="card__tag">Lacquer · Wajima</p><h2 class="card__title">Urushi Lacquerware</h2><p class="card__desc">Dozens of urushi layers, hand-rubbed over months — bowls that gleam like still water.</p></div></article>
+        <article class="card" data-bk-id="r04" data-bk-cat="craft" data-bk-title="Origami"><div class="card__watermark" aria-hidden="true">折</div><div class="card__body"><span class="card__icon">🦢</span><p class="card__tag">Paper Folding · Edo</p><h2 class="card__title">Origami</h2><p class="card__desc">A single square transformed through folding alone — mathematics, meditative practice, and art.</p></div></article>
+        <article class="card" data-bk-id="r05" data-bk-cat="craft" data-bk-title="Bizen Pottery"><div class="card__watermark" aria-hidden="true">備</div><div class="card__body"><span class="card__icon">🫙</span><p class="card__tag">Ceramics · Okayama</p><h2 class="card__title">Bizen Pottery</h2><p class="card__desc">Unglazed stoneware fired two weeks in wood-burning kilns — each piece unique, marked by flame.</p></div></article>
+        <article class="card" data-bk-id="r06" data-bk-cat="craft" data-bk-title="Nishijin Textiles"><div class="card__watermark" aria-hidden="true">西</div><div class="card__body"><span class="card__icon">🎴</span><p class="card__tag">Weaving · Kyoto</p><h2 class="card__title">Nishijin Textiles</h2><p class="card__desc">Kyoto's imperial silk-weaving district — weavers may spend a week on five centimetres of obi sash.</p></div></article>
       </div>
     </div>
 
     <div class="tab-panel" id="panel-nature">
       <p class="panel-label">Spotlight — Japan in Nature</p>
       <div class="bento bento--three">
-        <article class="card" data-bk-id="n01" data-bk-cat="nature" data-bk-title="Cherry Blossom (Hanami)">
-          <div class="card__watermark" aria-hidden="true">花</div>
-          <div class="card__body">
-            <span class="card__icon">🌸</span>
-            <p class="card__tag">Season · Nationwide</p>
-            <h2 class="card__title">Hanami</h2>
-            <p class="card__desc">For two fleeting weeks each spring, Japan pauses beneath a canopy of sakura — a national meditation on impermanence.</p>
-          </div>
-        </article>
-        <article class="card" data-bk-id="n02" data-bk-cat="nature" data-bk-title="Arashiyama Bamboo">
-          <div class="card__watermark" aria-hidden="true">竹</div>
-          <div class="card__body">
-            <span class="card__icon">🎋</span>
-            <p class="card__tag">Forest · Kyoto</p>
-            <h2 class="card__title">Arashiyama Bamboo</h2>
-            <p class="card__desc">Ten thousand moso bamboo stalks filter dawn light into vertical green corridors — enter early and the forest floor is yours.</p>
-          </div>
-        </article>
-        <article class="card" data-bk-id="n03" data-bk-cat="nature" data-bk-title="Yakushima Forest">
-          <div class="card__watermark" aria-hidden="true">屋</div>
-          <div class="card__body">
-            <span class="card__icon">🌿</span>
-            <p class="card__tag">UNESCO · Kagoshima</p>
-            <h2 class="card__title">Yakushima Forest</h2>
-            <p class="card__desc">Ancient cryptomeria draped in metre-thick moss, some predating the Roman Empire — the biosphere that inspired Mononoke.</p>
-          </div>
-        </article>
-        <article class="card" data-bk-id="n04" data-bk-cat="nature" data-bk-title="Mt. Fuji">
-          <div class="card__watermark" aria-hidden="true">富</div>
-          <div class="card__body">
-            <span class="card__icon">🗻</span>
-            <p class="card__tag">Mountain · Yamanashi</p>
-            <h2 class="card__title">Mt. Fuji</h2>
-            <p class="card__desc">An almost perfectly symmetrical volcanic cone rising 3,776 metres — worshipped by pilgrims since antiquity.</p>
-          </div>
-        </article>
-        <article class="card" data-bk-id="n05" data-bk-cat="nature" data-bk-title="Jigokudani Monkey Park">
-          <div class="card__watermark" aria-hidden="true">猿</div>
-          <div class="card__body">
-            <span class="card__icon">🐒</span>
-            <p class="card__tag">Wildlife · Nagano</p>
-            <h2 class="card__title">Jigokudani Monkeys</h2>
-            <p class="card__desc">Wild Japanese macaques descend daily to soak in volcanic onsen pools while snow falls around them.</p>
-          </div>
-        </article>
-        <article class="card" data-bk-id="n06" data-bk-cat="nature" data-bk-title="Okinawa Coral Reefs">
-          <div class="card__watermark" aria-hidden="true">珊</div>
-          <div class="card__body">
-            <span class="card__icon">🪸</span>
-            <p class="card__tag">Marine · Okinawa</p>
-            <h2 class="card__title">Okinawa Reefs</h2>
-            <p class="card__desc">The Kerama Islands cradle coral gardens of tropical clarity — manta rays, sea turtles, and 250 species of hard coral.</p>
-          </div>
-        </article>
+        <article class="card" data-bk-id="n01" data-bk-cat="nature" data-bk-title="Hanami"><div class="card__watermark" aria-hidden="true">花</div><div class="card__body"><span class="card__icon">🌸</span><p class="card__tag">Season · Nationwide</p><h2 class="card__title">Hanami</h2><p class="card__desc">For two fleeting weeks each spring, Japan pauses beneath a canopy of sakura — a national meditation on impermanence.</p></div></article>
+        <article class="card" data-bk-id="n02" data-bk-cat="nature" data-bk-title="Arashiyama Bamboo"><div class="card__watermark" aria-hidden="true">竹</div><div class="card__body"><span class="card__icon">🎋</span><p class="card__tag">Forest · Kyoto</p><h2 class="card__title">Arashiyama Bamboo</h2><p class="card__desc">Ten thousand moso bamboo stalks filter dawn light into vertical green corridors.</p></div></article>
+        <article class="card" data-bk-id="n03" data-bk-cat="nature" data-bk-title="Yakushima Forest"><div class="card__watermark" aria-hidden="true">屋</div><div class="card__body"><span class="card__icon">🌿</span><p class="card__tag">UNESCO · Kagoshima</p><h2 class="card__title">Yakushima Forest</h2><p class="card__desc">Ancient cryptomeria draped in metre-thick moss — the biosphere that inspired Mononoke.</p></div></article>
+        <article class="card" data-bk-id="n04" data-bk-cat="nature" data-bk-title="Mt. Fuji"><div class="card__watermark" aria-hidden="true">富</div><div class="card__body"><span class="card__icon">🗻</span><p class="card__tag">Mountain · Yamanashi</p><h2 class="card__title">Mt. Fuji</h2><p class="card__desc">An almost perfectly symmetrical volcanic cone rising 3,776 metres — worshipped by pilgrims since antiquity.</p></div></article>
+        <article class="card" data-bk-id="n05" data-bk-cat="nature" data-bk-title="Jigokudani Monkeys"><div class="card__watermark" aria-hidden="true">猿</div><div class="card__body"><span class="card__icon">🐒</span><p class="card__tag">Wildlife · Nagano</p><h2 class="card__title">Jigokudani Monkeys</h2><p class="card__desc">Wild Japanese macaques descend daily to soak in volcanic onsen pools while snow falls around them.</p></div></article>
+        <article class="card" data-bk-id="n06" data-bk-cat="nature" data-bk-title="Okinawa Reefs"><div class="card__watermark" aria-hidden="true">珊</div><div class="card__body"><span class="card__icon">🪸</span><p class="card__tag">Marine · Okinawa</p><h2 class="card__title">Okinawa Reefs</h2><p class="card__desc">The Kerama Islands cradle coral gardens of tropical clarity — manta rays, turtles, and 250 species of hard coral.</p></div></article>
       </div>
     </div>
 
     <div class="tab-panel" id="panel-ritual">
       <p class="panel-label">Spotlight — Japanese Ritual &amp; Ceremony</p>
       <div class="bento bento--three">
-        <article class="card" data-bk-id="t01" data-bk-cat="ritual" data-bk-title="Chanoyu (Tea Ceremony)">
-          <div class="card__watermark" aria-hidden="true">茶</div>
-          <div class="card__body">
-            <span class="card__icon">🍵</span>
-            <p class="card__tag">Ceremony · Kyoto</p>
-            <h2 class="card__title">Chanoyu</h2>
-            <p class="card__desc">Every gesture codified, every utensil chosen for its imperfection — distilling four centuries of Zen into a bowl of matcha.</p>
-          </div>
-        </article>
-        <article class="card" data-bk-id="t02" data-bk-cat="ritual" data-bk-title="Setsubun Bean Throwing">
-          <div class="card__watermark" aria-hidden="true">節</div>
-          <div class="card__body">
-            <span class="card__icon">🫘</span>
-            <p class="card__tag">Festival · Nationwide</p>
-            <h2 class="card__title">Setsubun</h2>
-            <p class="card__desc">On the eve of spring, roasted soybeans are hurled to drive out demons and invite fortune into the home.</p>
-          </div>
-        </article>
-        <article class="card" data-bk-id="t03" data-bk-cat="ritual" data-bk-title="Obon Festival">
-          <div class="card__watermark" aria-hidden="true">盆</div>
-          <div class="card__body">
-            <span class="card__icon">🏮</span>
-            <p class="card__tag">Ancestral · August</p>
-            <h2 class="card__title">Obon Festival</h2>
-            <p class="card__desc">For three summer days, the spirits of ancestors return — welcomed by paper lanterns and circular Bon Odori dances.</p>
-          </div>
-        </article>
-        <article class="card" data-bk-id="t04" data-bk-cat="ritual" data-bk-title="Shinto Misogi">
-          <div class="card__watermark" aria-hidden="true">禊</div>
-          <div class="card__body">
-            <span class="card__icon">💧</span>
-            <p class="card__tag">Shinto · Purification</p>
-            <h2 class="card__title">Misogi</h2>
-            <p class="card__desc">Standing beneath a freezing mountain waterfall in a white loincloth to cleanse the soul through cold water and breath.</p>
-          </div>
-        </article>
-        <article class="card" data-bk-id="t05" data-bk-cat="ritual" data-bk-title="New Year Hatsumode">
-          <div class="card__watermark" aria-hidden="true">初</div>
-          <div class="card__body">
-            <span class="card__icon">⛩️</span>
-            <p class="card__tag">New Year · Shrine</p>
-            <h2 class="card__title">Hatsumode</h2>
-            <p class="card__desc">Millions visit a shrine or temple for the first prayer of the new year, collecting omamori charms and fortunes.</p>
-          </div>
-        </article>
-        <article class="card" data-bk-id="t06" data-bk-cat="ritual" data-bk-title="Sumo">
-          <div class="card__watermark" aria-hidden="true">相</div>
-          <div class="card__body">
-            <span class="card__icon">🏆</span>
-            <p class="card__tag">Sport · Tokyo</p>
-            <h2 class="card__title">Grand Sumo</h2>
-            <p class="card__desc">Two rikishi in the ancient dohyō ring. Each ritual gesture — salt throw, leg stomp — is an offering to the gods.</p>
-          </div>
-        </article>
+        <article class="card" data-bk-id="t01" data-bk-cat="ritual" data-bk-title="Chanoyu"><div class="card__watermark" aria-hidden="true">茶</div><div class="card__body"><span class="card__icon">🍵</span><p class="card__tag">Ceremony · Kyoto</p><h2 class="card__title">Chanoyu</h2><p class="card__desc">Every gesture codified, every utensil chosen for its imperfection — four centuries of Zen in a bowl of matcha.</p></div></article>
+        <article class="card" data-bk-id="t02" data-bk-cat="ritual" data-bk-title="Setsubun"><div class="card__watermark" aria-hidden="true">節</div><div class="card__body"><span class="card__icon">🫘</span><p class="card__tag">Festival · Nationwide</p><h2 class="card__title">Setsubun</h2><p class="card__desc">On the eve of spring, roasted soybeans are hurled to drive out demons and invite fortune into the home.</p></div></article>
+        <article class="card" data-bk-id="t03" data-bk-cat="ritual" data-bk-title="Obon Festival"><div class="card__watermark" aria-hidden="true">盆</div><div class="card__body"><span class="card__icon">🏮</span><p class="card__tag">Ancestral · August</p><h2 class="card__title">Obon Festival</h2><p class="card__desc">For three summer days, the spirits of ancestors return — welcomed by lanterns and circular Bon Odori dances.</p></div></article>
+        <article class="card" data-bk-id="t04" data-bk-cat="ritual" data-bk-title="Misogi"><div class="card__watermark" aria-hidden="true">禊</div><div class="card__body"><span class="card__icon">💧</span><p class="card__tag">Shinto · Purification</p><h2 class="card__title">Misogi</h2><p class="card__desc">Standing beneath a freezing mountain waterfall in a white loincloth to cleanse the soul through cold water and breath.</p></div></article>
+        <article class="card" data-bk-id="t05" data-bk-cat="ritual" data-bk-title="Hatsumode"><div class="card__watermark" aria-hidden="true">初</div><div class="card__body"><span class="card__icon">⛩️</span><p class="card__tag">New Year · Shrine</p><h2 class="card__title">Hatsumode</h2><p class="card__desc">Millions visit a shrine for the first prayer of the new year, collecting omamori charms and fortunes.</p></div></article>
+        <article class="card" data-bk-id="t06" data-bk-cat="ritual" data-bk-title="Grand Sumo"><div class="card__watermark" aria-hidden="true">相</div><div class="card__body"><span class="card__icon">🏆</span><p class="card__tag">Sport · Tokyo</p><h2 class="card__title">Grand Sumo</h2><p class="card__desc">Two rikishi in the ancient dohyō ring. Each ritual gesture — salt throw, leg stomp — is an offering to the gods.</p></div></article>
       </div>
     </div>
-  </div></div><div class="page" id="page-locations">
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PAGE: LOCATIONS
+═══════════════════════════════════════ -->
+<div class="page" id="page-locations">
   <header class="page-header">
     <button class="btn-back" onclick="showPage('home')">← Back to Discover</button>
     <p class="page-header__eyebrow">Where to Experience</p>
     <h1 class="page-header__title" id="loc-title">Item Locations</h1>
-    <p class="page-header__sub">Click the heart to save these specific locations to your collection.</p>
+    <p class="page-header__sub">Select a location for photos, map, and community reviews.</p>
     <div class="page-header__rule"><span></span><i>&#10022;</i><span></span></div>
   </header>
+  <!-- Bento grid injected by script.js — supports infinite items via CSS columns -->
+  <div class="loc-scroll-wrap">
+    <div class="bento bento--three" id="loc-grid"></div>
+  </div>
+</div>
 
-  <div class="bento bento--three" id="loc-grid">
-    </div>
-</div><div class="page" id="page-bookmarks">
+<!-- ═══════════════════════════════════════
+     PAGE: BOOKMARKS
+═══════════════════════════════════════ -->
+<div class="page" id="page-bookmarks">
   <header class="page-header">
     <p class="page-header__eyebrow">Your Collection</p>
     <h1 class="page-header__title">Saved Locations</h1>
-    <p class="page-header__sub">Specific spots and stores across Japan you've earmarked for your journey.</p>
+    <p class="page-header__sub">Specific spots across Japan earmarked for your journey.</p>
     <div class="page-header__rule"><span></span><i>&#10022;</i><span></span></div>
   </header>
-
   <div style="max-width:1000px;margin:0 auto;">
     <div class="bk-filter-bar">
       <span class="bk-filter-label">Filter by:</span>
@@ -1133,7 +214,6 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
       <button class="bk-filter-btn" data-bk-filter="ritual">Ritual</button>
     </div>
   </div>
-
   <div class="bk-grid" id="bk-grid">
     <div class="bk-empty" id="bk-empty">
       <div class="bk-empty__icon">♡</div>
@@ -1141,306 +221,187 @@ button:focus-visible { outline: 2px solid var(--crimson); outline-offset: 3px; b
       <p class="bk-empty__text">Click a card in Discover to view its locations, then save them here.</p>
     </div>
   </div>
-</div><div class="page" id="page-about">
+</div>
+
+<!-- ═══════════════════════════════════════
+     PAGE: ABOUT
+═══════════════════════════════════════ -->
+<div class="page" id="page-about">
   <div class="about-hero">
     <div class="about-hero__kana">日本</div>
     <h1 class="about-hero__title">About This Series</h1>
-    <p class="about-hero__desc">A curated editorial journey through the layers of Japanese excellence — from humble street food to centuries-old ceremony. Each entry is chosen not for fame alone, but for the philosophy it carries and the craft it demands.</p>
+    <p class="about-hero__desc">A curated editorial journey through the layers of Japanese excellence — from humble street food to centuries-old ceremony.</p>
   </div>
-
   <div class="about-divider"><span></span><i>&#10022;</i><span></span></div>
-
   <div class="about-grid">
-    <div class="about-card">
-      <div class="about-card__num">01</div>
-      <h3 class="about-card__title">The Philosophy</h3>
-      <p class="about-card__text"><em>Monozukuri</em> — the art of making things. We believe every object, dish, and ritual in Japan encodes a worldview. This series attempts to decode it, one icon at a time.</p>
-    </div>
-    <div class="about-card">
-      <div class="about-card__num">02</div>
-      <h3 class="about-card__title">The Curation</h3>
-      <p class="about-card__text">Each entry is selected by researchers who have lived and studied in Japan. We prioritise depth over breadth — a single article should leave you knowing something true.</p>
-    </div>
-    <div class="about-card">
-      <div class="about-card__num">03</div>
-      <h3 class="about-card__title">The Aesthetic</h3>
-      <p class="about-card__text">Design inspired by the quiet luxury of Japanese editorial print — cream stock, serif type, and red accent ink. <em>Ma</em> (negative space) as a design principle, not an oversight.</p>
-    </div>
+    <div class="about-card"><div class="about-card__num">01</div><h3 class="about-card__title">The Philosophy</h3><p class="about-card__text"><em>Monozukuri</em> — the art of making things. Every object, dish, and ritual in Japan encodes a worldview.</p></div>
+    <div class="about-card"><div class="about-card__num">02</div><h3 class="about-card__title">The Curation</h3><p class="about-card__text">Each entry is selected by researchers who have lived and studied in Japan. Depth over breadth — always.</p></div>
+    <div class="about-card"><div class="about-card__num">03</div><h3 class="about-card__title">The Aesthetic</h3><p class="about-card__text">Design inspired by quiet luxury of Japanese editorial print — cream stock, serif type, and red accent ink.</p></div>
   </div>
-
   <div class="about-divider"><span></span><i>&#10022;</i><span></span></div>
-
   <div style="max-width:600px;margin:0 auto;text-align:center;">
-    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--text-mid);line-height:1.85;">
-      "The nail that sticks up gets hammered down — but first it must be remarkable enough to notice."
-    </p>
-    <p style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted);margin-top:14px;">Japanese Editorial Series · Est. 2025</p>
+    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--text-mid);line-height:1.85;">"The nail that sticks up gets hammered down — but first it must be remarkable enough to notice."</p>
+    <p style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted);margin-top:14px;">Komorebi Maps · Est. 2025</p>
   </div>
-</div><div class="page" id="page-contact">
+</div>
+
+<!-- ═══════════════════════════════════════
+     PAGE: CONTACT
+═══════════════════════════════════════ -->
+<div class="page" id="page-contact">
   <header class="page-header">
     <p class="page-header__eyebrow">Get in Touch</p>
     <h1 class="page-header__title">Contact Us</h1>
-    <p class="page-header__sub">Pitch an icon for inclusion, report an inaccuracy, or simply share your own experience of Japanese excellence.</p>
+    <p class="page-header__sub">Pitch an icon for inclusion, report an inaccuracy, or share your experience of Japanese excellence.</p>
     <div class="page-header__rule"><span></span><i>&#10022;</i><span></span></div>
   </header>
-
   <div class="contact-wrap">
     <div class="contact-info">
       <h2 class="contact-info__title">Let's talk about Japan.</h2>
-      <p class="contact-info__text">We welcome submissions, editorial partnerships, corrections, and stories from travellers who have encountered something unforgettable in Japan.</p>
-      <div class="contact-detail">
-        <span class="contact-detail__icon">✉</span>
-        <div>
-          <p class="contact-detail__label">Email</p>
-          <p class="contact-detail__val">editorial@icons-of-japan.com</p>
-        </div>
-      </div>
-      <div class="contact-detail">
-        <span class="contact-detail__icon">📍</span>
-        <div>
-          <p class="contact-detail__label">Based in</p>
-          <p class="contact-detail__val">Tokyo · Kyoto · London</p>
-        </div>
-      </div>
-      <div class="contact-detail">
-        <span class="contact-detail__icon">🕐</span>
-        <div>
-          <p class="contact-detail__label">Response time</p>
-          <p class="contact-detail__val">Within 3 working days</p>
-        </div>
-      </div>
+      <p class="contact-info__text">We welcome submissions, editorial partnerships, corrections, and stories from travellers who have encountered something unforgettable.</p>
+      <div class="contact-detail"><span class="contact-detail__icon">✉</span><div><p class="contact-detail__label">Email</p><p class="contact-detail__val">editorial@komorebi-maps.com</p></div></div>
+      <div class="contact-detail"><span class="contact-detail__icon">📍</span><div><p class="contact-detail__label">Based in</p><p class="contact-detail__val">Tokyo · Kyoto · London</p></div></div>
+      <div class="contact-detail"><span class="contact-detail__icon">🕐</span><div><p class="contact-detail__label">Response time</p><p class="contact-detail__val">Within 3 working days</p></div></div>
     </div>
-
     <form class="contact-form" onsubmit="handleFormSubmit(event)">
-      <div class="form-group">
-        <label class="form-label" for="cf-name">Your Name</label>
-        <input class="form-input" id="cf-name" type="text" placeholder="Tanaka Kenji" required />
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="cf-email">Email Address</label>
-        <input class="form-input" id="cf-email" type="email" placeholder="kenji@example.com" required />
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="cf-subject">Subject</label>
-        <input class="form-input" id="cf-subject" type="text" placeholder="Icon submission — Kyoto Nishiki Market" />
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="cf-msg">Message</label>
-        <textarea class="form-textarea" id="cf-msg" placeholder="Tell us about your discovery…" required></textarea>
-      </div>
+      <div class="form-group"><label class="form-label" for="cf-name">Your Name</label><input class="form-input" id="cf-name" type="text" placeholder="Tanaka Kenji" required /></div>
+      <div class="form-group"><label class="form-label" for="cf-email">Email Address</label><input class="form-input" id="cf-email" type="email" placeholder="kenji@example.com" required /></div>
+      <div class="form-group"><label class="form-label" for="cf-subject">Subject</label><input class="form-input" id="cf-subject" type="text" placeholder="Icon submission — Kyoto Nishiki Market" /></div>
+      <div class="form-group"><label class="form-label" for="cf-msg">Message</label><textarea class="form-textarea" id="cf-msg" placeholder="Tell us about your discovery…" required></textarea></div>
       <button class="form-submit" type="submit">Send Message →</button>
     </form>
   </div>
-</div><div class="toast" id="toast"></div>
+</div>
 
-<script>
-'use strict';
+<!-- ═══════════════════════════════════════
+     MODAL: LOCATION DETAIL
+     (Gallery + Map + Reviews)
+═══════════════════════════════════════ -->
+<div class="modal-overlay" id="location-modal" role="dialog" aria-modal="true" aria-labelledby="modal-loc-title">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('location-modal')" aria-label="Close">✕</button>
 
-/* ── State ── */
-const bookmarks = new Map(); // Store full location objects instead of main card items
-let bkFilter = 'all';
-let toastTimer = null;
+    <!-- Header -->
+    <div class="modal-header">
+      <span class="modal-eyebrow" id="modal-loc-sub">Category · Region</span>
+      <h2 class="modal-title" id="modal-loc-title">Location Name</h2>
+    </div>
 
-/* ── Specific Locations Database ── */
-const locationsDB = {
-  'c01': [
-    { id: 'l-c01-a', title: 'Don Quijote Dotonbori', icon: '🛒', cat: 'culture', sub: 'Osaka • Discount Store', desc: 'Massive multi-story shop featuring a towering dedicated wall of regional and limited-edition KitKats.' },
-    { id: 'l-c01-b', title: 'KitKat Chocolatory Ginza', icon: '🍫', cat: 'culture', sub: 'Tokyo • Ginza', desc: 'Premium boutique offering high-end, chef-crafted KitKat variations you cannot find in standard shops.' },
-    { id: 'l-c01-c', title: 'Kansai Airport Duty Free', icon: '✈️', cat: 'culture', sub: 'Osaka • Airport', desc: 'The perfect last-minute spot to grab Kansai-exclusive flavors like Uji Matcha and Hojicha in bulk.' }
-  ],
-  'c03': [
-    { id: 'l-c03-a', title: 'Suntory Yamazaki Distillery', icon: '🏭', cat: 'culture', sub: 'Osaka • Shimamoto', desc: 'The birthplace of Japanese whisky. Offers guided tours and an exclusive, massive tasting library.' },
-    { id: 'l-c03-b', title: 'Bar High Five', icon: '🥃', cat: 'culture', sub: 'Tokyo • Ginza', desc: 'World-renowned bar famous for perfectly carved ice and an unbelievable collection of rare Japanese whisky vintages.' },
-    { id: 'l-c03-c', title: 'Nikka Yoichi Distillery', icon: '🏔️', cat: 'culture', sub: 'Hokkaido • Yoichi', desc: 'Historic stone buildings producing rich, peaty whisky using traditional coal-fired distillation.' }
-  ],
-  'q01': [
-    { id: 'l-q01-a', title: 'Sukiyabashi Jiro', icon: '🍣', cat: 'cuisine', sub: 'Tokyo • Ginza', desc: 'The legendary, highly exclusive Michelin-starred sushi restaurant nestled inside a subway station.' },
-    { id: 'l-q01-b', title: 'Toyosu Market', icon: '🐟', cat: 'cuisine', sub: 'Tokyo • Koto', desc: 'The world\'s largest wholesale fish market. Surrounding stalls offer incredibly fresh breakfast sushi.' }
-  ]
-};
+    <!-- Tab Strip -->
+    <div class="modal-tabs">
+      <button class="modal-tab is-active" data-modal-target="mtab-gallery">
+        <span>Gallery</span>
+      </button>
+      <button class="modal-tab" data-modal-target="mtab-map">
+        <span>Map</span>
+      </button>
+      <button class="modal-tab" data-modal-target="mtab-reviews">
+        <span>Reviews</span>
+      </button>
+    </div>
 
-/* Dynamically generate a fallback for cards that don't have hardcoded locations yet */
-function getLocationsForCard(itemId, title, cat) {
-  if (locationsDB[itemId]) return locationsDB[itemId];
-  return [
-    { id: `l-${itemId}-1`, title: `Renowned ${title} Shop`, icon: '📍', cat: cat, sub: 'Tokyo • Specialty Shop', desc: `Discover authentic ${title.toLowerCase()} right in the bustling heart of the capital city.` },
-    { id: `l-${itemId}-2`, title: `Traditional ${title} Workshop`, icon: '⛩️', cat: cat, sub: 'Kyoto • Heritage Site', desc: `Experience the deepest roots of ${title.toLowerCase()} in a historically preserved setting.` }
-  ];
-}
+    <!-- Tab: Gallery -->
+    <div class="modal-panel is-active" id="mtab-gallery">
+      <div class="gallery-grid" id="gallery-grid">
+        <!-- Injected by script.js -->
+      </div>
+      <div class="gallery-lightbox" id="gallery-lightbox">
+        <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+        <button class="lightbox-nav lightbox-nav--prev" id="lb-prev">‹</button>
+        <img class="lightbox-img" id="lightbox-img" src="" alt="" />
+        <button class="lightbox-nav lightbox-nav--next" id="lb-next">›</button>
+        <p class="lightbox-caption" id="lightbox-caption"></p>
+      </div>
+    </div>
 
-/* ── Page Router ── */
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('is-active'));
-  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('is-active'));
+    <!-- Tab: Map -->
+    <div class="modal-panel" id="mtab-map">
+      <div class="map-info-bar" id="map-info-bar">
+        <span class="map-info-bar__icon">📍</span>
+        <span class="map-info-bar__label" id="map-info-label">Loading coordinates…</span>
+        <a class="map-info-bar__link" id="map-gmaps-link" href="#" target="_blank" rel="noopener">Open in Google Maps →</a>
+      </div>
+      <div id="leaflet-map" style="width:100%;height:380px;border-radius:6px;overflow:hidden;"></div>
+    </div>
 
-  document.getElementById('page-' + name).classList.add('is-active');
-  const link = document.querySelector(`.nav-link[data-page="${name}"]`);
-  if (link) link.classList.add('is-active');
-
-  if (name === 'bookmarks') renderBookmarkGrid();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-/* ── Tabs ── */
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const targetId = btn.dataset.target;
-    const panel    = document.getElementById(targetId);
-    if (!panel) return;
-
-    const nav = btn.closest('.tabs__nav');
-    nav.querySelectorAll('.tab-btn').forEach(b => {
-      b.classList.remove('is-active');
-      b.setAttribute('aria-selected', 'false');
-    });
-
-    const panelsParent = panel.parentElement;
-    panelsParent.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('is-active'));
-
-    btn.classList.add('is-active');
-    btn.setAttribute('aria-selected', 'true');
-    panel.classList.add('is-active');
-  });
-
-  btn.addEventListener('keydown', e => {
-    const btns = [...btn.closest('.tabs__nav').querySelectorAll('.tab-btn')];
-    const idx  = btns.indexOf(btn);
-    if (e.key === 'ArrowRight') btns[(idx+1)%btns.length].click();
-    if (e.key === 'ArrowLeft')  btns[(idx-1+btns.length)%btns.length].click();
-  });
-});
-
-/* ── Click Main Discover Cards -> Open Locations ── */
-document.querySelectorAll('.page#page-home .card').forEach(card => {
-  card.addEventListener('click', () => {
-    const itemId = card.dataset.bkId;
-    const itemTitle = card.dataset.bkTitle;
-    const itemCat = card.dataset.bkCat;
-    
-    // Update Header
-    document.getElementById('loc-title').textContent = itemTitle;
-    
-    // Generate Location Cards
-    const grid = document.getElementById('loc-grid');
-    grid.innerHTML = '';
-    
-    const locations = getLocationsForCard(itemId, itemTitle, itemCat);
-    locations.forEach(loc => {
-      const isSaved = bookmarks.has(loc.id);
-      const article = document.createElement('article');
-      article.className = 'card';
-      article.innerHTML = `
-        <div class="card__watermark" aria-hidden="true">${loc.icon}</div>
-        <button class="card__bk-btn ${isSaved ? 'is-saved' : ''}" title="Save Location"><span class="bk-icon"></span></button>
-        <div class="card__body">
-          <span class="card__icon">${loc.icon}</span>
-          <p class="card__tag">${loc.sub}</p>
-          <h2 class="card__title">${loc.title}</h2>
-          <p class="card__desc">${loc.desc}</p>
+    <!-- Tab: Reviews -->
+    <div class="modal-panel" id="mtab-reviews">
+      <div class="reviews-list" id="reviews-list">
+        <!-- Injected by script.js -->
+      </div>
+      <div class="review-compose" id="review-compose">
+        <div class="review-compose__avatar" id="review-avatar">?</div>
+        <div class="review-compose__field">
+          <textarea class="review-compose__input" id="review-input" placeholder="Share your experience…" rows="2"></textarea>
+          <div class="review-compose__actions">
+            <div class="star-picker" id="star-picker" role="group" aria-label="Rating">
+              <button class="star" data-val="1">★</button>
+              <button class="star" data-val="2">★</button>
+              <button class="star" data-val="3">★</button>
+              <button class="star" data-val="4">★</button>
+              <button class="star" data-val="5">★</button>
+            </div>
+            <button class="review-submit-btn" id="review-submit-btn" onclick="submitReview()">Post Review</button>
+          </div>
         </div>
-      `;
-      
-      // Heart Button Listener (on location card)
-      const btn = article.querySelector('.card__bk-btn');
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation(); // prevent clicking the card underneath
-        if (bookmarks.has(loc.id)) {
-          bookmarks.delete(loc.id);
-          btn.classList.remove('is-saved');
-          showToast(`Removed "${loc.title}"`);
-        } else {
-          bookmarks.set(loc.id, loc);
-          btn.classList.add('is-saved');
-          showToast(`Saved "${loc.title}" ♥`);
-        }
-        updateBadge();
-      });
-      
-      grid.appendChild(article);
-    });
+      </div>
+    </div>
+  </div>
+</div>
 
-    showPage('locations');
-  });
-});
+<!-- ═══════════════════════════════════════
+     MODAL: AUTH (Login / Signup)
+═══════════════════════════════════════ -->
+<div class="modal-overlay" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+  <div class="modal-content modal-content--auth">
+    <button class="modal-close" onclick="closeModal('auth-modal')" aria-label="Close">✕</button>
 
-/* ── Bookmark Filter ── */
-document.querySelectorAll('.bk-filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.bk-filter-btn').forEach(b => b.classList.remove('is-active'));
-    btn.classList.add('is-active');
-    bkFilter = btn.dataset.bkFilter;
-    renderBookmarkGrid();
-  });
-});
+    <div class="auth-logo">
+      <span class="nav-logo-mark" style="width:36px;height:36px;font-size:14px;">JP</span>
+    </div>
+    <h2 class="auth-title" id="auth-modal-title">Welcome Back</h2>
+    <p class="auth-sub" id="auth-sub">Sign in to sync your saved locations.</p>
 
-/* ── Render Bookmark Grid ── */
-function renderBookmarkGrid() {
-  const grid  = document.getElementById('bk-grid');
-  const empty = document.getElementById('bk-empty');
+    <!-- Auth mode toggle -->
+    <div class="auth-mode-toggle">
+      <button class="auth-mode-btn is-active" id="auth-login-tab" onclick="setAuthMode('login')">Login</button>
+      <button class="auth-mode-btn" id="auth-signup-tab" onclick="setAuthMode('signup')">Sign Up</button>
+    </div>
 
-  const filtered = [...bookmarks.entries()].filter(([, locObj]) =>
-    bkFilter === 'all' || locObj.cat === bkFilter
-  );
+    <!-- Form -->
+    <div class="auth-form-wrap">
+      <div class="form-group">
+        <label class="form-label" for="auth-username">Username</label>
+        <input class="form-input" id="auth-username" type="text" placeholder="your_username" autocomplete="username" />
+      </div>
+      <!-- Extra field for signup -->
+      <div class="form-group" id="auth-email-group" style="display:none;">
+        <label class="form-label" for="auth-email">Email</label>
+        <input class="form-input" id="auth-email" type="email" placeholder="you@example.com" autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="auth-password">Password</label>
+        <div style="position:relative;">
+          <input class="form-input" id="auth-password" type="password" placeholder="••••••••" autocomplete="current-password" style="padding-right:40px;" />
+          <button class="auth-pw-toggle" onclick="togglePasswordVisibility()" aria-label="Toggle password visibility" tabindex="-1">👁</button>
+        </div>
+      </div>
+      <div id="auth-error" class="auth-error" style="display:none;"></div>
+      <button class="form-submit auth-submit" id="auth-submit-btn" onclick="handleAuthSubmit()">
+        <span id="auth-submit-label">Sign In</span>
+        <span class="auth-spinner" id="auth-spinner" style="display:none;">⋯</span>
+      </button>
+    </div>
 
-  grid.querySelectorAll('.bk-card').forEach(c => c.remove());
+    <p class="auth-footer-text">By continuing, you agree to our <a href="#" style="color:var(--crimson);">Terms of Service</a>.</p>
+  </div>
+</div>
 
-  if (filtered.length === 0) {
-    empty.style.display = '';
-    return;
-  }
-  empty.style.display = 'none';
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  filtered.forEach(([id, loc]) => {
-    const card = document.createElement('article');
-    card.className = 'bk-card';
-    card.innerHTML = `
-      <div class="bk-card__watermark" aria-hidden="true">${loc.icon}</div>
-      <span class="bk-card__cat-badge">${loc.sub.split(' • ')[0]}</span>
-      <span class="bk-card__icon">${loc.icon}</span>
-      <h3 class="bk-card__title">${loc.title}</h3>
-      <p class="bk-card__sub">${loc.desc}</p>
-      <button class="bk-card__remove" data-remove-id="${id}">✕ Remove</button>
-    `;
-    grid.appendChild(card);
-  });
-
-  // Attach remove listeners
-  grid.querySelectorAll('.bk-card__remove').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.removeId;
-      bookmarks.delete(id);
-      updateBadge();
-      renderBookmarkGrid();
-      showToast('Removed from saved locations');
-    });
-  });
-}
-
-/* ── Badge ── */
-function updateBadge() {
-  document.getElementById('global-bk-count').textContent = bookmarks.size;
-}
-
-/* ── Toast ── */
-function showToast(msg) {
-  if (toastTimer) clearTimeout(toastTimer);
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('is-visible');
-  toastTimer = setTimeout(() => t.classList.remove('is-visible'), 2600);
-}
-
-/* ── Contact Form ── */
-function handleFormSubmit(e) {
-  e.preventDefault();
-  showToast('Message sent — thank you! ✉');
-  e.target.reset();
-}
-
-/* ── Logo / keyboard nav ── */
-document.querySelector('.nav-logo').addEventListener('keydown', e => {
-  if (e.key === 'Enter') showPage('home');
-});
-</script>
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
