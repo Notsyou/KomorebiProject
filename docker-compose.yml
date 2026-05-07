@@ -1,0 +1,58 @@
+version: '3.8'
+
+networks:
+  komorebi_net:
+    driver: bridge
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: komorebi_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: komorebi_maps
+      MYSQL_USER: komorebi_user
+      MYSQL_PASSWORD: komorebipassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db_data:/var/lib/mysql
+    networks:
+      - komorebi_net
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: komorebi_pma
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: rootpassword
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    networks:
+      - komorebi_net
+
+  backend:
+    build: ./backend
+    container_name: komorebi_backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=db
+      - DB_USER=komorebi_user
+      - DB_PASSWORD=komorebipassword
+      - DB_NAME=komorebi_maps
+      - JWT_SECRET=supersecretlocaltoken
+    depends_on:
+      - db
+    networks:
+      - komorebi_net
+
+volumes:
+  db_data:
