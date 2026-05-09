@@ -5,7 +5,14 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 const app = express();
-app.use(cors());
+// Replace your current app.use(cors()) with this precise version:
+app.use(cors({
+  origin: ['http://127.0.0.1:5500', 'http://localhost:5500'], 
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 const pool = mysql.createPool({
@@ -93,13 +100,10 @@ app.post('/api/signup', async (req, res) => {
 /* GET /api/bookmarks — fetch all saved locations for the authed user */
 app.get('/api/bookmarks', authenticateToken, async (req, res) => {
   try {
-    const [rows] = await pool.query(`
-      SELECT l.*, b.id AS bookmark_id, b.created_at AS saved_at
-      FROM bookmarks b
-      JOIN locations l ON b.location_id = l.id
-      WHERE b.user_id = ?
-      ORDER BY b.created_at DESC
-    `, [req.user.id]);
+    const [rows] = await pool.query(
+      'SELECT location_id FROM bookmarks WHERE user_id = ? ORDER BY created_at DESC',
+      [req.user.id]
+    );
     res.json(rows);
   } catch (err) {
     console.error('Bookmark fetch error:', err);
@@ -211,6 +215,41 @@ app.post('/api/reviews', authenticateToken, async (req, res) => {
   }
 });
 
+/* POST /api/bookmarks/sync — additive merge of guest bookmarks on login.
+   Uses INSERT IGNORE to exploit the UNIQUE KEY(user_id, location_id)
+   constraint — never toggles, never deletes, safe to call with any
+   IDs that already exist on the server. */
+   app.post('/api/bookmarks/sync', authenticateToken, async (req, res) => {
+    const { locationIds } = req.body;
+  
+    if (!Array.isArray(locationIds) || locationIds.length === 0)
+      return res.status(400).json({ error: 'locationIds must be a non-empty array.' });
+  
+    if (locationIds.length > 100)
+      return res.status(400).json({ error: 'Cannot sync more than 100 bookmarks at once.' });
+  
+    // Validate each ID is a non-empty string (guards against SQL injection surface)
+    const invalid = locationIds.some(id => typeof id !== 'string' || !id.trim());
+    if (invalid)
+      return res.status(400).json({ error: 'All locationIds must be non-empty strings.' });
+  
+    try {
+      // Build a multi-row INSERT IGNORE — one round-trip regardless of count
+      const rows = locationIds.map(id => [req.user.id, id.trim()]);
+      const [result] = await pool.query(
+        'INSERT IGNORE INTO bookmarks (user_id, location_id) VALUES ?',
+        [rows]
+      );
+      res.json({
+        message: 'Sync complete.',
+        inserted: result.affectedRows,        // IDs that were new
+        skipped: locationIds.length - result.affectedRows  // IDs already on server
+      });
+    } catch (err) {
+      console.error('Bookmark sync error:', err);
+      res.status(500).json({ error: 'Database operation failed.' });
+    }
+  });
 /* ─── Health check ─── */
 app.get('/api/health', async (req, res) => {
   try {

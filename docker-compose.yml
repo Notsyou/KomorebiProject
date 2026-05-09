@@ -38,7 +38,7 @@ services:
       - komorebi_net
 
   backend:
-    build: ./backend
+    build: .
     container_name: komorebi_backend
     restart: unless-stopped
     ports:

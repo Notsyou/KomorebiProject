@@ -251,9 +251,23 @@ const authState = {
   clearUsername:   () => localStorage.removeItem('komorebi_user'),
   isLoggedIn:      () => !!localStorage.getItem('komorebi_jwt'),
   logout() {
+    if (!window.confirm("Are you sure you want to log out?")) return;
+
     this.clearToken();
     this.clearUsername();
-    updateAuthUI();
+
+    if (typeof bookmarks !== 'undefined') {
+      bookmarks.clear(); // Wipes the data
+    }
+
+    // CALL THE TOOLS HERE
+    updateBadge();      // Resets the counter to 0
+    updateAuthUI();     // Changes buttons back to "Login/Join"
+    
+    // If you have a function that renders the bookmark list, call it too
+    if (typeof renderBookmarkGrid === 'function') {
+        renderBookmarkGrid(); 
+    }
   }
 };
 
@@ -263,25 +277,30 @@ async function apiLogin(username, password) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password })
   });
-  if (!res.ok) throw new Error((await res.json()).error || 'Login failed');
+
   const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Login failed');
+
+  // Just save credentials, don't touch the UI or bookmarks here!
   authState.setToken(data.token);
-  authState.setUsername(username);
-  return data;
+  authState.setUsername(data.username);
 }
 
 async function apiSignup(username, email, password) {
-  const res = await fetch(`${API_BASE}/signup`, {
+  const response = await fetch(`${API_BASE}/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, email, password })
   });
-  if (!res.ok) throw new Error((await res.json()).error || 'Signup failed');
-  const data = await res.json();
+
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || 'Signup failed');
+
+  // Just save credentials, NO location.reload()!
   authState.setToken(data.token);
-  authState.setUsername(username);
-  return data;
+  authState.setUsername(data.username);
 }
+
 
 async function apiFetchBookmarks() {
   const res = await fetch(`${API_BASE}/bookmarks`, {
@@ -840,7 +859,6 @@ async function handleAuthSubmit() {
   label.style.display = 'none';
   spinner.style.display = 'inline';
   errEl.style.display = 'none';
-
   try {
     if (authMode === 'login') {
       await apiLogin(username, password);
@@ -850,15 +868,23 @@ async function handleAuthSubmit() {
       await apiSignup(username, email, password);
     }
 
-    // Success
+    // --- CRITICAL SYNC SEQUENCE ---
+    
+    // 1. Snapshot guest items and wait for them to upload to Docker
+    if (bookmarks.size > 0) {
+      await syncBookmarksToServer(); // Wait for the loop to finish
+    }
+
+    // 2. Clear local memory and pull the "Truth" from MySQL
+    // This merges what you just uploaded with anything you saved months ago
+    await syncBookmarksFromDB();
+
     closeModal('auth-modal');
     updateAuthUI();
     showToast(`Welcome, ${username} ✓`);
 
-    // Sync server bookmarks if any local ones exist
-    if (bookmarks.size > 0) syncBookmarksToServer();
-
   } catch (err) {
+    // ... rest of catch
     showAuthError(err.message || 'Something went wrong. Please retry.');
   } finally {
     btn.disabled = false;
@@ -903,15 +929,69 @@ function updateAuthUI() {
 }
 
 /* ─── Sync local bookmarks → server after login ─── */
+
 async function syncBookmarksToServer() {
-  for (const [id] of bookmarks) {
-    try { await apiToggleBookmark(id); } catch { /* no-op */ }
+  if (bookmarks.size === 0) return;
+
+  const ids = Array.from(bookmarks.keys());
+  console.log(`📤 [Sync] Migrating ${ids.length} guest bookmark(s) to account...`);
+
+  const res = await fetch(`${API_BASE}/bookmarks/sync`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authState.getToken()}`
+    },
+    body: JSON.stringify({ locationIds: ids })
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || 'Bookmark sync failed');
   }
+
+  const result = await res.json();
+  console.log(`✅ [Sync] ${result.inserted} added, ${result.skipped} already existed`);
 }
 
 /* ═══════════════════════════════════════════
    BOOKMARK PAGE
 ═══════════════════════════════════════════ */
+async function syncBookmarksFromDB() {
+  if (!authState.isLoggedIn()) return;
+
+  try {
+    const response = await fetch(`${API_BASE}/bookmarks`, {
+      headers: { 'Authorization': `Bearer ${authState.getToken()}` }
+    });
+
+    const savedLocations = await response.json();
+    console.log('📥 [DB] Raw response:', savedLocations); // ADD THIS
+    
+    bookmarks.clear();
+
+    savedLocations.forEach(item => {
+      const locId = typeof item === 'string' ? item : (item.location_id || item.locationId || item.id);
+      console.log('🔍 [DB] Trying to match locId:', locId); // ADD THIS
+      
+      let fullLoc = null;
+      for (const key in locationsDB) {
+        const found = locationsDB[key].find(l => l.id === locId);
+        if (found) { fullLoc = found; break; }
+      }
+
+      console.log('✅ [DB] Matched fullLoc:', fullLoc); // ADD THIS
+      if (fullLoc) bookmarks.set(fullLoc.id, fullLoc);
+    });
+
+    updateBadge();
+    if (typeof renderBookmarkGrid === 'function') renderBookmarkGrid();
+
+  } catch (err) {
+    console.error('Failed to sync bookmarks:', err);
+  }
+}
+
 document.querySelectorAll('.bk-filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.bk-filter-btn').forEach(b => b.classList.remove('is-active'));
@@ -972,9 +1052,12 @@ function renderBookmarkGrid() {
    UTILITIES
 ═══════════════════════════════════════════ */
 function updateBadge() {
-  document.getElementById('global-bk-count').textContent = bookmarks.size;
+  const countEl = document.getElementById('global-bk-count');
+  if (countEl) {
+    // If bookmarks was cleared, this will correctly show 0
+    countEl.textContent = bookmarks.size; 
+  }
 }
-
 function showToast(msg) {
   if (toastTimer) clearTimeout(toastTimer);
   const t = document.getElementById('toast');
@@ -998,3 +1081,22 @@ document.querySelector('.nav-logo').addEventListener('keydown', e => {
    INIT
 ═══════════════════════════════════════════ */
 updateAuthUI();
+
+/* ═══════════════════════════════════════════
+   FINAL INITIALIZATION
+═══════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', async () => {
+  // 1. Setup UI based on login status
+  updateAuthUI();
+  updateBadge();
+
+  // 2. If logged in, sync bookmarks from the Docker database
+  if (authState.isLoggedIn()) {
+    await syncBookmarksFromDB();
+  }
+
+  // 3. Default to home page
+  showPage('home');
+  
+  console.log("Komorebi Maps Initialized: Backend connected to Port 3000");
+});
