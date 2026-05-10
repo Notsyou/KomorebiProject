@@ -3,413 +3,631 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Komorebi Maps — Icons of Japanese Excellence</title>
+  <title>Komorebi Maps — Japan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <!-- Leaflet CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════
-     NAVIGATION
-═══════════════════════════════════════ -->
-<nav class="site-nav" role="navigation" aria-label="Main navigation">
-  <div class="nav-inner">
-    <div class="nav-logo" onclick="showPage('home')" role="link" tabindex="0">
-      <span class="nav-logo-mark">JP</span>
-      Komorebi Maps
+  <!-- ═══════════════════════════════════
+       LOADER
+  ═══════════════════════════════════ -->
+  <div class="loader" id="loader">
+    <div class="loader__inner">
+      <span class="loader__kanji">旅</span>
+      <div class="loader__bar"><div class="loader__fill"></div></div>
+      <span class="loader__label">KOMOREBI MAPS</span>
     </div>
-    <div class="nav-links">
-      <button class="nav-link is-active" data-page="home" onclick="showPage('home')">Discover</button>
-      <button class="nav-link" data-page="about" onclick="showPage('about')">About</button>
-      <button class="nav-link" data-page="contact" onclick="showPage('contact')">Contact</button>
-      <button class="nav-bookmark-btn" onclick="showPage('bookmarks')">
-        ♥ Saved <span class="bk-count" id="global-bk-count">0</span>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       GLOBAL NAV
+       Auth button sits right of search icon
+  ═══════════════════════════════════ -->
+  <nav class="global-nav" id="globalNav">
+    <div class="global-nav__logo">
+      <span class="logo-mark">◆</span> KOMOREBI
+    </div>
+    <ul class="global-nav__links">
+      <li><a href="#" data-scroll-to="hero">Explore</a></li>
+      <li><a href="#" data-scroll-to="grid">Discover</a></li>
+      <li><a href="#" id="navToursLink">Tours</a></li>
+      <li><a href="#" id="navAboutLink">About</a></li>
+    </ul>
+    <div class="global-nav__actions">
+      <!-- AUTH BUTTON — toggled by JS -->
+      <button class="nav-auth-btn" id="navAuthBtn" aria-label="Login or view profile">
+        <span class="nav-auth-btn__icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </span>
+        <span class="nav-auth-btn__label" id="navAuthLabel">Join / Login</span>
       </button>
-      <!-- Auth button — changes state after login -->
-      <button class="nav-auth-btn" id="nav-auth-btn" onclick="openAuthModal()">
-        <span class="auth-btn-label">Login</span>
-      </button>
-    </div>
-  </div>
-</nav>
-
-<!-- ═══════════════════════════════════════
-     PAGE: HOME / DISCOVER
-═══════════════════════════════════════ -->
-<div class="page is-active" id="page-home">
-  <header class="page-header">
-    <p class="page-header__eyebrow">Editorial Discovery Series</p>
-    <h1 class="page-header__title">Five Icons of Japanese Excellence</h1>
-    <p class="page-header__sub">Each product represents a distinct philosophy of craftsmanship — refined over generations and cherished across the world.</p>
-    <div class="page-header__rule"><span></span><i>&#10022;</i><span></span></div>
-  </header>
-
-  <div class="tabs">
-    <nav class="tabs__nav" role="tablist" aria-label="Discovery categories">
-      <button class="tab-btn is-active" role="tab" aria-selected="true"  data-target="panel-culture">Culture</button>
-      <button class="tab-btn"           role="tab" aria-selected="false" data-target="panel-cuisine">Cuisine</button>
-      <button class="tab-btn"           role="tab" aria-selected="false" data-target="panel-craft">Craft</button>
-      <button class="tab-btn"           role="tab" aria-selected="false" data-target="panel-nature">Nature</button>
-      <button class="tab-btn"           role="tab" aria-selected="false" data-target="panel-ritual">Ritual</button>
-    </nav>
-
-    <div class="tab-panel is-active" id="panel-culture">
-      <p class="panel-label">Five Pillars — Culture &amp; Craftsmanship</p>
-      <div class="bento">
-        <article class="card card--1" data-bk-id="c01" data-bk-cat="culture" data-bk-title="Regional KitKats">
-          <div class="card__watermark" aria-hidden="true">01</div>
-          <div class="card__body">
-            <span class="card__icon">🍫</span>
-            <p class="card__tag">Confections · Regional</p>
-            <h2 class="card__title">Regional KitKats</h2>
-            <p class="card__desc">Over 400 hyper-local flavours — from Hokkaido melon to Uji matcha — turned a foreign chocolate bar into a deeply Japanese obsession.</p>
-          </div>
-        </article>
-        <article class="card card--2" data-bk-id="c02" data-bk-cat="culture" data-bk-title="Selvedge Denim">
-          <div class="card__watermark" aria-hidden="true">02</div>
-          <div class="card__body">
-            <span class="card__icon">🧵</span>
-            <p class="card__tag">Textile · Heritage</p>
-            <h2 class="card__title">Selvedge Denim</h2>
-            <p class="card__desc">Kojima's weavers preserved shuttle-loom techniques abandoned elsewhere, making Japan the world capital of premium raw denim.</p>
-          </div>
-        </article>
-        <article class="card card--3" data-bk-id="c03" data-bk-cat="culture" data-bk-title="Japanese Whisky">
-          <div class="card__watermark" aria-hidden="true">03</div>
-          <div class="card__body">
-            <span class="card__icon">🥃</span>
-            <p class="card__tag">Spirits · Distillery</p>
-            <h2 class="card__title">Japanese Whisky</h2>
-            <p class="card__desc">Borrowing Scottish methods yet guided by <em>monozukuri</em>, Suntory and Nikka redefined what whisky could be.</p>
-          </div>
-        </article>
-        <article class="card card--4" data-bk-id="c04" data-bk-cat="culture" data-bk-title="Hobonichi Techo">
-          <div class="card__watermark" aria-hidden="true">04</div>
-          <div class="card__body">
-            <span class="card__icon">✒️</span>
-            <p class="card__tag">Stationery · Design</p>
-            <h2 class="card__title">Hobonichi Techo</h2>
-            <p class="card__desc">Thin Tomoe River paper and a culture of personal curation turned a planner into a global cult object.</p>
-          </div>
-        </article>
-        <article class="card card--5" data-bk-id="c05" data-bk-cat="culture" data-bk-title="Sakai Kitchen Knives">
-          <div class="card__watermark" aria-hidden="true">05</div>
-          <div class="card__body">
-            <span class="card__icon">🔪</span>
-            <p class="card__tag">Cutlery · Artisan</p>
-            <h2 class="card__title">Sakai Kitchen Knives</h2>
-            <p class="card__desc">Six-hundred years of sword-making tradition channelled into blades that reshaped professional kitchens worldwide.</p>
-          </div>
-        </article>
-      </div>
-    </div>
-
-    <div class="tab-panel" id="panel-cuisine">
-      <p class="panel-label">Spotlight — Japanese Cuisine</p>
-      <div class="bento bento--three">
-        <article class="card" data-bk-id="q01" data-bk-cat="cuisine" data-bk-title="Edomae Sushi">
-          <div class="card__watermark" aria-hidden="true">食</div>
-          <div class="card__body"><span class="card__icon">🍣</span><p class="card__tag">Umami · Tokyo</p><h2 class="card__title">Edomae Sushi</h2><p class="card__desc">A centuries-old Tokyo style where every grain of rice is seasoned and every fish aged with calculated precision.</p></div>
-        </article>
-        <article class="card" data-bk-id="q02" data-bk-cat="cuisine" data-bk-title="Hakata Tonkotsu">
-          <div class="card__watermark" aria-hidden="true">麺</div>
-          <div class="card__body"><span class="card__icon">🍜</span><p class="card__tag">Broth · Fukuoka</p><h2 class="card__title">Hakata Tonkotsu</h2><p class="card__desc">A milky, 18-hour pork-bone broth so revered that Fukuoka's yatai stalls have earned global pilgrimage status.</p></div>
-        </article>
-        <article class="card" data-bk-id="q03" data-bk-cat="cuisine" data-bk-title="Kaiseki Ryōri">
-          <div class="card__watermark" aria-hidden="true">懐</div>
-          <div class="card__body"><span class="card__icon">🍱</span><p class="card__tag">Haute Cuisine · Kyoto</p><h2 class="card__title">Kaiseki Ryōri</h2><p class="card__desc">Japan's answer to haute cuisine — seasonal courses presented as living art, rooted in tea ceremony aesthetics.</p></div>
-        </article>
-        <article class="card" data-bk-id="q04" data-bk-cat="cuisine" data-bk-title="Osaka Takoyaki">
-          <div class="card__watermark" aria-hidden="true">章</div>
-          <div class="card__body"><span class="card__icon">🐙</span><p class="card__tag">Street Food · Osaka</p><h2 class="card__title">Osaka Takoyaki</h2><p class="card__desc">Crispy-outside, molten-inside octopus balls — Osaka's greatest contribution to the global street-food canon.</p></div>
-        </article>
-        <article class="card" data-bk-id="q05" data-bk-cat="cuisine" data-bk-title="Wagyu Beef">
-          <div class="card__watermark" aria-hidden="true">和</div>
-          <div class="card__body"><span class="card__icon">🥩</span><p class="card__tag">Delicacy · Hyōgo</p><h2 class="card__title">Wagyu Beef</h2><p class="card__desc">Intensely marbled Kobe cattle, raised with devotion bordering on ritual, produce beef that dissolves rather than chews.</p></div>
-        </article>
-        <article class="card" data-bk-id="q06" data-bk-cat="cuisine" data-bk-title="Uji Matcha">
-          <div class="card__watermark" aria-hidden="true">茶</div>
-          <div class="card__body"><span class="card__icon">🍵</span><p class="card__tag">Tea · Uji</p><h2 class="card__title">Uji Matcha</h2><p class="card__desc">Stone-ground shade-grown tea leaves — simultaneously a morning drink, a cultural institution, and a global flavour.</p></div>
-        </article>
-        <article class="card" data-bk-id="q06" data-bk-cat="cuisine" data-bk-title="Uji Matcha">
-          <div class="card__watermark" aria-hidden="true">茶</div>
-          <div class="card__body"><span class="card__icon">🍵</span><p class="card__tag">Tea · Uji</p><h2 class="card__title">Uji Matcha</h2><p class="card__desc">Stone-ground shade-grown tea leaves — simultaneously a morning drink, a cultural institution, and a global flavour.</p></div>
-        </article>
-        <article class="card" data-bk-id="q06" data-bk-cat="cuisine" data-bk-title="Uji Matcha">
-          <div class="card__watermark" aria-hidden="true">茶</div>
-          <div class="card__body"><span class="card__icon">🍵</span><p class="card__tag">Tea · Uji</p><h2 class="card__title">Uji Matcha</h2><p class="card__desc">Stone-ground shade-grown tea leaves — simultaneously a morning drink, a cultural institution, and a global flavour.</p></div>
-        </article>
-      </div>
-    </div>
-
-    <div class="tab-panel" id="panel-craft">
-      <p class="panel-label">Spotlight — Japanese Craft</p>
-      <div class="bento bento--three">
-        <article class="card" data-bk-id="r01" data-bk-cat="craft" data-bk-title="Kintsugi"><div class="card__watermark" aria-hidden="true">金</div><div class="card__body"><span class="card__icon">🏺</span><p class="card__tag">Ceramics · Philosophy</p><h2 class="card__title">Kintsugi</h2><p class="card__desc">Broken pottery repaired with gold lacquer — a philosophy that treats damage as biography.</p></div></article>
-        <article class="card" data-bk-id="r02" data-bk-cat="craft" data-bk-title="Washi Paper"><div class="card__watermark" aria-hidden="true">紙</div><div class="card__body"><span class="card__icon">📜</span><p class="card__tag">Paper · UNESCO</p><h2 class="card__title">Washi Paper</h2><p class="card__desc">Hand-made from kozo fibres, washi is stronger than wood-pulp paper and revered by artists worldwide.</p></div></article>
-        <article class="card" data-bk-id="r03" data-bk-cat="craft" data-bk-title="Urushi Lacquerware"><div class="card__watermark" aria-hidden="true">漆</div><div class="card__body"><span class="card__icon">🪆</span><p class="card__tag">Lacquer · Wajima</p><h2 class="card__title">Urushi Lacquerware</h2><p class="card__desc">Dozens of urushi layers, hand-rubbed over months — bowls that gleam like still water.</p></div></article>
-        <article class="card" data-bk-id="r04" data-bk-cat="craft" data-bk-title="Origami"><div class="card__watermark" aria-hidden="true">折</div><div class="card__body"><span class="card__icon">🦢</span><p class="card__tag">Paper Folding · Edo</p><h2 class="card__title">Origami</h2><p class="card__desc">A single square transformed through folding alone — mathematics, meditative practice, and art.</p></div></article>
-        <article class="card" data-bk-id="r05" data-bk-cat="craft" data-bk-title="Bizen Pottery"><div class="card__watermark" aria-hidden="true">備</div><div class="card__body"><span class="card__icon">🫙</span><p class="card__tag">Ceramics · Okayama</p><h2 class="card__title">Bizen Pottery</h2><p class="card__desc">Unglazed stoneware fired two weeks in wood-burning kilns — each piece unique, marked by flame.</p></div></article>
-        <article class="card" data-bk-id="r06" data-bk-cat="craft" data-bk-title="Nishijin Textiles"><div class="card__watermark" aria-hidden="true">西</div><div class="card__body"><span class="card__icon">🎴</span><p class="card__tag">Weaving · Kyoto</p><h2 class="card__title">Nishijin Textiles</h2><p class="card__desc">Kyoto's imperial silk-weaving district — weavers may spend a week on five centimetres of obi sash.</p></div></article>
-      </div>
-    </div>
-
-    <div class="tab-panel" id="panel-nature">
-      <p class="panel-label">Spotlight — Japan in Nature</p>
-      <div class="bento bento--three">
-        <article class="card" data-bk-id="n01" data-bk-cat="nature" data-bk-title="Hanami"><div class="card__watermark" aria-hidden="true">花</div><div class="card__body"><span class="card__icon">🌸</span><p class="card__tag">Season · Nationwide</p><h2 class="card__title">Hanami</h2><p class="card__desc">For two fleeting weeks each spring, Japan pauses beneath a canopy of sakura — a national meditation on impermanence.</p></div></article>
-        <article class="card" data-bk-id="n02" data-bk-cat="nature" data-bk-title="Arashiyama Bamboo"><div class="card__watermark" aria-hidden="true">竹</div><div class="card__body"><span class="card__icon">🎋</span><p class="card__tag">Forest · Kyoto</p><h2 class="card__title">Arashiyama Bamboo</h2><p class="card__desc">Ten thousand moso bamboo stalks filter dawn light into vertical green corridors.</p></div></article>
-        <article class="card" data-bk-id="n03" data-bk-cat="nature" data-bk-title="Yakushima Forest"><div class="card__watermark" aria-hidden="true">屋</div><div class="card__body"><span class="card__icon">🌿</span><p class="card__tag">UNESCO · Kagoshima</p><h2 class="card__title">Yakushima Forest</h2><p class="card__desc">Ancient cryptomeria draped in metre-thick moss — the biosphere that inspired Mononoke.</p></div></article>
-        <article class="card" data-bk-id="n04" data-bk-cat="nature" data-bk-title="Mt. Fuji"><div class="card__watermark" aria-hidden="true">富</div><div class="card__body"><span class="card__icon">🗻</span><p class="card__tag">Mountain · Yamanashi</p><h2 class="card__title">Mt. Fuji</h2><p class="card__desc">An almost perfectly symmetrical volcanic cone rising 3,776 metres — worshipped by pilgrims since antiquity.</p></div></article>
-        <article class="card" data-bk-id="n05" data-bk-cat="nature" data-bk-title="Jigokudani Monkeys"><div class="card__watermark" aria-hidden="true">猿</div><div class="card__body"><span class="card__icon">🐒</span><p class="card__tag">Wildlife · Nagano</p><h2 class="card__title">Jigokudani Monkeys</h2><p class="card__desc">Wild Japanese macaques descend daily to soak in volcanic onsen pools while snow falls around them.</p></div></article>
-        <article class="card" data-bk-id="n06" data-bk-cat="nature" data-bk-title="Okinawa Reefs"><div class="card__watermark" aria-hidden="true">珊</div><div class="card__body"><span class="card__icon">🪸</span><p class="card__tag">Marine · Okinawa</p><h2 class="card__title">Okinawa Reefs</h2><p class="card__desc">The Kerama Islands cradle coral gardens of tropical clarity — manta rays, turtles, and 250 species of hard coral.</p></div></article>
-      </div>
-    </div>
-
-    <div class="tab-panel" id="panel-ritual">
-      <p class="panel-label">Spotlight — Japanese Ritual &amp; Ceremony</p>
-      <div class="bento bento--three">
-        <article class="card" data-bk-id="t01" data-bk-cat="ritual" data-bk-title="Chanoyu"><div class="card__watermark" aria-hidden="true">茶</div><div class="card__body"><span class="card__icon">🍵</span><p class="card__tag">Ceremony · Kyoto</p><h2 class="card__title">Chanoyu</h2><p class="card__desc">Every gesture codified, every utensil chosen for its imperfection — four centuries of Zen in a bowl of matcha.</p></div></article>
-        <article class="card" data-bk-id="t02" data-bk-cat="ritual" data-bk-title="Setsubun"><div class="card__watermark" aria-hidden="true">節</div><div class="card__body"><span class="card__icon">🫘</span><p class="card__tag">Festival · Nationwide</p><h2 class="card__title">Setsubun</h2><p class="card__desc">On the eve of spring, roasted soybeans are hurled to drive out demons and invite fortune into the home.</p></div></article>
-        <article class="card" data-bk-id="t03" data-bk-cat="ritual" data-bk-title="Obon Festival"><div class="card__watermark" aria-hidden="true">盆</div><div class="card__body"><span class="card__icon">🏮</span><p class="card__tag">Ancestral · August</p><h2 class="card__title">Obon Festival</h2><p class="card__desc">For three summer days, the spirits of ancestors return — welcomed by lanterns and circular Bon Odori dances.</p></div></article>
-        <article class="card" data-bk-id="t04" data-bk-cat="ritual" data-bk-title="Misogi"><div class="card__watermark" aria-hidden="true">禊</div><div class="card__body"><span class="card__icon">💧</span><p class="card__tag">Shinto · Purification</p><h2 class="card__title">Misogi</h2><p class="card__desc">Standing beneath a freezing mountain waterfall in a white loincloth to cleanse the soul through cold water and breath.</p></div></article>
-        <article class="card" data-bk-id="t05" data-bk-cat="ritual" data-bk-title="Hatsumode"><div class="card__watermark" aria-hidden="true">初</div><div class="card__body"><span class="card__icon">⛩️</span><p class="card__tag">New Year · Shrine</p><h2 class="card__title">Hatsumode</h2><p class="card__desc">Millions visit a shrine for the first prayer of the new year, collecting omamori charms and fortunes.</p></div></article>
-        <article class="card" data-bk-id="t06" data-bk-cat="ritual" data-bk-title="Grand Sumo"><div class="card__watermark" aria-hidden="true">相</div><div class="card__body"><span class="card__icon">🏆</span><p class="card__tag">Sport · Tokyo</p><h2 class="card__title">Grand Sumo</h2><p class="card__desc">Two rikishi in the ancient dohyō ring. Each ritual gesture — salt throw, leg stomp — is an offering to the gods.</p></div></article>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════
-     PAGE: LOCATIONS
-═══════════════════════════════════════ -->
-<div class="page" id="page-locations">
-  <header class="page-header">
-    <button class="btn-back" onclick="showPage('home')">← Back to Discover</button>
-    <p class="page-header__eyebrow">Where to Experience</p>
-    <h1 class="page-header__title" id="loc-title">Item Locations</h1>
-    <p class="page-header__sub">Select a location for photos, map, and community reviews.</p>
-    <div class="page-header__rule"><span></span><i>&#10022;</i><span></span></div>
-  </header>
-  <!-- Bento grid injected by script.js — supports infinite items via CSS columns -->
-  <div class="loc-scroll-wrap">
-    <div class="bento bento--three" id="loc-grid"></div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════
-     PAGE: BOOKMARKS
-═══════════════════════════════════════ -->
-<div class="page" id="page-bookmarks">
-  <header class="page-header">
-    <p class="page-header__eyebrow">Your Collection</p>
-    <h1 class="page-header__title">Saved Locations</h1>
-    <p class="page-header__sub">Specific spots across Japan earmarked for your journey.</p>
-    <div class="page-header__rule"><span></span><i>&#10022;</i><span></span></div>
-  </header>
-  <div style="max-width:1000px;margin:0 auto;">
-    <div class="bk-filter-bar">
-      <span class="bk-filter-label">Filter by:</span>
-      <button class="bk-filter-btn is-active" data-bk-filter="all">All</button>
-      <button class="bk-filter-btn" data-bk-filter="culture">Culture</button>
-      <button class="bk-filter-btn" data-bk-filter="cuisine">Cuisine</button>
-      <button class="bk-filter-btn" data-bk-filter="craft">Craft</button>
-      <button class="bk-filter-btn" data-bk-filter="nature">Nature</button>
-      <button class="bk-filter-btn" data-bk-filter="ritual">Ritual</button>
-    </div>
-  </div>
-  <div class="bk-grid" id="bk-grid">
-    <div class="bk-empty" id="bk-empty">
-      <div class="bk-empty__icon">♡</div>
-      <p class="bk-empty__title">Nothing saved yet</p>
-      <p class="bk-empty__text">Click a card in Discover to view its locations, then save them here.</p>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════
-     PAGE: ABOUT
-═══════════════════════════════════════ -->
-<div class="page" id="page-about">
-  <div class="about-hero">
-    <div class="about-hero__kana">日本</div>
-    <h1 class="about-hero__title">About This Series</h1>
-    <p class="about-hero__desc">A curated editorial journey through the layers of Japanese excellence — from humble street food to centuries-old ceremony.</p>
-  </div>
-  <div class="about-divider"><span></span><i>&#10022;</i><span></span></div>
-  <div class="about-grid">
-    <div class="about-card"><div class="about-card__num">01</div><h3 class="about-card__title">The Philosophy</h3><p class="about-card__text"><em>Monozukuri</em> — the art of making things. Every object, dish, and ritual in Japan encodes a worldview.</p></div>
-    <div class="about-card"><div class="about-card__num">02</div><h3 class="about-card__title">The Curation</h3><p class="about-card__text">Each entry is selected by researchers who have lived and studied in Japan. Depth over breadth — always.</p></div>
-    <div class="about-card"><div class="about-card__num">03</div><h3 class="about-card__title">The Aesthetic</h3><p class="about-card__text">Design inspired by quiet luxury of Japanese editorial print — cream stock, serif type, and red accent ink.</p></div>
-  </div>
-  <div class="about-divider"><span></span><i>&#10022;</i><span></span></div>
-  <div style="max-width:600px;margin:0 auto;text-align:center;">
-    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--text-mid);line-height:1.85;">"The nail that sticks up gets hammered down — but first it must be remarkable enough to notice."</p>
-    <p style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted);margin-top:14px;">Komorebi Maps · Est. 2025</p>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════
-     PAGE: CONTACT
-═══════════════════════════════════════ -->
-<div class="page" id="page-contact">
-  <header class="page-header">
-    <p class="page-header__eyebrow">Get in Touch</p>
-    <h1 class="page-header__title">Contact Us</h1>
-    <p class="page-header__sub">Pitch an icon for inclusion, report an inaccuracy, or share your experience of Japanese excellence.</p>
-    <div class="page-header__rule"><span></span><i>&#10022;</i><span></span></div>
-  </header>
-  <div class="contact-wrap">
-    <div class="contact-info">
-      <h2 class="contact-info__title">Let's talk about Japan.</h2>
-      <p class="contact-info__text">We welcome submissions, editorial partnerships, corrections, and stories from travellers who have encountered something unforgettable.</p>
-      <div class="contact-detail"><span class="contact-detail__icon">✉</span><div><p class="contact-detail__label">Email</p><p class="contact-detail__val">editorial@komorebi-maps.com</p></div></div>
-      <div class="contact-detail"><span class="contact-detail__icon">📍</span><div><p class="contact-detail__label">Based in</p><p class="contact-detail__val">Tokyo · Kyoto · London</p></div></div>
-      <div class="contact-detail"><span class="contact-detail__icon">🕐</span><div><p class="contact-detail__label">Response time</p><p class="contact-detail__val">Within 3 working days</p></div></div>
-    </div>
-    <form class="contact-form" onsubmit="handleFormSubmit(event)">
-      <div class="form-group"><label class="form-label" for="cf-name">Your Name</label><input class="form-input" id="cf-name" type="text" placeholder="Tanaka Kenji" required /></div>
-      <div class="form-group"><label class="form-label" for="cf-email">Email Address</label><input class="form-input" id="cf-email" type="email" placeholder="kenji@example.com" required /></div>
-      <div class="form-group"><label class="form-label" for="cf-subject">Subject</label><input class="form-input" id="cf-subject" type="text" placeholder="Icon submission — Kyoto Nishiki Market" /></div>
-      <div class="form-group"><label class="form-label" for="cf-msg">Message</label><textarea class="form-textarea" id="cf-msg" placeholder="Tell us about your discovery…" required></textarea></div>
-      <button class="form-submit" type="submit">Send Message →</button>
-    </form>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════
-     MODAL: LOCATION DETAIL
-     (Gallery + Map + Reviews)
-═══════════════════════════════════════ -->
-<div class="modal-overlay" id="location-modal" role="dialog" aria-modal="true" aria-labelledby="modal-loc-title">
-  <div class="modal-content">
-    <button class="modal-close" onclick="closeModal('location-modal')" aria-label="Close">✕</button>
-
-    <!-- Header -->
-    <div class="modal-header">
-      <span class="modal-eyebrow" id="modal-loc-sub">Category · Region</span>
-      <h2 class="modal-title" id="modal-loc-title">Location Name</h2>
-    </div>
-
-    <!-- Tab Strip -->
-    <div class="modal-tabs">
-      <button class="modal-tab is-active" data-modal-target="mtab-gallery">
-        <span>Gallery</span>
-      </button>
-      <button class="modal-tab" data-modal-target="mtab-map">
-        <span>Map</span>
-      </button>
-      <button class="modal-tab" data-modal-target="mtab-reviews">
-        <span>Reviews</span>
+      <!-- SAVES COUNTER (visible when logged in) -->
+      <button class="nav-saves-btn" id="navSavesBtn" aria-label="My saved locations" style="display:none">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span id="savesBadge">0</span>
       </button>
     </div>
+  </nav>
 
-    <!-- Tab: Gallery -->
-    <div class="modal-panel is-active" id="mtab-gallery">
-      <div class="gallery-grid" id="gallery-grid">
-        <!-- Injected by script.js -->
-      </div>
-      <div class="gallery-lightbox" id="gallery-lightbox">
-        <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-        <button class="lightbox-nav lightbox-nav--prev" id="lb-prev">‹</button>
-        <img class="lightbox-img" id="lightbox-img" src="" alt="" />
-        <button class="lightbox-nav lightbox-nav--next" id="lb-next">›</button>
-        <p class="lightbox-caption" id="lightbox-caption"></p>
-      </div>
-    </div>
+  <!-- ═══════════════════════════════════
+       HERO — HORIZONTAL SCROLL ENGINE
+  ═══════════════════════════════════ -->
+  <div class="scroll-viewport" id="heroViewport">
+    <main class="scroll-container" id="scrollContainer">
 
-    <!-- Tab: Map -->
-    <div class="modal-panel" id="mtab-map">
-      <div class="map-info-bar" id="map-info-bar">
-        <span class="map-info-bar__icon">📍</span>
-        <span class="map-info-bar__label" id="map-info-label">Loading coordinates…</span>
-        <a class="map-info-bar__link" id="map-gmaps-link" href="#" target="_blank" rel="noopener">Open in Google Maps →</a>
-      </div>
-      <div id="leaflet-map" style="width:100%;height:380px;border-radius:6px;overflow:hidden;"></div>
-    </div>
-
-    <!-- Tab: Reviews -->
-    <div class="modal-panel" id="mtab-reviews">
-      <div class="reviews-list" id="reviews-list">
-        <!-- Injected by script.js -->
-      </div>
-      <div class="review-compose" id="review-compose">
-        <div class="review-compose__avatar" id="review-avatar">?</div>
-        <div class="review-compose__field">
-          <textarea class="review-compose__input" id="review-input" placeholder="Share your experience…" rows="2"></textarea>
-          <div class="review-compose__actions">
-            <div class="star-picker" id="star-picker" role="group" aria-label="Rating">
-              <button class="star" data-val="1">★</button>
-              <button class="star" data-val="2">★</button>
-              <button class="star" data-val="3">★</button>
-              <button class="star" data-val="4">★</button>
-              <button class="star" data-val="5">★</button>
+      <!-- SECTION 1: TOKYO -->
+      <section class="city-section" id="city-tokyo" data-city="tokyo" data-index="0">
+        <div class="city-section__bg" style="background-image:url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1920&q=80')"></div>
+        <div class="city-section__overlay"></div>
+        <div class="city-section__content">
+          <div class="city-section__meta">
+            <span class="city-meta__num">01</span>
+            <span class="city-meta__region">Kantō Region</span>
+          </div>
+          <h1 class="city-section__title">
+            <span class="title-jp">東京</span>
+            <span class="title-en">VISIT<br>TOKYO</span>
+          </h1>
+          <p class="city-section__desc">
+            Where neon canyons meet ancient shrines — Tokyo pulses as the world's most electrifying metropolis, a city that never sleeps and never stops surprising.
+          </p>
+          <div class="city-section__actions">
+            <button class="btn-explore" data-city="tokyo">Explore City →</button>
+            <div class="city-section__stats">
+              <div class="stat"><span class="stat__val">37M</span><span class="stat__label">Population</span></div>
+              <div class="stat"><span class="stat__val">23</span><span class="stat__label">Wards</span></div>
+              <div class="stat"><span class="stat__val">★ 4.9</span><span class="stat__label">Rating</span></div>
             </div>
-            <button class="review-submit-btn" id="review-submit-btn" onclick="submitReview()">Post Review</button>
+          </div>
+        </div>
+        <div class="city-section__slide-num">01 / 05</div>
+      </section>
+
+      <!-- SECTION 2: OSAKA -->
+      <section class="city-section" id="city-osaka" data-city="osaka" data-index="1">
+        <div class="city-section__bg" style="background-image:url('https://images.unsplash.com/photo-1590559899731-a382839e5549?w=1920&q=80')"></div>
+        <div class="city-section__overlay"></div>
+        <div class="city-section__content">
+          <div class="city-section__meta">
+            <span class="city-meta__num">02</span>
+            <span class="city-meta__region">Kansai Region</span>
+          </div>
+          <h1 class="city-section__title">
+            <span class="title-jp">大阪</span>
+            <span class="title-en">TASTE<br>OSAKA</span>
+          </h1>
+          <p class="city-section__desc">
+            Japan's culinary capital lives by the creed of "Eat till you drop" — a city of street food legends, neon-lit arcades, and the warmest souls in the archipelago.
+          </p>
+          <div class="city-section__actions">
+            <button class="btn-explore" data-city="osaka">Explore City →</button>
+            <div class="city-section__stats">
+              <div class="stat"><span class="stat__val">2.7M</span><span class="stat__label">Population</span></div>
+              <div class="stat"><span class="stat__val">Dotonbori</span><span class="stat__label">Icon</span></div>
+              <div class="stat"><span class="stat__val">★ 4.8</span><span class="stat__label">Rating</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="city-section__slide-num">02 / 05</div>
+      </section>
+
+      <!-- SECTION 3: NAGOYA -->
+      <section class="city-section" id="city-nagoya" data-city="nagoya" data-index="2">
+        <div class="city-section__bg" style="background-image:url('https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?w=1920&q=80')"></div>
+        <div class="city-section__overlay"></div>
+        <div class="city-section__content">
+          <div class="city-section__meta">
+            <span class="city-meta__num">03</span>
+            <span class="city-meta__region">Chūbu Region</span>
+          </div>
+          <h1 class="city-section__title">
+            <span class="title-jp">名古屋</span>
+            <span class="title-en">RISE<br>NAGOYA</span>
+          </h1>
+          <p class="city-section__desc">
+            Japan's industrial heart conceals a bold castle, ferocious cuisine, and a design culture that quietly shapes the nation — a city that rewards the curious traveler.
+          </p>
+          <div class="city-section__actions">
+            <button class="btn-explore" data-city="nagoya">Explore City →</button>
+            <div class="city-section__stats">
+              <div class="stat"><span class="stat__val">2.3M</span><span class="stat__label">Population</span></div>
+              <div class="stat"><span class="stat__val">Castle</span><span class="stat__label">Icon</span></div>
+              <div class="stat"><span class="stat__val">★ 4.6</span><span class="stat__label">Rating</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="city-section__slide-num">03 / 05</div>
+      </section>
+
+      <!-- SECTION 4: OKINAWA -->
+      <section class="city-section" id="city-okinawa" data-city="okinawa" data-index="3">
+        <div class="city-section__bg" style="background-image:url('https://plus.unsplash.com/premium_photo-1661963745503-8b3a86b8c2b1?q=80&w=1331&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')"></div>
+        <div class="city-section__overlay"></div>
+        <div class="city-section__content">
+          <div class="city-section__meta">
+            <span class="city-meta__num">04</span>
+            <span class="city-meta__region">Ryukyu Islands</span>
+          </div>
+          <h1 class="city-section__title">
+            <span class="title-jp">沖縄</span>
+            <span class="title-en">DREAM<br>OKINAWA</span>
+          </h1>
+          <p class="city-section__desc">
+            Crystal-clear waters the color of aquamarine, coral gardens teeming with life, and a distinct Ryukyuan culture older than Japan itself — paradise redefined.
+          </p>
+          <div class="city-section__actions">
+            <button class="btn-explore" data-city="okinawa">Explore City →</button>
+            <div class="city-section__stats">
+              <div class="stat"><span class="stat__val">160</span><span class="stat__label">Islands</span></div>
+              <div class="stat"><span class="stat__val">28°C</span><span class="stat__label">Avg Temp</span></div>
+              <div class="stat"><span class="stat__val">★ 4.9</span><span class="stat__label">Rating</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="city-section__slide-num">04 / 05</div>
+      </section>
+
+      <!-- SECTION 5: SAPPORO -->
+      <section class="city-section" id="city-sapporo" data-city="sapporo" data-index="4">
+        <div class="city-section__bg" style="background-image:url('https://images.unsplash.com/photo-1549693578-d683be217e58?w=1920&q=80')"></div>
+        <div class="city-section__overlay"></div>
+        <div class="city-section__content">
+          <div class="city-section__meta">
+            <span class="city-meta__num">05</span>
+            <span class="city-meta__region">Hokkaido</span>
+          </div>
+          <h1 class="city-section__title">
+            <span class="title-jp">札幌</span>
+            <span class="title-en">SNOW<br>SAPPORO</span>
+          </h1>
+          <p class="city-section__desc">
+            Winter's masterpiece — a city carved from powder snow, where world-class ski slopes, ice sculpture festivals, and legendary ramen steam against frozen mountain air.
+          </p>
+          <div class="city-section__actions">
+            <button class="btn-explore" data-city="sapporo">Explore City →</button>
+            <div class="city-section__stats">
+              <div class="stat"><span class="stat__val">1.9M</span><span class="stat__label">Population</span></div>
+              <div class="stat"><span class="stat__val">-12°C</span><span class="stat__label">Winter Low</span></div>
+              <div class="stat"><span class="stat__val">★ 4.8</span><span class="stat__label">Rating</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="city-section__slide-num">05 / 05</div>
+      </section>
+
+    </main>
+  </div><!-- /scroll-viewport -->
+
+  <!-- ═══════════════════════════════════
+       SCROLL-DOWN CTA (transitions to grid)
+  ═══════════════════════════════════ -->
+  <div class="hero-scroll-cta" id="heroScrollCta">
+    <button class="hero-scroll-cta__btn" id="enterGridBtn">
+      <span>Discover All Locations</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </button>
+  </div>
+
+  <!-- FLOATING PILL NAV -->
+  <nav class="pill-nav" id="pillNav">
+    <button class="pill-nav__item active" data-target="city-tokyo">
+      <span class="pill-nav__dot"></span>
+      <span class="pill-nav__label">Tokyo</span>
+    </button>
+    <button class="pill-nav__item" data-target="city-osaka">
+      <span class="pill-nav__dot"></span>
+      <span class="pill-nav__label">Osaka</span>
+    </button>
+    <button class="pill-nav__item" data-target="city-nagoya">
+      <span class="pill-nav__dot"></span>
+      <span class="pill-nav__label">Nagoya</span>
+    </button>
+    <button class="pill-nav__item" data-target="city-okinawa">
+      <span class="pill-nav__dot"></span>
+      <span class="pill-nav__label">Okinawa</span>
+    </button>
+    <button class="pill-nav__item" data-target="city-sapporo">
+      <span class="pill-nav__dot"></span>
+      <span class="pill-nav__label">Sapporo</span>
+    </button>
+    <div class="pill-nav__progress">
+      <div class="pill-nav__progress-fill" id="progressFill"></div>
+    </div>
+  </nav>
+
+  <!-- SCROLL HINT -->
+  <div class="scroll-hint" id="scrollHint">
+    <span>Scroll to explore</span>
+    <div class="scroll-hint__arrows">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       GRID SECTION (vertical, below hero)
+       Transitions in when user clicks CTA
+  ═══════════════════════════════════ -->
+  <div class="grid-section" id="gridSection">
+    <div class="grid-section__inner">
+
+      <!-- Grid Header -->
+      <div class="grid-section__header">
+        <button class="grid-back-btn" id="gridBackBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          Back to Cities
+        </button>
+        <div class="grid-header__title">
+          <h2>All Locations</h2>
+          <p>Browse and save your favourite spots across Japan</p>
+        </div>
+        <!-- Category filter -->
+        <div class="grid-filter" id="gridFilter">
+          <button class="grid-filter__btn active" data-filter="all">All</button>
+          <button class="grid-filter__btn" data-filter="culture">Culture</button>
+          <button class="grid-filter__btn" data-filter="cuisine">Cuisine</button>
+          <button class="grid-filter__btn" data-filter="nature">Nature</button>
+          <button class="grid-filter__btn" data-filter="ritual">Ritual</button>
+        </div>
+      </div>
+
+      <!-- Location Cards Grid — populated by JS -->
+      <div class="location-grid" id="locationGrid"></div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       CITY DETAIL MODAL (city overview — Explore City button)
+  ═══════════════════════════════════ -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal" id="modal">
+      <button class="modal__close" id="modalClose">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="modal__header" id="modalHeader">
+        <div class="modal__header-top">
+          <div class="modal__city-tag" id="modalCityTag"></div>
+          <!-- SAVE HEART BUTTON — per-location, toggled by JS -->
+          <button class="modal__save-btn" id="modalSaveBtn" aria-label="Save this location">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span id="modalSaveLabel">Save</span>
+          </button>
+        </div>
+        <h2 class="modal__title" id="modalTitle"></h2>
+        <p class="modal__subtitle" id="modalSubtitle"></p>
+      </div>
+      <div class="modal__tabs" id="modalTabsBar">
+        <button class="modal__tab active" data-tab="highlights">Highlights</button>
+        <button class="modal__tab" data-tab="gallery">Gallery</button>
+        <button class="modal__tab" data-tab="map">Map</button>
+        <button class="modal__tab" data-tab="tours">Tours</button>
+      </div>
+      <div class="modal__body">
+        <div class="modal__tab-content active" id="tab-highlights">
+          <div class="attractions-grid" id="attractionsGrid"></div>
+        </div>
+        <div class="modal__tab-content" id="tab-gallery">
+          <div class="city-modal-gallery-tabs" id="cityModalGalleryTabs"></div>
+          <div class="gallery-grid" id="cityModalGalleryGrid"></div>
+          <div class="gallery-lightbox" id="cityModalLightbox">
+            <button class="lightbox-close" id="cityModalLightboxClose">✕</button>
+            <button class="lightbox-nav lightbox-nav--prev" id="cityModalLbPrev">‹</button>
+            <img class="lightbox-img" id="cityModalLightboxImg" src="" alt="" />
+            <button class="lightbox-nav lightbox-nav--next" id="cityModalLbNext">›</button>
+            <p class="lightbox-caption" id="cityModalLightboxCaption"></p>
+          </div>
+        </div>
+        <div class="modal__tab-content" id="tab-map">
+          <div id="leaflet-map" style="height:380px;border-radius:8px;overflow:hidden;"></div>
+          <p class="modal__map-label" id="modalMapLabel"></p>
+        </div>
+        <div class="modal__tab-content" id="tab-tours">
+          <div class="tours-list" id="toursList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       LOCATION DETAIL MODAL (from grid/highlights — Gallery/Map/Reviews)
+  ═══════════════════════════════════ -->
+  <div class="modal-overlay" id="location-modal" role="dialog" aria-modal="true" aria-labelledby="modal-loc-title">
+    <div class="modal-content">
+      <button class="modal-close" id="locModalClose" aria-label="Close">✕</button>
+      <button class="loc-card__heart" id="locModalHeart" aria-label="Save location">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </button>
+
+      <!-- Header -->
+      <div class="modal-header">
+        <span class="modal-eyebrow" id="modal-loc-sub">Category · Region</span>
+        <h2 class="modal-title" id="modal-loc-title">Location Name</h2>
+        <p class="modal-loc-desc" id="modal-loc-desc"></p>
+      </div>
+
+      <!-- Tab Strip -->
+      <div class="modal-tabs">
+        <button class="modal-tab is-active" data-modal-target="mtab-gallery">
+          <span>Gallery</span>
+        </button>
+        <button class="modal-tab" data-modal-target="mtab-map">
+          <span>Map</span>
+        </button>
+        <button class="modal-tab" data-modal-target="mtab-reviews">
+          <span>Reviews</span>
+        </button>
+      </div>
+
+      <!-- Tab: Gallery -->
+      <div class="modal-panel is-active" id="mtab-gallery">
+        <div class="gallery-grid" id="gallery-grid"></div>
+        <div class="gallery-lightbox" id="gallery-lightbox">
+          <button class="lightbox-close" id="lightboxCloseBtn">✕</button>
+          <button class="lightbox-nav lightbox-nav--prev" id="lb-prev">‹</button>
+          <img class="lightbox-img" id="lightbox-img" src="" alt="" />
+          <button class="lightbox-nav lightbox-nav--next" id="lb-next">›</button>
+          <p class="lightbox-caption" id="lightbox-caption"></p>
+        </div>
+      </div>
+
+      <!-- Tab: Map -->
+      <div class="modal-panel" id="mtab-map">
+        <div class="map-info-bar" id="map-info-bar">
+          <span class="map-info-bar__icon">📍</span>
+          <span class="map-info-bar__label" id="map-info-label">Loading coordinates…</span>
+          <a class="map-info-bar__link" id="map-gmaps-link" href="#" target="_blank" rel="noopener">Open in Google Maps →</a>
+        </div>
+        <div id="leaflet-map-loc" style="width:100%;height:380px;border-radius:6px;overflow:hidden;"></div>
+      </div>
+
+      <!-- Tab: Reviews -->
+      <div class="modal-panel" id="mtab-reviews">
+        <div class="reviews-list" id="reviews-list"></div>
+        <!-- Login wall for guests -->
+        <div class="review-login-wall" id="review-login-wall" style="display:none;">
+          <div class="review-login-wall__icon">✍️</div>
+          <p class="review-login-wall__msg">Sign in to share your experience</p>
+          <button class="review-login-wall__btn" id="reviewLoginBtn">Sign In / Join</button>
+        </div>
+        <div class="review-compose" id="review-compose">
+          <div class="review-compose__avatar" id="review-avatar">?</div>
+          <div class="review-compose__field">
+            <textarea class="review-compose__input" id="review-input" placeholder="Share your experience…" rows="2"></textarea>
+            <div class="review-compose__actions">
+              <div class="star-picker" id="star-picker" role="group" aria-label="Rating">
+                <button class="star" data-val="1">★</button>
+                <button class="star" data-val="2">★</button>
+                <button class="star" data-val="3">★</button>
+                <button class="star" data-val="4">★</button>
+                <button class="star" data-val="5">★</button>
+              </div>
+              <button class="review-submit-btn" id="review-submit-btn">Post Review</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- ═══════════════════════════════════════
-     MODAL: AUTH (Login / Signup)
-═══════════════════════════════════════ -->
-<div class="modal-overlay" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
-  <div class="modal-content modal-content--auth">
-    <button class="modal-close" onclick="closeModal('auth-modal')" aria-label="Close">✕</button>
+  <!-- ═══════════════════════════════════
+       AUTH MODAL — Glassmorphism Vermillion
+  ═══════════════════════════════════ -->
+  <div class="auth-backdrop" id="authBackdrop">
+    <div class="auth-modal" id="authModal">
 
-    <div class="auth-logo">
-      <span class="nav-logo-mark" style="width:36px;height:36px;font-size:14px;">JP</span>
-    </div>
-    <h2 class="auth-title" id="auth-modal-title">Welcome Back</h2>
-    <p class="auth-sub" id="auth-sub">Sign in to sync your saved locations.</p>
-
-    <!-- Auth mode toggle -->
-    <div class="auth-mode-toggle">
-      <button class="auth-mode-btn is-active" id="auth-login-tab" onclick="setAuthMode('login')">Login</button>
-      <button class="auth-mode-btn" id="auth-signup-tab" onclick="setAuthMode('signup')">Sign Up</button>
-    </div>
-
-    <!-- Form -->
-    <div class="auth-form-wrap">
-      <div class="form-group">
-        <label class="form-label" for="auth-username">Username</label>
-        <input class="form-input" id="auth-username" type="text" placeholder="your_username" autocomplete="username" />
+      <!-- Mode tabs -->
+      <div class="auth-modal__tabs">
+        <button class="auth-tab active" id="authTabLogin" data-mode="login">Sign In</button>
+        <button class="auth-tab" id="authTabSignup" data-mode="signup">Create Account</button>
+        <button class="auth-modal__close" id="authClose" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
       </div>
-      <!-- Extra field for signup -->
-      <div class="form-group" id="auth-email-group" style="display:none;">
-        <label class="form-label" for="auth-email">Email</label>
-        <input class="form-input" id="auth-email" type="email" placeholder="you@example.com" autocomplete="email" />
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="auth-password">Password</label>
-        <div style="position:relative;">
-          <input class="form-input" id="auth-password" type="password" placeholder="••••••••" autocomplete="current-password" style="padding-right:40px;" />
-          <button class="auth-pw-toggle" onclick="togglePasswordVisibility()" aria-label="Toggle password visibility" tabindex="-1">👁</button>
+
+      <div class="auth-modal__body">
+        <div class="auth-modal__kicker">
+          <span class="logo-mark">◆</span> KOMOREBI MAPS
         </div>
+        <h3 class="auth-modal__title" id="authTitle">Welcome Back</h3>
+        <p class="auth-modal__sub" id="authSub">Sign in to sync your saved locations across devices.</p>
+
+        <!-- Error -->
+        <div class="auth-error" id="authError" style="display:none"></div>
+
+        <!-- Username -->
+        <div class="auth-field">
+          <label class="auth-field__label" for="authUsername">Username</label>
+          <input class="auth-field__input" id="authUsername" type="text" autocomplete="username" placeholder="your_username" />
+        </div>
+
+        <!-- Email (signup only) -->
+        <div class="auth-field" id="authEmailGroup" style="display:none">
+          <label class="auth-field__label" for="authEmail">Email</label>
+          <input class="auth-field__input" id="authEmail" type="email" autocomplete="email" placeholder="you@example.com" />
+        </div>
+
+        <!-- Password -->
+        <div class="auth-field auth-field--pw">
+          <label class="auth-field__label" for="authPassword">Password</label>
+          <input class="auth-field__input" id="authPassword" type="password" autocomplete="current-password" placeholder="••••••••" />
+          <button class="auth-field__toggle" id="pwToggle" type="button" aria-label="Toggle password visibility">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+
+        <!-- Submit -->
+        <button class="auth-submit" id="authSubmit">
+          <span id="authSubmitLabel">Sign In</span>
+          <span class="auth-spinner" id="authSpinner" style="display:none">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 0.8s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+          </span>
+        </button>
       </div>
-      <div id="auth-error" class="auth-error" style="display:none;"></div>
-      <button class="form-submit auth-submit" id="auth-submit-btn" onclick="handleAuthSubmit()">
-        <span id="auth-submit-label">Sign In</span>
-        <span class="auth-spinner" id="auth-spinner" style="display:none;">⋯</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       SAVES DRAWER — slides in from right
+  ═══════════════════════════════════ -->
+  <div class="saves-overlay" id="savesOverlay"></div>
+  <div class="saves-drawer" id="savesDrawer">
+    <div class="saves-drawer__header">
+      <div>
+        <h3 class="saves-drawer__title">My Saves</h3>
+        <p class="saves-drawer__sub" id="savesDrawerSub">Your saved locations</p>
+      </div>
+      <button class="saves-drawer__close" id="savesDrawerClose">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </div>
-
-    <p class="auth-footer-text">By continuing, you agree to our <a href="#" style="color:var(--crimson);">Terms of Service</a>.</p>
+    <!-- Filter pills inside drawer -->
+    <div class="saves-filter" id="savesFilter">
+      <button class="saves-filter__btn active" data-filter="all">All</button>
+      <button class="saves-filter__btn" data-filter="culture">Culture</button>
+      <button class="saves-filter__btn" data-filter="cuisine">Cuisine</button>
+      <button class="saves-filter__btn" data-filter="nature">Nature</button>
+      <button class="saves-filter__btn" data-filter="ritual">Ritual</button>
+    </div>
+    <div class="saves-drawer__grid" id="savesGrid">
+      <div class="saves-empty" id="savesEmpty">
+        <div class="saves-empty__icon">♡</div>
+        <p>No saved locations yet.</p>
+        <p class="saves-empty__hint">Heart any location to save it here.</p>
+      </div>
+    </div>
   </div>
-</div>
 
-<!-- Toast -->
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <!-- ═══════════════════════════════════
+       TOURS PAGE OVERLAY
+  ═══════════════════════════════════ -->
+  <div class="page-overlay" id="toursPage">
+    <div class="page-overlay__inner">
+      <button class="page-overlay__close" id="toursPageClose">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="page-overlay__header">
+        <span class="page-overlay__eyebrow">◆ KOMOREBI MAPS</span>
+        <h2 class="page-overlay__title">Curated Tours</h2>
+        <p class="page-overlay__sub">Handcrafted journeys through Japan's finest cities — led by local experts who know every hidden alley.</p>
+      </div>
+      <div class="tours-page-grid">
+        <div class="tours-page-card">
+          <div class="tours-page-card__num">01</div>
+          <div class="tours-page-card__city">Tokyo</div>
+          <div class="tours-page-card__name">Old Town &amp; Temples Walk</div>
+          <div class="tours-page-card__meta">Full Day · 8hrs</div>
+          <div class="tours-page-card__price">¥18,000</div>
+          <p class="tours-page-card__desc">Wander from Senso-ji at dawn through the backstreets of Yanaka to Ueno's museum mile — Tokyo's living memory.</p>
+        </div>
+        <div class="tours-page-card">
+          <div class="tours-page-card__num">02</div>
+          <div class="tours-page-card__city">Osaka</div>
+          <div class="tours-page-card__name">Street Food Safari</div>
+          <div class="tours-page-card__meta">Evening · 3hrs</div>
+          <div class="tours-page-card__price">¥8,500</div>
+          <p class="tours-page-card__desc">From takoyaki stalls to ramen at midnight — navigate Dotonbori and Shinsekai with a guide who eats for sport.</p>
+        </div>
+        <div class="tours-page-card">
+          <div class="tours-page-card__num">03</div>
+          <div class="tours-page-card__city">Nagoya</div>
+          <div class="tours-page-card__name">Castle &amp; Shrine Circuit</div>
+          <div class="tours-page-card__meta">Full Day · 8hrs</div>
+          <div class="tours-page-card__price">¥14,000</div>
+          <p class="tours-page-card__desc">Gold shachihoko, Zen rock gardens, and ancient Shinto forest paths — central Japan distilled into one day.</p>
+        </div>
+        <div class="tours-page-card">
+          <div class="tours-page-card__num">04</div>
+          <div class="tours-page-card__city">Okinawa</div>
+          <div class="tours-page-card__name">Kerama Islands Snorkel Day</div>
+          <div class="tours-page-card__meta">Full Day · 9hrs</div>
+          <div class="tours-page-card__price">¥28,000</div>
+          <p class="tours-page-card__desc">Turquoise water, sea turtles, and coral gardens ranked among the finest snorkeling on Earth.</p>
+        </div>
+        <div class="tours-page-card">
+          <div class="tours-page-card__num">05</div>
+          <div class="tours-page-card__city">Hokkaido</div>
+          <div class="tours-page-card__name">Powder Snow Ski Day</div>
+          <div class="tours-page-card__meta">Full Day · 9hrs</div>
+          <div class="tours-page-card__price">¥35,000</div>
+          <p class="tours-page-card__desc">15 metres of annual snowfall, legendary powder, world-class runs. The definitive Niseko ski experience.</p>
+        </div>
+        <div class="tours-page-card">
+          <div class="tours-page-card__num">06</div>
+          <div class="tours-page-card__city">Tokyo</div>
+          <div class="tours-page-card__name">Culinary Deep Dive</div>
+          <div class="tours-page-card__meta">Half Day · 5hrs</div>
+          <div class="tours-page-card__price">¥22,000</div>
+          <p class="tours-page-card__desc">Toyosu tuna auction, Ginza sushi counter, whisky bar — Japan's flavour in five hours.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="script.js"></script>
+  <!-- ═══════════════════════════════════
+       ABOUT PAGE OVERLAY
+  ═══════════════════════════════════ -->
+  <div class="page-overlay" id="aboutPage">
+    <div class="page-overlay__inner">
+      <button class="page-overlay__close" id="aboutPageClose">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="page-overlay__header">
+        <span class="page-overlay__eyebrow">◆ KOMOREBI MAPS</span>
+        <h2 class="page-overlay__title">About Komorebi</h2>
+        <p class="page-overlay__sub">木漏れ日 — the Japanese concept of sunlight filtering through leaves. We believe travel should feel exactly like that.</p>
+      </div>
+      <div class="about-grid">
+        <div class="about-block">
+          <div class="about-block__icon">旅</div>
+          <h3 class="about-block__title">Our Philosophy</h3>
+          <p class="about-block__body">Komorebi Maps was built for travellers who move slowly, look deeply, and remember for a lifetime. We reject the algorithmic tour list. Every location in our database has been visited, vetted, and written about by people who love Japan.</p>
+        </div>
+        <div class="about-block">
+          <div class="about-block__icon">🗾</div>
+          <h3 class="about-block__title">Five Cities, Infinite Depth</h3>
+          <p class="about-block__body">We focus on Tokyo, Osaka, Nagoya, Okinawa, and Sapporo — not because Japan ends there, but because we believe in mastery over breadth. Detailed maps, real reviews, honest itineraries.</p>
+        </div>
+        <div class="about-block">
+          <div class="about-block__icon">♡</div>
+          <h3 class="about-block__title">Built for Bookmarkers</h3>
+          <p class="about-block__body">Your saved locations sync across devices the moment you sign in. Build a personal atlas of Japan — curated by you, remembered forever.</p>
+        </div>
+        <div class="about-block">
+          <div class="about-block__icon">🤝</div>
+          <h3 class="about-block__title">Work With Us</h3>
+          <p class="about-block__body">We partner with local guides, boutique hotels, and cultural organisations to keep our recommendations independent and our tours extraordinary. Reach us at <span style="color:var(--accent)">hello@komorebi.jp</span></p>
+        </div>
+      </div>
+      <div class="about-manifesto">
+        <blockquote class="about-quote">"The best travel is the kind that stays with you — not in photographs, but in the way you see the world afterwards."</blockquote>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       LOGOUT CONFIRM WINDOW
+  ═══════════════════════════════════════════ -->
+  <div class="logout-backdrop" id="logoutBackdrop">
+    <div class="logout-modal" id="logoutModal">
+      <div class="logout-modal__icon">◆</div>
+      <h3 class="logout-modal__title">Sign Out?</h3>
+      <p class="logout-modal__sub">Are you sure you want to log out of Komorebi Maps?</p>
+      <div class="logout-modal__actions">
+        <button class="logout-modal__cancel" id="logoutCancel">Cancel</button>
+        <button class="logout-modal__confirm" id="logoutConfirm">Log Out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
