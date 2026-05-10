@@ -235,7 +235,7 @@
       },
     ],
   };
-
+  
   /* Flat list for the grid section */
   const ALL_LOCATIONS = Object.values(LOCATIONS_DB).flat();
 
@@ -310,7 +310,9 @@
   /* ═══════════════════════════════════════════
      API
   ═══════════════════════════════════════════ */
-  const API_BASE = 'http://localhost:3000/api';
+  const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:3000/api' 
+  : 'https://komorebproject-backend.onrender.com/api';
 
   const authState = {
     getToken:    () => localStorage.getItem('komorebi_jwt'),
