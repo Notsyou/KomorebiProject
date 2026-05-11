@@ -434,6 +434,22 @@
     setTimeout(() => { animating = false; }, instant ? 0 : 900);
   }
 
+  /* Preload every city background image immediately so overlays are ready
+     before the user swipes. Creates off-screen Image objects — the browser
+     caches them and the bg elements paint instantly on slide change.       */
+  (function preloadCityBgs() {
+    sections.forEach(sec => {
+      const bg = sec.querySelector('.city-section__bg');
+      if (!bg) return;
+      const style = bg.getAttribute('style') || '';
+      const match = style.match(/url\(['"]?([^'")\s]+)['"]?\)/);
+      if (match && match[1]) {
+        const img = new Image();
+        img.src = match[1];
+      }
+    });
+  })();
+
   /* Parallax rAF loop */
   let parallaxCurrent = 0;
   let parallaxTarget  = 0;
