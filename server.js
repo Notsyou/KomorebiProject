@@ -71,15 +71,33 @@ async function query(sql, params = []) {
 const app = express();
 
 app.use(cors({
-  origin: [
-    'http://127.0.0.1:5500',
-    'http://localhost:5500',
-    'https://komorebi-maps.onrender.com'   // ← live Render frontend
-  ],
+  origin: (origin, callback) => {
+    // Allow requests with no origin (curl, Postman, server-to-server)
+    if (!origin) return callback(null, true);
+
+    const allowed = [
+      'http://127.0.0.1:5500',
+      'http://localhost:5500',
+      'https://komorebi-maps.onrender.com',         // live Render frontend
+      'https://komorebproject-backend.onrender.com', // Render backend (health checks)
+    ];
+
+    // Also allow any *.onrender.com subdomain (covers Render preview deployments)
+    const isRenderPreview = /^https:\/\/[a-z0-9-]+\.onrender\.com$/.test(origin);
+
+    if (allowed.includes(origin) || isRenderPreview) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS: origin ${origin} not allowed`));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Explicitly handle pre-flight OPTIONS for all routes
+app.options('*', cors());
 
 app.use(express.json());
 

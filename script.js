@@ -1549,4 +1549,34 @@
     }
   });
 
+  /* ═══════════════════════════════════════════
+     LIVE JST CLOCK
+  ═══════════════════════════════════════════ */
+  (function initJSTClock() {
+    const timeEl = document.getElementById('jstTime');
+    if (!timeEl) return;
+
+    let lastSec = -1;
+
+    function tick() {
+      const now = new Date();
+      const jst = now.toLocaleString('en-GB', {
+        timeZone: 'Asia/Tokyo',
+        hour:     '2-digit',
+        minute:   '2-digit',
+        second:   '2-digit',
+        hour12:   false
+      });
+
+      const sec = now.toLocaleString('en-GB', { timeZone: 'Asia/Tokyo', second: '2-digit' });
+      if (sec !== lastSec) {
+        lastSec = sec;
+        timeEl.textContent = jst;
+      }
+    }
+
+    tick();
+    setInterval(tick, 500);
+  })();
+
 })();

@@ -122,6 +122,7 @@ body {
   z-index: 300;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 40px;
   padding: 20px 48px;
   background: linear-gradient(to bottom, rgba(26,29,33,0.9) 0%, transparent 100%);
@@ -157,7 +158,11 @@ body {
   display: flex;
   list-style: none;
   gap: 36px;
-  margin: 0 auto;
+  /* True viewport-center: taken out of flex flow so logo/actions widths
+     don't push it off-axis */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .global-nav__links a {
@@ -572,10 +577,12 @@ body {
 
 .modal {
   position: relative;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  /* Glassmorphism 2.0 base — deeper blur + slight warm tint */
+  background: rgba(22, 25, 30, 0.78);
+  /* Semi-transparent 1px border */
+  border: 1px solid rgba(240, 237, 232, 0.13);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-radius: 16px;
   width: 100%;
   max-width: 720px;
@@ -585,7 +592,32 @@ body {
   flex-direction: column;
   transform: translateY(40px) scale(0.96);
   transition: transform 0.4s var(--ease-smooth);
-  box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05) inset;
+  /* Rim light: subtle bright stripe across the very top edge, plus depth shadow */
+  box-shadow:
+    0 32px 80px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+}
+
+/* Rim-light gradient overlay pinned to the top edge */
+.modal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.18) 30%,
+    rgba(255, 79, 0, 0.25) 55%,
+    rgba(255, 255, 255, 0.18) 75%,
+    transparent 100%
+  );
+  border-radius: 16px 16px 0 0;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .modal-backdrop.open .modal {
@@ -916,7 +948,11 @@ body::before {
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
   .city-section {
-    padding: 60px 32px 120px;
+    /* Switch from align-items:flex-end (bottom-anchored) to center so content
+       sits in the visual middle of the hero, well above the pill nav (≈100px)
+       and the Discover All button (≈100px from bottom). */
+    align-items: center;
+    padding: 80px 28px 160px; /* top clears nav; bottom clears pill-nav + Discover All */
   }
 
   .title-en {
@@ -2887,4 +2923,72 @@ body.modal-lock {
   gap: 8px;
   flex-wrap: wrap;
   margin-bottom: 18px;
+}
+
+/* ═══════════════════════════════════════════
+   VERTICAL KANJI ACCENT
+═══════════════════════════════════════════ */
+.city-section__kanji-accent {
+  position: absolute;
+  right: 120px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: var(--font-serif);
+  font-size: clamp(4rem, 7vw, 6.5rem);
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 79, 0, 0.25);
+  opacity: 0;
+  transition: opacity 1s var(--ease-smooth) 0.55s;
+  pointer-events: none;
+  user-select: none;
+}
+
+.city-section.in-view .city-section__kanji-accent {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .city-section__kanji-accent { display: none; }
+}
+
+/* ═══════════════════════════════════════════
+   LIVE JST CLOCK
+═══════════════════════════════════════════ */
+.jst-clock {
+  position: fixed;
+  left: 48px;
+  bottom: 44px;
+  z-index: 250;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  pointer-events: none;
+}
+
+.jst-clock__label {
+  font-family: var(--font-sans);
+  font-size: 0.52rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.jst-clock__time {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 480px) {
+  .jst-clock { display: none; }
 }
