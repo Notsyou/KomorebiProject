@@ -407,8 +407,8 @@ body {
 /* SLIDE NUMBER (bottom right) */
 .city-section__slide-num {
   position: absolute;
-  bottom: 100px;   /* sits above the Discover All button (48px + btn height ≈ 44px) */
-  right: 80px;
+  bottom: 150px;   /* sits above the Discover All button (48px + btn height ≈ 44px) */
+  right: 24px;
   z-index: 2;
   font-family: var(--font-sans);
   font-size: 0.65rem;
@@ -523,11 +523,10 @@ body {
 /* === SCROLL HINT === */
 .scroll-hint {
   position: fixed;
-  right: 48px;
-  bottom: 44px;
+  right: 72px;
+  bottom: 100px;
   z-index: 150;
   display: flex;
-  flex-direction: column;
   align-items: center;
   gap: 8px;
   color: var(--text-muted);
@@ -2577,7 +2576,7 @@ body.modal-lock {
 @media (max-width: 600px) {
   /* ── Discover All button: center it above the pill-nav ── */
   .hero-scroll-cta {
-    bottom: 108px;   /* clears pill-nav (≈56px tall) + gap */
+    bottom: 93px;   /* clears pill-nav (≈56px tall) + gap */
     right: 50%;
     transform: translateX(50%);
   }
@@ -2597,9 +2596,10 @@ body.modal-lock {
 
   /* ── Scroll hint: move to left side so it never touches Discover All ── */
   .scroll-hint {
-    right: auto;
-    left: 20px;
-    bottom: 116px;  /* same band as Discover All, opposite corner */
+    justify-content: center;
+    right: 180px;
+    left: 180px;
+    bottom: 130px;  /* same band as Discover All, opposite corner */
     font-size: 0.52rem;
     letter-spacing: 0.14em;
     gap: 5px;
