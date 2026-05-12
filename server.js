@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import rateLimit from 'express-rate-limit';
 
 /* ═══════════════════════════════════════════
    DATABASE BOOTSTRAP — MySQL ↔ PostgreSQL
@@ -70,6 +71,35 @@ async function query(sql, params = []) {
 
 const app = express();
 
+/* ─── Trust Render's load balancer so rate limiters see real client IPs ─── */
+app.set('trust proxy', 1);
+
+/* ═══════════════════════════════════════════
+   RATE LIMITING
+═══════════════════════════════════════════ */
+
+/* General API limiter — 100 requests per 15 minutes per IP */
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,   // sends RateLimit-* headers (RFC 6585)
+  legacyHeaders: false,
+  handler: (req, res) =>
+    res.status(429).json({ error: 'Too many requests, please try again later.' })
+});
+
+/* Auth limiter — 10 attempts per hour per IP (brute-force protection) */
+const authLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) =>
+    res.status(429).json({ error: 'Too many requests, please try again later.' })
+});
+
+app.use('/api/', limiter);
+
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (curl, Postman, server-to-server)
@@ -121,7 +151,7 @@ const authenticateToken = (req, res, next) => {
 ═══════════════════════════════════════════ */
 
 /* POST /api/login */
-app.post('/api/login', async (req, res) => {
+app.post('/api/login', authLimiter, async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password)
     return res.status(400).json({ error: 'Username and password are required.' });
@@ -141,7 +171,7 @@ app.post('/api/login', async (req, res) => {
 });
 
 /* POST /api/signup */
-app.post('/api/signup', async (req, res) => {
+app.post('/api/signup', authLimiter, async (req, res) => {
   const { username, email, password } = req.body;
   if (!username || !email || !password)
     return res.status(400).json({ error: 'Username, email, and password are required.' });

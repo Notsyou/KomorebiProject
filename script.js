@@ -421,15 +421,15 @@
     if (animating && !instant) return;
     animating = true;
     current = idx;
-
+  
     strip.style.transition = instant ? 'none' : 'transform 0.85s cubic-bezier(0.77,0,0.18,1)';
     strip.style.transform  = `translateX(${-idx * 100}vw)`;
-
+  
     pillItems.forEach((p, i) => p.classList.toggle('active', i === idx));
     progressFill.style.width = `${TOTAL > 1 ? (idx / (TOTAL-1)) * 100 : 0}%`;
-    sections.forEach((s, i) => { if (i === idx) s.classList.add('in-view'); });
+    sections.forEach((s, i) => { s.classList.toggle('in-view', i === idx); });
     if (idx > 0 && scrollHint) scrollHint.classList.add('hidden');
-
+  
     parallaxTarget = idx * window.innerWidth;
     setTimeout(() => { animating = false; }, instant ? 0 : 900);
   }
