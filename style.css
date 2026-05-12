@@ -2597,8 +2597,8 @@ body.modal-lock {
   /* ── Scroll hint: move to left side so it never touches Discover All ── */
   .scroll-hint {
     justify-content: center;
-    right: 180px;
-    left: 180px;
+    right: 150px;
+    left: 150px;
     bottom: 130px;  /* same band as Discover All, opposite corner */
     font-size: 0.52rem;
     letter-spacing: 0.14em;
