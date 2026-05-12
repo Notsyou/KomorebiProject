@@ -327,11 +327,12 @@
     }
   };
 
-  async function apiLogin(username, password) {
+  async function apiLogin(identifier, password) {
     const res = await fetch(`${API_BASE}/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
+      // Send as both 'identifier' (new) and 'username' (fallback for old backend)
+      body: JSON.stringify({ identifier, username: identifier, password })
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Login failed');
@@ -623,8 +624,8 @@
   const LOCATION_GALLERY = {
     // TOKYO
     'l-tok-01': [ // Senso-ji Temple
-      { src: 'https://images.unsplash.com/photo-1604273074897-37a3b9fd9ada?w=800&q=80', cap: 'Senso-ji main gate at dawn' },
-      { src: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80', cap: 'Five-storey pagoda, Asakusa' },
+      { src: 'https://cdn.cheapoguides.com/wp-content/uploads/sites/2/2020/05/sensoji-temple-iStock-1083328636-1024x684.jpg', cap: 'Senso-ji main gate at day' },
+      { src: 'https://traveldudes.com/wp-content/uploads/2020/01/Gate-at-Sensoji-temple-in-Asakusa-Tokyo-Japan.jpg', cap: 'Senso-ji main gate at day' },
       { src: 'https://images.unsplash.com/photo-1624601573012-efb68931cc8f?w=800&q=80', cap: 'Nakamise shopping street' },
       { src: 'https://images.unsplash.com/photo-1551818255-e6e10579494b?w=800&q=80', cap: 'Incense smoke at the shrine' },
     ],
@@ -1300,6 +1301,16 @@
     document.getElementById('authSubmitLabel').textContent = isLogin ? 'Sign In' : 'Create Account';
     document.getElementById('authEmailGroup').style.display = isLogin ? 'none' : 'block';
     document.getElementById('authPassword').setAttribute('autocomplete', isLogin ? 'current-password' : 'new-password');
+
+    // Login accepts username OR email; signup accepts username only
+    const usernameLabel = document.getElementById('authUsernameLabel');
+    const usernameInput = document.getElementById('authUsername');
+    if (usernameLabel) usernameLabel.textContent = isLogin ? 'Username or Email' : 'Username';
+    if (usernameInput) {
+      usernameInput.placeholder    = isLogin ? 'Username or email address' : 'Choose a username';
+      usernameInput.autocomplete   = isLogin ? 'username email' : 'username';
+    }
+
     document.getElementById('authError').style.display = 'none';
   }
 
@@ -1315,14 +1326,15 @@
   });
 
   async function handleAuthSubmit() {
-    const btn     = document.getElementById('authSubmit');
-    const label   = document.getElementById('authSubmitLabel');
-    const spinner = document.getElementById('authSpinner');
-    const errEl   = document.getElementById('authError');
-    const username = document.getElementById('authUsername').value.trim();
-    const password = document.getElementById('authPassword').value;
+    const btn       = document.getElementById('authSubmit');
+    const label     = document.getElementById('authSubmitLabel');
+    const spinner   = document.getElementById('authSpinner');
+    const errEl     = document.getElementById('authError');
+    // In login mode this field holds username OR email; in signup it's username only
+    const identifier = document.getElementById('authUsername').value.trim();
+    const password   = document.getElementById('authPassword').value;
 
-    if (!username || !password) { showAuthError('Please fill in all fields.'); return; }
+    if (!identifier || !password) { showAuthError('Please fill in all fields.'); return; }
 
     btn.disabled = true;
     label.style.display   = 'none';
@@ -1331,11 +1343,13 @@
 
     try {
       if (authMode === 'login') {
-        await apiLogin(username, password);
+        // Pass as 'identifier' so the backend can match on username OR email
+        await apiLogin(identifier, password);
       } else {
         const email = document.getElementById('authEmail').value.trim();
         if (!email) { showAuthError('Email is required.'); return; }
-        await apiSignup(username, email, password);
+        // In signup, identifier IS the username
+        await apiSignup(identifier, email, password);
       }
 
       // Additive sync: push guest bookmarks first, then pull DB truth
@@ -1344,7 +1358,7 @@
 
       closeAuthModal();
       updateNavAuth();
-      showToast(`Welcome, ${username} ✓`);
+      showToast(`Welcome, ${authState.getUsername() || identifier} ✓`);
 
     } catch (err) {
       showAuthError(err.message || 'Something went wrong. Please retry.');

@@ -525,7 +525,7 @@ body {
 /* === SCROLL HINT === */
 .scroll-hint {
   position: fixed;
-  right: 72px;
+  right: 60px;
   bottom: 100px;
   z-index: 150;
   display: flex;
@@ -972,7 +972,7 @@ body::before {
 
   .modal__header { padding: 28px 24px 20px; }
   .modal__body { padding: 24px; }
-  .modal__tabs { padding: 0 24px; }
+  .modal__tabs { padding: 0 8px; justify-content: center; }
 }
 
 @media (max-width: 480px) {
@@ -980,6 +980,8 @@ body::before {
   .pill-nav__item  { padding: 8px 8px; }
   /* Reduce pill-nav container padding so it doesn't overflow narrow screens */
   .pill-nav        { padding: 6px 8px; gap: 2px; }
+  /* Compact tab padding so 3-4 tabs always fit without overflow */
+  .modal__tab      { padding: 14px 10px; font-size: 0.64rem; letter-spacing: 0.06em; }
 }
 /* ═══════════════════════════════════════════
    MERGED ADDITIONS — Komorebi Maps v2
@@ -1857,7 +1859,9 @@ body.modal-lock {
 @media (max-width: 768px) {
   .hero-scroll-cta { right: 24px; bottom: 32px; }
   .global-nav__actions { gap: 8px; }
-  .nav-auth-btn__label { display: none; }
+  /* Hide label on guest button only; show it when logged in so username is visible */
+  .nav-auth-btn:not(.is-logged-in) .nav-auth-btn__label { display: none; }
+  .nav-auth-btn.is-logged-in .nav-auth-btn__label { display: inline; }
   .grid-section__inner { padding: 80px 24px 60px; }
   .grid-section__header { flex-direction: column; gap: 16px; }
   .saves-drawer { width: 100%; }
@@ -2599,8 +2603,8 @@ body.modal-lock {
   /* ── Scroll hint: move to left side so it never touches Discover All ── */
   .scroll-hint {
     justify-content: center;
-    right: 150px;
-    left: 150px;
+    right: 100px;
+    left: 100px;
     bottom: 130px;  /* same band as Discover All, opposite corner */
     font-size: 0.52rem;
     letter-spacing: 0.14em;
