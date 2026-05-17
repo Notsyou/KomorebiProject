@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import rateLimit from 'express-rate-limit';
 
@@ -108,8 +108,11 @@ app.use(cors({
     const allowed = [
       'http://127.0.0.1:5500',
       'http://localhost:5500',
-      'https://komorebi-maps.onrender.com',         // live Render frontend
-      'https://komorebproject-backend.onrender.com', // Render backend (health checks)
+      'http://localhost:3000',
+      'http://127.0.0.1:3000',
+      'null',                                          // direct file:// open (origin is "null")
+      'https://komorebi-maps.onrender.com',            // live Render frontend
+      'https://komorebproject-backend.onrender.com',   // Render backend (health checks)
     ];
 
     // Also allow any *.onrender.com subdomain (covers Render preview deployments)
@@ -401,6 +404,259 @@ app.post('/api/reviews', authenticateToken, async (req, res) => {
     });
   } catch (err) {
     console.error('Review post error:', err);
+    res.status(500).json({ error: 'Database operation failed.' });
+  }
+});
+
+/* ═══════════════════════════════════════════
+   TOUR ROUTES
+═══════════════════════════════════════════ */
+
+/* ─── GET /api/tours ────────────────────────────────────────────────────────
+   Returns the authenticated user's full saved itinerary array, with each
+   tour's activities sub-array sorted by step_index ASC.
+
+   Response shape mirrors the localStorage object exactly so the client-side
+   renderFullItinerariesPage() and openTourDetail() need zero changes:
+
+   [
+     {
+       name:       "Old Town & Temples Walk",
+       duration:   "Full Day · 8hrs",
+       price:      "¥18,000",           // null if not set
+       activities: [
+         { time: "08:00 AM", title: "Senso-ji Temple", desc: "...", locId: "l-tok-01" },
+         { time: "11:30 AM", title: "Yanaka Ginza",    desc: "..." }
+       ]
+     },
+     …
+   ]
+────────────────────────────────────────────────────────────────────────────── */
+app.get('/api/tours', authenticateToken, async (req, res) => {
+  try {
+    /* 1. Pull all parent tour rows for this user */
+    const [tourRows] = await query(
+      `SELECT id, name, duration, price
+       FROM saved_tours
+       WHERE user_id = ?
+       ORDER BY updated_at DESC`,
+      [req.user.id]
+    );
+
+    if (tourRows.length === 0) return res.json([]);
+
+    /* 2. Pull all activity rows for these tours in one round-trip */
+    const tourIds = tourRows.map(t => t.id);
+
+    /* Build a parameterised IN clause that works for both drivers.
+       MySQL:    WHERE tour_id IN (?, ?, ?)
+       Postgres: WHERE tour_id IN ($1, $2, $3)          */
+    const placeholders = tourIds.map(() => '?').join(', ');
+    const [activityRows] = await query(
+      `SELECT tour_id, loc_id, time, title, description
+       FROM saved_tour_activities
+       WHERE tour_id IN (${placeholders})
+       ORDER BY tour_id, step_index ASC`,
+      tourIds
+    );
+
+    /* 3. Group activities by tour_id for O(n) assembly */
+    const activityMap = new Map();
+    for (const act of activityRows) {
+      if (!activityMap.has(act.tour_id)) activityMap.set(act.tour_id, []);
+      activityMap.get(act.tour_id).push({
+        time:  act.time,
+        title: act.title,
+        desc:  act.description,
+        ...(act.loc_id ? { locId: act.loc_id } : {})
+      });
+    }
+
+    /* 4. Assemble final response — shape is identical to localStorage objects */
+    const tours = tourRows.map(t => ({
+      name:       t.name,
+      duration:   t.duration,
+      price:      t.price ?? undefined,
+      activities: activityMap.get(t.id) ?? []
+    }));
+
+    res.json(tours);
+  } catch (err) {
+    console.error('Tours fetch error:', err);
+    res.status(500).json({ error: 'Database query failed.' });
+  }
+});
+
+/* ─── POST /api/tours ───────────────────────────────────────────────────────
+   Saves or hard-overwrites a named itinerary for the authenticated user.
+
+   Expected body:
+   {
+     name:       "Old Town & Temples Walk",
+     duration:   "Full Day · 8hrs",
+     price:      "¥18,000",               // optional
+     activities: [
+       { time: "08:00 AM", title: "Senso-ji Temple", desc: "...", locId: "l-tok-01" },
+       { time: "11:30 AM", title: "Yanaka Ginza",    desc: "..." }
+     ]
+   }
+
+   Conflict strategy: hard overwrite — matches localStorage behaviour where
+   saving a tour with the same name replaces the previous entry.
+   The overwrite is wrapped in a transaction so a partial failure never leaves
+   an orphaned parent with no activities (PG: pool.connect(); MySQL: sequential
+   awaits with manual rollback since pool.query doesn't expose transactions).
+────────────────────────────────────────────────────────────────────────────── */
+app.post('/api/tours', authenticateToken, async (req, res) => {
+  const { name, duration, price, activities } = req.body;
+
+  /* ── Input validation ── */
+  if (!name || typeof name !== 'string' || !name.trim())
+    return res.status(400).json({ error: 'Tour name is required.' });
+  if (!duration || typeof duration !== 'string')
+    return res.status(400).json({ error: 'Tour duration is required.' });
+  if (!Array.isArray(activities) || activities.length === 0)
+    return res.status(400).json({ error: 'activities must be a non-empty array.' });
+  if (activities.length > 50)
+    return res.status(400).json({ error: 'A tour cannot exceed 50 stops.' });
+
+  const safeName     = name.trim();
+  const safeDuration = duration.trim();
+  const safePrice    = (typeof price === 'string' && price.trim()) ? price.trim() : null;
+
+  /* Validate each activity has minimum required fields */
+  for (const [i, act] of activities.entries()) {
+    if (!act.time || !act.title)
+      return res.status(400).json({ error: `Activity at index ${i} is missing time or title.` });
+  }
+
+  if (IS_POSTGRES) {
+    /* ── PostgreSQL path — explicit transaction via pool.connect() ── */
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+
+      /* Delete existing tour with the same name for this user (hard overwrite) */
+      await client.query(
+        'DELETE FROM saved_tours WHERE user_id = $1 AND name = $2',
+        [req.user.id, safeName]
+      );
+
+      /* Insert fresh parent row, capture new ID via RETURNING */
+      const tourResult = await client.query(
+        `INSERT INTO saved_tours (user_id, name, duration, price)
+         VALUES ($1, $2, $3, $4) RETURNING id`,
+        [req.user.id, safeName, safeDuration, safePrice]
+      );
+      const newTourId = tourResult.rows[0].id;
+
+      /* Bulk-insert all activity rows */
+      for (const [idx, act] of activities.entries()) {
+        await client.query(
+          `INSERT INTO saved_tour_activities (tour_id, step_index, loc_id, time, title, description)
+           VALUES ($1, $2, $3, $4, $5, $6)`,
+          [
+            newTourId,
+            idx,
+            act.locId || null,
+            act.time.trim(),
+            act.title.trim(),
+            (act.desc || act.description || '').trim() || null
+          ]
+        );
+      }
+
+      await client.query('COMMIT');
+      res.status(201).json({ message: 'Tour saved.', tourId: newTourId });
+    } catch (err) {
+      await client.query('ROLLBACK');
+      console.error('Tour save error (PG):', err);
+      res.status(500).json({ error: 'Database operation failed.' });
+    } finally {
+      client.release();
+    }
+
+  } else {
+    /* ── MySQL path — sequential awaits with manual rollback ──
+       mysql2's pool.query() doesn't expose BEGIN/COMMIT directly;
+       we grab a connection from the pool and drive the transaction
+       the same way the PG path does.                              */
+    const conn = await pool.getConnection();
+    try {
+      await conn.beginTransaction();
+
+      /* Hard overwrite: delete the old parent (CASCADE removes its activities) */
+      await conn.query(
+        'DELETE FROM saved_tours WHERE user_id = ? AND name = ?',
+        [req.user.id, safeName]
+      );
+
+      /* Insert fresh parent row */
+      const [tourResult] = await conn.query(
+        `INSERT INTO saved_tours (user_id, name, duration, price)
+         VALUES (?, ?, ?, ?)`,
+        [req.user.id, safeName, safeDuration, safePrice]
+      );
+      const newTourId = tourResult.insertId;
+
+      /* Bulk-insert activity rows */
+      for (const [idx, act] of activities.entries()) {
+        await conn.query(
+          `INSERT INTO saved_tour_activities (tour_id, step_index, loc_id, time, title, description)
+           VALUES (?, ?, ?, ?, ?, ?)`,
+          [
+            newTourId,
+            idx,
+            act.locId || null,
+            act.time.trim(),
+            act.title.trim(),
+            (act.desc || act.description || '').trim() || null
+          ]
+        );
+      }
+
+      await conn.commit();
+      res.status(201).json({ message: 'Tour saved.', tourId: newTourId });
+    } catch (err) {
+      await conn.rollback();
+      console.error('Tour save error (MySQL):', err);
+      res.status(500).json({ error: 'Database operation failed.' });
+    } finally {
+      conn.release();
+    }
+  }
+});
+
+/* ─── DELETE /api/tours ─────────────────────────────────────────────────────
+   Deletes a named tour for the authenticated user.
+
+   Expected body: { name: "Old Town & Temples Walk" }
+
+   Child activity rows are removed automatically via ON DELETE CASCADE.
+   Matches the localStorage deletion pattern: filter by name, no numeric IDs
+   needed on the client side.
+────────────────────────────────────────────────────────────────────────────── */
+app.delete('/api/tours', authenticateToken, async (req, res) => {
+  const { name } = req.body;
+
+  if (!name || typeof name !== 'string' || !name.trim())
+    return res.status(400).json({ error: 'Tour name is required.' });
+
+  try {
+    const [result] = await query(
+      'DELETE FROM saved_tours WHERE user_id = ? AND name = ?',
+      [req.user.id, name.trim()]
+    );
+
+    /* Both mysql2 and pg return an object with affectedRows / rowCount */
+    const affected = IS_POSTGRES ? result.rowCount : result.affectedRows;
+
+    if (affected === 0)
+      return res.status(404).json({ error: 'Tour not found.' });
+
+    res.json({ message: 'Tour deleted.' });
+  } catch (err) {
+    console.error('Tour delete error:', err);
     res.status(500).json({ error: 'Database operation failed.' });
   }
 });

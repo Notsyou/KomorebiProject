@@ -310,7 +310,8 @@
      CITY MODAL DATA (Fully fleshed out itineraries)
   ═══════════════════════════════════════════ */
   const CITY_DATA = {
-    tokyo: {
+    // Tokyo
+    tokyo: { 
       tag: 'Tokyo — Kantō', title: 'VISIT TOKYO',
       subtitle: 'A metropolis of 37 million souls where ancient temples share skylines with neon skyscrapers.',
       tours: [
@@ -319,7 +320,8 @@
           duration: 'Full Day · 8hrs', 
           price: '¥18,000',
           activities: [
-            { time: '08:00 AM', title: 'Senso-ji Temple', desc: 'Beat the crowds at Tokyo’s oldest temple in Asakusa.' },
+            // Added locId for Senso-ji (it will be clickable!)
+            { time: '08:00 AM', title: 'Senso-ji Temple', desc: 'Beat the crowds at Tokyo’s oldest temple in Asakusa.', locId: 'l-tok-01' },
             { time: '11:30 AM', title: 'Yanaka Ginza', desc: 'Wander the retro street food alleys and grab a quick bite.' },
             { time: '02:00 PM', title: 'Ueno Park & Museums', desc: 'Explore the national museum mile and surrounding gardens.' },
             { time: '06:00 PM', title: 'Ramen Street', desc: 'Finish the day with dinner at a legendary hidden ramen spot.' }
@@ -330,7 +332,8 @@
           duration: 'Half Day · 5hrs', 
           price: '¥22,000',
           activities: [
-            { time: '05:00 AM', title: 'Toyosu Wholesale', desc: 'Witness the energy of the early morning seafood logistics.' },
+            // Added locId for Toyosu (it will be clickable!)
+            { time: '05:00 AM', title: 'Toyosu Wholesale', desc: 'Witness the energy of the early morning seafood logistics.', locId: 'l-tok-09' },
             { time: '07:30 AM', title: 'Breakfast Sushi', desc: 'Eat the freshest catch right outside the market.' },
             { time: '10:00 AM', title: 'Tsukiji Outer Market', desc: 'Sample tamagoyaki, wagyu skewers, and matcha.' }
           ]
@@ -348,7 +351,8 @@
       ],
       plan: { bestTime: 'Mar–May', budget: '¥15k/day', language: 'Japanese', flight: '~14h from EU', visa: 'Visa-free (90d)', currency: 'JPY ¥' }
     },
-    osaka: {
+    // Osaka
+    osaka: { 
       tag: 'Osaka — Kansai', title: 'TASTE OSAKA',
       subtitle: "Japan's kitchen and comedy capital — takoyaki at midnight and the castle lit vermillion against a winter sky.",
       tours: [
@@ -512,9 +516,10 @@
   /* ═══════════════════════════════════════════
      API
   ═══════════════════════════════════════════ */
-  const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  ? 'http://localhost:3000/api' 
-  : 'https://komorebproject-backend.onrender.com/api';
+  const _host = window.location.hostname;
+  const API_BASE = (_host === 'localhost' || _host === '127.0.0.1' || _host === '')
+    ? 'http://localhost:3000/api'
+    : 'https://komorebproject-backend.onrender.com/api';
 
   const authState = {
     getToken:    () => localStorage.getItem('komorebi_jwt'),
@@ -599,6 +604,7 @@
       updateSavesBadge();
       renderSavesDrawer();
       renderLocationGrid();
+      persistBookmarksToStorage();
     } catch (err) {
       console.error('Bookmark sync error:', err);
     }
@@ -763,6 +769,10 @@
   /* ═══════════════════════════════════════════
      BOOKMARK TOGGLE — Optimistic UI
   ═══════════════════════════════════════════ */
+  function persistBookmarksToStorage() {
+    localStorage.setItem('komorebi_saved_locations', JSON.stringify([...bookmarks.values()]));
+  }
+
   function toggleBookmarkOptimistic(loc, btn) {
     const alreadySaved = bookmarks.has(loc.id);
 
@@ -778,6 +788,7 @@
       showToast(`Saved "${loc.name}" ♥`);
     }
 
+    persistBookmarksToStorage();
     updateSavesBadge();
     renderSavesDrawer();
 
@@ -808,6 +819,7 @@
           btn.classList.remove('is-saved');
           btn.querySelector('svg').setAttribute('fill', 'none');
         }
+        persistBookmarksToStorage();
         updateSavesBadge();
         renderSavesDrawer();
         showToast('Sync failed — please retry');
@@ -1706,10 +1718,19 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
   logoutBackdrop.addEventListener('click', e => { if (e.target === logoutBackdrop) closeLogoutConfirm(); });
 
   function updateSavesBadge() {
-    savesBadge.textContent = bookmarks.size;
-    // We removed the logic that hid the button here!
-  }
+    // 1. Grab the badge element using the correct ID from your HTML
+    const badgeEl = document.getElementById('savesBadge');
+    if (!badgeEl) return;
 
+    // 2. Count the tours in LocalStorage
+    const savedTours = JSON.parse(localStorage.getItem('komorebi_saved_tours') || '[]');
+    
+    // 3. Add them to the database bookmarks count
+    const totalSaves = bookmarks.size + savedTours.length;
+    
+    // 4. Update the text
+    badgeEl.textContent = totalSaves;
+  }
   /* ═══════════════════════════════════════════
      SAVES DRAWER
   ═══════════════════════════════════════════ */
@@ -1723,7 +1744,13 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
     savesDrawer.classList.add('open');
     savesOverlay.classList.add('open');
     document.body.classList.add('modal-lock');
-    renderSavesDrawer();
+    
+    renderSavesDrawer(); // Renders database locations
+    
+    // Add this to render the LocalStorage tours whenever the drawer opens!
+    if (typeof renderSavedToursDrawer === 'function') {
+      renderSavedToursDrawer();
+    }
   }
 
   function closeSavesDrawer() {
@@ -1749,6 +1776,12 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
   });
 
   function renderSavesDrawer() {
+    // Seed the in-memory Map from localStorage for guest sessions (mirrors tour pattern)
+    if (bookmarks.size === 0) {
+      const stored = JSON.parse(localStorage.getItem('komorebi_saved_locations') || '[]');
+      stored.forEach(loc => bookmarks.set(loc.id, loc));
+    }
+
     const sub = document.getElementById('savesDrawerSub');
     sub.textContent = `${bookmarks.size} saved location${bookmarks.size !== 1 ? 's' : ''}`;
 
@@ -1786,6 +1819,7 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
       });
       card.querySelector('.saves-card__remove').addEventListener('click', () => {
         bookmarks.delete(loc.id);
+        persistBookmarksToStorage();
         updateSavesBadge();
         renderSavesDrawer();
         renderLocationGrid();
@@ -1859,34 +1893,103 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
     tick();
     setInterval(tick, 500);
   })();
+  
 /* ═══════════════════════════════════════════
-     TOUR DETAIL TIMELINE MODAL
+     TOUR DETAIL TIMELINE MODAL (RICH VISUAL)
   ═══════════════════════════════════════════ */
   let currentModalTour = null;
 
   function openTourDetail(tour) {
-    currentModalTour = tour; // <-- Safely inside the function now!
+    currentModalTour = tour;
 
     document.getElementById('td-title').textContent = tour.name;
     document.getElementById('td-meta').textContent = tour.duration;
-    document.getElementById('td-price').textContent = tour.price;
+    document.getElementById('td-price').textContent = tour.price || '';
 
     const timeline = document.getElementById('td-timeline');
     
     if (tour.activities && tour.activities.length > 0) {
-      timeline.innerHTML = tour.activities.map(act => `
-        <div style="border-left: 2px solid #FF4F00; padding-left: 1.2rem; margin-bottom: 1.5rem; position: relative;">
-          <div style="position: absolute; left: -5px; top: 0; width: 8px; height: 8px; background: #FF4F00; border-radius: 50%;"></div>
-          <div style="font-size: 0.75rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem;">${act.time}</div>
-          <h4 style="margin: 0 0 0.25rem 0; font-size: 1.1rem; color: #fff;">${act.title}</h4>
-          <p style="margin: 0; font-size: 0.9rem; opacity: 0.8; line-height: 1.4;">${act.desc}</p>
-        </div>
-      `).join('');
+      timeline.innerHTML = tour.activities.map(act => {
+        // 1. Dynamic Gallery Image Lookup using the activity's locId
+        let imgHtml = '';
+        if (act.locId && typeof LOCATION_GALLERY !== 'undefined' && LOCATION_GALLERY[act.locId]) {
+          const imgSrc = LOCATION_GALLERY[act.locId][0].src;
+          imgHtml = `
+            <div style="margin: 0.75rem 0; height: 130px; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+              <img src="${imgSrc}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: 0.3s;" class="tour-stop-img" alt="${act.title}">
+            </div>
+          `;
+        }
+
+        // 2. Check if the stop can be mapped to a location modal
+        const isInteractive = act.locId ? true : false;
+
+        return `
+          <div class="timeline-stop" data-loc-id="${act.locId}" style="border-left: 2px solid #FF4F00; padding-left: 1.2rem; margin-bottom: 2rem; position: relative; ${isInteractive ? 'cursor: pointer;' : ''}">
+            <div style="position: absolute; left: -5px; top: 0; width: 8px; height: 8px; background: #FF4F00; border-radius: 50%; box-shadow: 0 0 8px var(--accent-glow);"></div>
+            <div style="font-size: 0.75rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;">${act.time}</div>
+            
+            ${imgHtml}
+            
+            <h4 class="stop-title" style="margin: 0.25rem 0; font-size: 1.1rem; color: #fff; transition: 0.2s;">${act.title}</h4>
+            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; opacity: 0.8; line-height: 1.4;">${act.desc || act.description || ''}</p>
+            
+            ${isInteractive ? `
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
+                <span style="font-size: 0.8rem; color: var(--accent, #FF4F00); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">View Map & Reviews ↗</span>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+
+      // 3. Bind Hover and Click Listeners to Interactive Stops
+      timeline.querySelectorAll('.timeline-stop').forEach(stop => {
+        const locId = stop.dataset.locId;
+        if (!locId || locId === 'undefined') return;
+
+        const img = stop.querySelector('.tour-stop-img');
+        const title = stop.querySelector('.stop-title');
+
+        stop.addEventListener('mouseenter', () => {
+          if (title) title.style.color = 'var(--accent, #FF4F00)';
+          if (img) {
+            img.style.opacity = '1';
+            img.style.transform = 'scale(1.03)';
+          }
+        });
+        stop.addEventListener('mouseleave', () => {
+          if (title) title.style.color = '#fff';
+          if (img) {
+            img.style.opacity = '0.85';
+            img.style.transform = 'scale(1)';
+          }
+        });
+        
+        // STACK FIX: Close BOTH windows so the Leaflet map is fully revealed
+        stop.addEventListener('click', () => {
+          const loc = ALL_LOCATIONS.find(l => l.id === locId);
+          if (loc) {
+            // Dismiss tour timeline popup modal layer
+            document.getElementById('tourDetailBackdrop').classList.remove('open');
+            
+            // Slide down the parent full-screen 'My Itineraries' Dashboard layer
+            const itinsDashboard = document.getElementById('itinerariesDashboard');
+            if (itinsDashboard) {
+              itinsDashboard.classList.remove('open');
+            }
+            
+            // Pop open the live map, review, and photo modal view cleanly
+            setTimeout(() => openLocationModal(loc), 200);
+          }
+        });
+      });
+
     } else {
       timeline.innerHTML = '<p style="opacity: 0.6; margin-bottom: 0;">Detailed itinerary coming soon.</p>';
     }
 
-    refreshTourSaveButton(); // <-- The function is now defined below!
+    refreshTourSaveButton();
     document.getElementById('tourDetailBackdrop').classList.add('open');
   }
 
@@ -1915,25 +2018,67 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
   });
 
   /* ═══════════════════════════════════════════
-     SAVED TOURS (LOCALSTORAGE HACK)
+     SAVED TOURS (HYBRID STORAGE SYNC)
   ═══════════════════════════════════════════ */
-  document.getElementById('saveTourBtn').addEventListener('click', () => {
+  document.getElementById('saveTourBtn').addEventListener('click', async () => {
     if (!currentModalTour) return;
 
     let savedTours = JSON.parse(localStorage.getItem('komorebi_saved_tours') || '[]');
     const exists = savedTours.some(t => t.name === currentModalTour.name);
 
     if (exists) {
+      // Remove Locally
       savedTours = savedTours.filter(t => t.name !== currentModalTour.name);
-      if (typeof showToast === 'function') showToast('Itinerary removed from Saves');
+      localStorage.setItem('komorebi_saved_tours', JSON.stringify(savedTours));
+      showToast('Itinerary removed from Saves');
+      
+      // Remove Cloud Database records if logged in
+      if (authState.isLoggedIn()) {
+        try {
+          await fetch(`${API_BASE}/tours`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${authState.getToken()}`
+            },
+            body: JSON.stringify({ name: currentModalTour.name })
+          });
+        } catch (err) {
+          console.error('Cloud itinerary delete sync error:', err);
+        }
+      }
     } else {
+      // Save Locally
       savedTours.push(currentModalTour);
-      if (typeof showToast === 'function') showToast('Itinerary saved!');
+      localStorage.setItem('komorebi_saved_tours', JSON.stringify(savedTours));
+      showToast('Itinerary saved!');
+
+      // Push to Cloud Database records if logged in
+      if (authState.isLoggedIn()) {
+        try {
+          await fetch(`${API_BASE}/tours`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${authState.getToken()}`
+            },
+            body: JSON.stringify(currentModalTour)
+          });
+        } catch (err) {
+          console.error('Cloud itinerary post sync error:', err);
+        }
+      }
     }
 
-    localStorage.setItem('komorebi_saved_tours', JSON.stringify(savedTours));
     refreshTourSaveButton();
     renderSavedToursDrawer();
+    updateSavesBadge();
+    
+    // Refresh full dashboard list instantly if open behind modal
+    const itinsDashboard = document.getElementById('itinerariesDashboard');
+    if (itinsDashboard && itinsDashboard.classList.contains('open')) {
+      renderFullItinerariesPage();
+    }
   });
 
   function refreshTourSaveButton() {
@@ -1968,9 +2113,9 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
 
     container.innerHTML = `
       <div style="margin-bottom: 2rem;">
-        <h3 style="font-size: 0.85rem; color: var(--accent, #FF4F00); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 1rem;">Curated Itineraries</h3>
-        ${savedTours.map(t => `
-          <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; border-left: 3px solid var(--accent, #FF4F00);">
+        <h3 style="font-size: 0.85rem; color: var(--accent, #FF4F00); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 1rem; padding: 15px 10px 0px 10px;">Curated Itineraries</h3>
+        ${savedTours.map((t, index) => `
+          <div class="saved-tour-item" data-index="${index}" style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; border-left: 3px solid var(--accent, #FF4F00); cursor: pointer; transition: background 0.2s;">
             <h4 style="margin: 0 0 0.25rem 0; font-size: 1.05rem; color: #fff;">${t.name}</h4>
             <p style="margin: 0; font-size: 0.85rem; opacity: 0.7;">${t.duration} • ${t.activities ? t.activities.length : 0} Stops</p>
           </div>
@@ -1978,10 +2123,227 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
         <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 1.5rem;" />
       </div>
     `;
+
+    container.querySelectorAll('.saved-tour-item').forEach(item => {
+      item.addEventListener('mouseenter', () => item.style.background = 'rgba(255,255,255,0.1)');
+      item.addEventListener('mouseleave', () => item.style.background = 'rgba(255,255,255,0.05)');
+
+      item.addEventListener('click', () => {
+        const tourIndex = item.dataset.index;
+        const tourToOpen = savedTours[tourIndex];
+        
+        document.getElementById('savesDrawer').classList.remove('open');
+        const realOverlay = document.getElementById('savesOverlay');
+        if (realOverlay) realOverlay.classList.remove('open');
+        
+        openTourDetail(tourToOpen);
+      });
+    });
   }
 
-  window.addEventListener('DOMContentLoaded', () => {
-    renderSavedToursDrawer();
+  /* ═══════════════════════════════════════════
+     CLOUD TOURS BACKEND ENGINE SYNC
+  ═══════════════════════════════════════════ */
+  async function syncToursToServer() {
+    const localTours = JSON.parse(localStorage.getItem('komorebi_saved_tours') || '[]');
+    if (localTours.length === 0) return;
+
+    // Additive migration: loop and persist all cached guest profiles onto DB infrastructure
+    for (const tour of localTours) {
+      try {
+        await fetch(`${API_BASE}/tours`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authState.getToken()}`
+          },
+          body: JSON.stringify(tour)
+        });
+      } catch (err) {
+        console.error('Failed to sync guest tour up to cloud layer:', err);
+      }
+    }
+  }
+
+  async function syncToursFromDB() {
+    if (!authState.isLoggedIn()) return;
+    try {
+      const res = await fetch(`${API_BASE}/tours`, {
+        headers: { 'Authorization': `Bearer ${authState.getToken()}` }
+      });
+      if (!res.ok) return;
+      
+      const dbTours = await res.json();
+      
+      // Override local data state with fresh cloud single source of truth
+      localStorage.setItem('komorebi_saved_tours', JSON.stringify(dbTours));
+      
+      updateSavesBadge();
+      renderSavedToursDrawer();
+    } catch (err) {
+      console.error('Itineraries sync from DB execution crash:', err);
+    }
+  }
+
+/* ═══════════════════════════════════════════
+     UNIFIED CLOUD AUTHENTICATION SYNC LIFECYCLE
+  ═══════════════════════════════════════════ */
+  const originalHandleAuthSubmit = handleAuthSubmit;
+  handleAuthSubmit = async function() {
+    // 1. Execute the core authentication logic, credential processing, and token caching
+    await originalHandleAuthSubmit();
+    
+    // 2. If login is successful, run both sync streams sequentially to prevent thread collisions
+    if (authState.isLoggedIn()) {
+      try {
+        // Explicitly run single-location bookmark sync streams first
+        if (bookmarks.size > 0) await syncBookmarksToServer();
+        await syncBookmarksFromDB();
+        
+        // Next, process your dynamic dashboard itineraries 
+        await syncToursToServer();
+        await syncToursFromDB();
+        
+        // Force layout view trees to refresh simultaneously
+        updateSavesBadge();
+        renderSavesDrawer();
+        if (typeof renderFullItinerariesPage === 'function') renderFullItinerariesPage();
+        
+      } catch (syncError) {
+        console.error("Full cloud dataset sync sequence encountered an execution collision:", syncError);
+      }
+    }
+  };
+
+  const originalLogoutListener = document.getElementById('logoutConfirm').onclause || Object;
+  document.getElementById('logoutConfirm').addEventListener('click', () => {
+    localStorage.removeItem('komorebi_saved_tours'); // Clean offline states on absolute exit
+    localStorage.removeItem('komorebi_saved_locations');
   });
 
-})(); // <-- Keep this final closing bracket here!
+  // Supplement standard bootstrap sync loop directly inside document ready bounds
+  document.addEventListener('DOMContentLoaded', async () => {
+    if (authState.isLoggedIn()) {
+      await syncToursFromDB();
+    }
+  });
+
+ /* ═══════════════════════════════════════════
+     MY ITINERARIES DASHBOARD VIEW
+  ═══════════════════════════════════════════ */
+  const itinsDashboard = document.getElementById('itinerariesDashboard');
+  const navItinerariesBtn = document.getElementById('navItinerariesBtn');
+  const closeItinerariesBtn = document.getElementById('closeItinerariesBtn');
+
+  if (navItinerariesBtn) {
+    navItinerariesBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (!itinsDashboard) {
+        console.error("Dashboard HTML element reference was missing.");
+        return;
+      }
+      renderFullItinerariesPage();
+      itinsDashboard.classList.add('open');
+      document.body.classList.add('modal-lock');
+    });
+  }
+
+  if (closeItinerariesBtn) {
+    closeItinerariesBtn.addEventListener('click', () => {
+      if (itinsDashboard) {
+        itinsDashboard.classList.remove('open');
+        document.body.classList.remove('modal-lock');
+      }
+    });
+  }
+
+  function renderFullItinerariesPage() {
+    const grid = document.getElementById('itinerariesGrid');
+    if (!grid) return;
+
+    const savedTours = JSON.parse(localStorage.getItem('komorebi_saved_tours') || '[]');
+
+    if (savedTours.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 6rem 0; opacity: 0.5;">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="margin-bottom: 1rem;"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <h3 style="font-size: 1.8rem; font-weight: 300; margin-bottom: 0.5rem;">No itineraries saved yet</h3>
+          <p style="font-size: 1.1rem;">Explore the tours page and start curating your journey.</p>
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = savedTours.map((tour, index) => {
+      let coverImg = 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80';
+      if (tour.activities) {
+        const firstLoc = tour.activities.find(act => act.locId && LOCATION_GALLERY[act.locId]);
+        if (firstLoc) coverImg = LOCATION_GALLERY[firstLoc.locId][0].src;
+      }
+
+      return `
+        <div class="itin-card" data-index="${index}">
+          
+          <div class="itin-card__delete" data-tour-name="${tour.name}" title="Delete Itinerary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </div>
+
+          <div class="itin-card__cover-wrapper">
+            <img src="${coverImg}" alt="${tour.name}" class="itin-card__cover">
+          </div>
+          
+          <div class="itin-card__info">
+            <h4 class="itin-card__title">${tour.name}</h4>
+            <div class="itin-card__meta">
+              <span>${tour.duration}</span>
+              <span style="color: var(--accent);">${tour.activities ? tour.activities.length : 0} Stops</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    grid.querySelectorAll('.itin-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.itin-card__delete')) return;
+        
+        const index = card.dataset.index;
+        const tourToOpen = savedTours[index];
+        openTourDetail(tourToOpen); 
+      });
+
+      const deleteBtn = card.querySelector('.itin-card__delete');
+      if (deleteBtn) {
+        deleteBtn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const tourName = deleteBtn.dataset.tourName;
+          
+          // Filter out locally
+          const updatedTours = savedTours.filter(t => t.name !== tourName);
+          localStorage.setItem('komorebi_saved_tours', JSON.stringify(updatedTours));
+          
+          // Clear backend persistence tables matching user indices
+          if (authState.isLoggedIn()) {
+            try {
+              await fetch(`${API_BASE}/tours`, {
+                method: 'DELETE',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${authState.getToken()}`
+                },
+                body: JSON.stringify({ name: tourName })
+              });
+            } catch (err) {
+              console.error('Cloud tour deletion synchronization sync crash:', err);
+            }
+          }
+
+          if (typeof showToast === 'function') showToast('Itinerary deleted.');
+          if (typeof updateSavesBadge === 'function') updateSavesBadge();
+          renderFullItinerariesPage();
+        });
+      }
+    });
+  }
+  
+})();

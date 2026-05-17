@@ -36,6 +36,7 @@
       <li><a href="#" data-scroll-to="grid">Discover</a></li>
       <li><a href="#" id="navToursLink">Tours</a></li>
       <li><a href="#" id="navAboutLink">About</a></li>
+      <li><a href="#" class="nav__link" id="navItinerariesBtn">My Itineraries</a></li>
     </ul>
     <div class="global-nav__actions">
       <!-- AUTH BUTTON — toggled by JS -->
@@ -654,6 +655,19 @@
     </div>
   </div>
 
+  <div class="itineraries-dashboard" id="itinerariesDashboard">
+    <div class="itineraries-dashboard__nav">
+      <h2>My Curated Trips</h2>
+      <button class="itineraries-dashboard__close" id="closeItinerariesBtn" aria-label="Close Dashboard">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    
+    <div class="itineraries-dashboard__content">
+      <div class="itineraries-grid" id="itinerariesGrid">
+        </div>
+    </div>
+  </div>
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="script.js"></script>

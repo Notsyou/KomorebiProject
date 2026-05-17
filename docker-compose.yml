@@ -54,5 +54,17 @@ services:
     networks:
       - komorebi_net
 
+  # ─── NEW FRONTEND CONTAINER ───
+  frontend:
+    image: nginx:alpine
+    container_name: komorebi_frontend
+    restart: unless-stopped
+    ports:
+      - "5500:80"
+    volumes:
+      - ./:/usr/share/nginx/html
+    networks:
+      - komorebi_net
+
 volumes:
   db_data:
