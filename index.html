@@ -46,7 +46,7 @@
         <span class="nav-auth-btn__label" id="navAuthLabel">Join / Login</span>
       </button>
       <!-- SAVES COUNTER (visible when logged in) -->
-      <button class="nav-saves-btn" id="navSavesBtn" aria-label="My saved locations" style="display:none">
+      <button class="nav-saves-btn" id="navSavesBtn" aria-label="My saved locations">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         <span id="savesBadge">0</span>
       </button>
@@ -488,6 +488,7 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </div>
+    <div id="savedToursContainer"></div>
     <!-- Filter pills inside drawer -->
     <div class="saves-filter" id="savesFilter">
       <button class="saves-filter__btn active" data-filter="all">All</button>
@@ -519,7 +520,7 @@
         <p class="page-overlay__sub">Handcrafted journeys through Japan's finest cities — led by local experts who know every hidden alley.</p>
       </div>
       <div class="tours-page-grid">
-        <div class="tours-page-card">
+        <div class="tours-page-card" data-city="tokyo" data-tour-index="0" style="cursor:pointer;">
           <div class="tours-page-card__num">01</div>
           <div class="tours-page-card__city">Tokyo</div>
           <div class="tours-page-card__name">Old Town &amp; Temples Walk</div>
@@ -527,7 +528,7 @@
           <div class="tours-page-card__price">¥18,000</div>
           <p class="tours-page-card__desc">Wander from Senso-ji at dawn through the backstreets of Yanaka to Ueno's museum mile — Tokyo's living memory.</p>
         </div>
-        <div class="tours-page-card">
+        <div class="tours-page-card" data-city="osaka" data-tour-index="0" style="cursor:pointer;">
           <div class="tours-page-card__num">02</div>
           <div class="tours-page-card__city">Osaka</div>
           <div class="tours-page-card__name">Street Food Safari</div>
@@ -535,7 +536,7 @@
           <div class="tours-page-card__price">¥8,500</div>
           <p class="tours-page-card__desc">From takoyaki stalls to ramen at midnight — navigate Dotonbori and Shinsekai with a guide who eats for sport.</p>
         </div>
-        <div class="tours-page-card">
+        <div class="tours-page-card" data-city="nagoya" data-tour-index="0" style="cursor:pointer;">
           <div class="tours-page-card__num">03</div>
           <div class="tours-page-card__city">Nagoya</div>
           <div class="tours-page-card__name">Castle &amp; Shrine Circuit</div>
@@ -543,7 +544,7 @@
           <div class="tours-page-card__price">¥14,000</div>
           <p class="tours-page-card__desc">Gold shachihoko, Zen rock gardens, and ancient Shinto forest paths — central Japan distilled into one day.</p>
         </div>
-        <div class="tours-page-card">
+        <div class="tours-page-card" data-city="okinawa" data-tour-index="0" style="cursor:pointer;">
           <div class="tours-page-card__num">04</div>
           <div class="tours-page-card__city">Okinawa</div>
           <div class="tours-page-card__name">Kerama Islands Snorkel Day</div>
@@ -551,7 +552,7 @@
           <div class="tours-page-card__price">¥28,000</div>
           <p class="tours-page-card__desc">Turquoise water, sea turtles, and coral gardens ranked among the finest snorkeling on Earth.</p>
         </div>
-        <div class="tours-page-card">
+        <div class="tours-page-card" data-city="hokkaido" data-tour-index="0" style="cursor:pointer;">
           <div class="tours-page-card__num">05</div>
           <div class="tours-page-card__city">Hokkaido</div>
           <div class="tours-page-card__name">Powder Snow Ski Day</div>
@@ -559,7 +560,7 @@
           <div class="tours-page-card__price">¥35,000</div>
           <p class="tours-page-card__desc">15 metres of annual snowfall, legendary powder, world-class runs. The definitive Niseko ski experience.</p>
         </div>
-        <div class="tours-page-card">
+        <div class="tours-page-card" data-city="tokyo" data-tour-index="0" style="cursor:pointer;">
           <div class="tours-page-card__num">06</div>
           <div class="tours-page-card__city">Tokyo</div>
           <div class="tours-page-card__name">Culinary Deep Dive</div>
@@ -635,6 +636,23 @@
 
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
+
+  <div class="modal-backdrop" id="tourDetailBackdrop">
+    <div class="modal" id="tourDetailModal" style="max-width: 450px;">
+      <button class="modal__close" id="tourDetailClose">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="modal__header">
+        <div class="modal__city-tag" id="td-meta"></div>
+        <h2 class="modal__title" id="td-title"></h2>
+        <p class="modal__subtitle" id="td-price" style="color: var(--accent); font-weight: 600;"></p>
+      </div>
+      <div class="modal__body" style="padding: 1.5rem;">
+        <div id="td-timeline" style="margin-top: 1rem;"></div>
+        <button class="auth-submit" id="saveTourBtn" style="margin-top: 2rem; width: 100%; transition: 0.3s;">Save To Itinerary</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
