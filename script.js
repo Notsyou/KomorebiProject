@@ -74,7 +74,58 @@
         desc: "The world's largest wholesale fish market. Freshest breakfast sushi from 5 AM.",
         lat: 35.6451, lng: 139.7855,
         address: '6-6-1 Toyosu, Koto, Tokyo'
-      }
+      },
+      {
+        id: 'l-tok-10', icon: '🍡', name: 'Yanaka Ginza', cat: 'culture',
+        city: 'tokyo', cityLabel: 'Tokyo',
+        desc: 'Wander the retro street food alleys and experience old Tokyo vibes.',
+        lat: 35.7275, lng: 139.7667,
+        address: '3-13-1 Yanaka, Taito, Tokyo'
+      },
+      {
+        id: 'l-tok-11', icon: '🏛️', name: 'Ueno Park', cat: 'culture',
+        city: 'tokyo', cityLabel: 'Tokyo',
+        desc: 'Explore the national museum mile and surrounding cherry blossom gardens.',
+        lat: 35.7141, lng: 139.7736,
+        address: 'Uenokoen, Taito, Tokyo'
+      },
+      {
+        id: 'l-tok-12', icon: '🍜', name: 'Tokyo Ramen Street', cat: 'cuisine',
+        city: 'tokyo', cityLabel: 'Tokyo',
+        desc: 'Finish the day with dinner at a legendary hidden noodle shop in Tokyo Station.',
+        lat: 35.6812, lng: 139.7671,
+        address: '1-9-1 Marunouchi, Chiyoda, Tokyo (First Avenue)'
+      },
+      {
+        id: 'l-tok-13', icon: '🍣', name: 'Tsukiji Outer Market', cat: 'cuisine',
+        city: 'tokyo', cityLabel: 'Tokyo',
+        desc: 'Graze on fresh tamagoyaki, wagyu skewers, and fresh breakfast sushi.',
+        lat: 35.6655, lng: 139.7707,
+        address: '4-16-2 Tsukiji, Chuo, Tokyo'
+      },
+      {
+        id: 'l-tok-14', icon: '🍻', name: 'Shinjuku Golden Gai', cat: 'culture',
+        city: 'tokyo', cityLabel: 'Tokyo',
+        desc: 'Late-night drinks in a sprawling network of tiny, nostalgic bars.',
+        lat: 35.6940, lng: 139.7046,
+        address: '1-1-6 Kabukicho, Shinjuku, Tokyo'
+      },
+      {
+        id: 'l-tok-15', icon: '🍸', name: 'Bar High Five', cat: 'culture',
+        city: 'tokyo', cityLabel: 'Tokyo',
+        desc: 'A legendary Ginza cocktail institution known for bespoke, menu-less creations.',
+        lat: 35.6713, lng: 139.7629,
+        address: 'Efflore Ginza 5 Bldg. BF, 5-4-15 Ginza, Tokyo'
+      },
+      {
+        id: 'l-tok-16', icon: '🏮', name: 'Kabukicho', cat: 'culture',
+        city: 'tokyo', cityLabel: 'Tokyo',
+        desc: 'The neon-lit heart of Shinjuku’s entertainment district.',
+        lat: 35.6944, lng: 139.7027,
+        address: 'Kabukicho, Shinjuku, Tokyo'
+      },
+  
+
     ],
 
     /* ── OSAKA ── */
@@ -134,7 +185,35 @@
         desc: 'The birthplace of Japanese whisky. Guided tours spanning over a century.',
         lat: 34.8831, lng: 135.6647,
         address: '5-2-1 Yamazaki, Shimamoto, Mishima District, Osaka'
-      }
+      },
+      {
+        id: 'l-osa-09', icon: '🐙', name: 'Takoyaki Dotonbori', cat: 'cuisine',
+        city: 'osaka', cityLabel: 'Osaka',
+        desc: 'Sample the famous piping-hot octopus balls along the neon canal.',
+        lat: 34.6687, lng: 135.5013,
+        address: 'Dotonbori, Chuo Ward, Osaka'
+      },
+      {
+        id: 'l-osa-10', icon: '🗼', name: 'Shinsekai District', cat: 'culture',
+        city: 'osaka', cityLabel: 'Osaka',
+        desc: 'Step back into retro Osaka beneath the glowing Tsutenkaku Tower.',
+        lat: 34.6525, lng: 135.5063,
+        address: 'Ebisuhigashi, Naniwa Ward, Osaka'
+      },
+      {
+        id: 'l-osa-11', icon: '🍳', name: 'Okonomiyaki District', cat: 'cuisine',
+        city: 'osaka', cityLabel: 'Osaka',
+        desc: 'Savor savory cabbage pancakes cooked right in front of you on a hot iron griddle.',
+        lat: 34.6678, lng: 135.5019,
+        address: 'Namba, Chuo Ward, Osaka'
+      },
+      {
+        id: 'l-osa-12', icon: '🥃', name: 'Yamazaki Tasting Library', cat: 'cuisine',
+        city: 'osaka', cityLabel: 'Osaka',
+        desc: 'A wall of thousands of whisky bottles available for exclusive dram tastings.',
+        lat: 34.8831, lng: 135.6647,
+        address: '5-2-1 Yamazaki, Shimamoto, Osaka'
+      },
     ],
 
     /* ── NAGOYA ── */
@@ -187,6 +266,50 @@
         desc: 'A futuristic eco-complex featuring a spectacular "Spaceship Aqua" glass roof that glows beautifully at night.',
         lat: 35.1709, lng: 136.9093,
         address: '1-11-1 Higashisakura, Higashi Ward, Nagoya'
+      },
+      {
+        id: 'l-nag-08', icon: '🛍️', name: 'Osu Shopping District', cat: 'culture',
+        city: 'nagoya', cityLabel: 'Nagoya',
+        desc: 'A bustling arcade blending vintage thrifting, electronics, and global street food.',
+        lat: 35.1594, lng: 136.9015,
+        address: 'Osu, Naka Ward, Nagoya'
+      },
+      {
+        id: 'l-nag-09', icon: '🍽️', name: 'Noritake Garden', cat: 'culture',
+        city: 'nagoya', cityLabel: 'Nagoya',
+        desc: 'A beautiful red-brick complex celebrating Japan’s famous ceramics manufacturer.',
+        lat: 35.1783, lng: 136.8817,
+        address: '3-1-36 Noritakeshinmachi, Nishi Ward, Nagoya'
+      },
+      {
+        id: 'l-nag-10', icon: '🍲', name: 'Hitsumabushi Dining', cat: 'cuisine',
+        city: 'nagoya', cityLabel: 'Nagoya',
+        desc: 'Experience Nagoya’s signature grilled eel over rice, served three different ways.',
+        lat: 35.1709, lng: 136.9080,
+        address: 'Sakae, Naka Ward, Nagoya'
+      },
+      {
+        id: 'l-nag-11', icon: '🏮', name: 'Sakae Izakaya', cat: 'cuisine',
+        city: 'nagoya', cityLabel: 'Nagoya',
+        desc: 'Late-night drinks and regional pub food in Nagoya’s entertainment hub.',
+        lat: 35.1691, lng: 136.9069,
+        address: 'Sakae, Naka Ward, Nagoya'
+      },
+  
+      /* --- NEW OKINAWA LOCATIONS --- */
+      {
+        id: 'l-oki-08', icon: '🚢', name: 'Tomari Port', cat: 'culture',
+        city: 'okinawa', cityLabel: 'Okinawa',
+        desc: 'The gateway terminal for high-speed ferries departing to the Kerama Islands.',
+        lat: 26.2259, lng: 127.6836,
+        address: '3-25-1 Maejima, Naha, Okinawa'
+      },
+      {
+        id: 'l-oki-09', icon: '🏖️', name: 'Zamami Beach', cat: 'nature',
+        city: 'okinawa', cityLabel: 'Okinawa',
+        desc: 'Pristine white sands and crystal clear waters perfect for a beachside lunch.',
+        lat: 26.2238, lng: 127.3009,
+        address: 'Zamami, Shimajiri District, Okinawa'
       }
     ],
 
@@ -240,7 +363,42 @@
         desc: 'A vibrant, seaside entertainment complex blending Okinawan island vibes with retro Americana.',
         lat: 26.3163, lng: 127.7577,
         address: 'Mihama, Chatan, Nakagami District, Okinawa'
-      }
+      },
+      {
+        id: 'l-oki-08', icon: '🚢', name: 'Tomari Port', cat: 'culture',
+        city: 'okinawa', cityLabel: 'Okinawa',
+        desc: 'The gateway terminal for high-speed ferries departing to the Kerama Islands.',
+        lat: 26.2259, lng: 127.6836,
+        address: '3-25-1 Maejima, Naha, Okinawa'
+      },
+      {
+        id: 'l-oki-09', icon: '🏖️', name: 'Zamami Beach', cat: 'nature',
+        city: 'okinawa', cityLabel: 'Okinawa',
+        desc: 'Pristine white sands and crystal clear waters perfect for a beachside lunch.',
+        lat: 26.2238, lng: 127.3009,
+        address: 'Zamami, Shimajiri District, Okinawa'
+      },
+      {
+        id: 'l-oki-10', icon: '⛩️', name: 'Shuri Castle Gates', cat: 'culture',
+        city: 'okinawa', cityLabel: 'Okinawa',
+        desc: 'The iconic crimson gates leading into the ancient Ryukyuan palace grounds.',
+        lat: 26.2170, lng: 127.7195,
+        address: '1-2 Kinjocho, Naha, Okinawa'
+      },
+      {
+        id: 'l-oki-11', icon: '🪦', name: 'Tamaudun Mausoleum', cat: 'ritual',
+        city: 'okinawa', cityLabel: 'Okinawa',
+        desc: 'The stone royal mausoleum of the Ryukyu Kingdom, a UNESCO World Heritage site.',
+        lat: 26.2167, lng: 127.7144,
+        address: '1-3 Kinjocho, Naha, Okinawa'
+      },
+      {
+        id: 'l-oki-12', icon: '🪕', name: 'Folk Music Tavern', cat: 'culture',
+        city: 'okinawa', cityLabel: 'Okinawa',
+        desc: 'A lively izakaya featuring traditional Okinawan dishes and live sanshin music.',
+        lat: 26.2150, lng: 127.6845,
+        address: 'Makishi, Naha, Okinawa'
+      },
     ],
 
     /* ── SAPPORO / HOKKAIDO ── */
@@ -300,16 +458,335 @@
         desc: 'Historic stone buildings with traditional coal-fired pot stills in coastal Hokkaido.',
         lat: 43.2022, lng: 140.7876,
         address: '7-6 Kurokawa-cho, Yoichi, Hokkaido'
+      },
+      {
+        id: 'l-sap-09', icon: '🚌', name: 'Niseko Transfer', cat: 'nature',
+        city: 'sapporo', cityLabel: 'Sapporo',
+        desc: 'The scenic winter ride from Sapporo out to the powder capital of the world.',
+        lat: 42.8040, lng: 140.6870,
+        address: 'Sapporo Station to Niseko'
+      },
+      {
+        id: 'l-sap-10', icon: '🏂', name: 'First Tracks', cat: 'nature',
+        city: 'sapporo', cityLabel: 'Hokkaido',
+        desc: 'Carving through untouched, knee-deep Hokkaido powder snow first thing in the morning.',
+        lat: 42.8633, lng: 140.6980,
+        address: 'Grand Hirafu, Niseko, Hokkaido'
+      },
+      {
+        id: 'l-sap-11', icon: '🍜', name: 'Mountain Lodge Ramen', cat: 'cuisine',
+        city: 'sapporo', cityLabel: 'Hokkaido',
+        desc: 'Warm up mid-mountain with a steaming bowl of rich, buttery miso ramen.',
+        lat: 42.8600, lng: 140.7000,
+        address: 'Niseko Mountain Lodge, Hokkaido'
+      },
+      {
+        id: 'l-sap-12', icon: '♨️', name: 'Après-Ski Onsen', cat: 'ritual',
+        city: 'sapporo', cityLabel: 'Hokkaido',
+        desc: 'Soak tired muscles in a natural volcanic hot spring surrounded by snowbanks.',
+        lat: 42.8465, lng: 140.6310,
+        address: 'Niseko Onsen Village, Hokkaido'
+      },
+      {
+        id: 'l-sap-13', icon: '🏭', name: 'Historic Brewery', cat: 'culture',
+        city: 'sapporo', cityLabel: 'Sapporo',
+        desc: 'Explore the beautifully preserved red-brick buildings of Japan’s oldest beer brand.',
+        lat: 43.0782, lng: 141.3565,
+        address: '9-2-10 Kita, Higashi Ward, Sapporo'
+      },
+      {
+        id: 'l-sap-14', icon: '🍺', name: 'Tasting Flight', cat: 'cuisine',
+        city: 'sapporo', cityLabel: 'Sapporo',
+        desc: 'Sample a flight of exclusive Hokkaido brews straight from the source.',
+        lat: 43.0783, lng: 141.3566,
+        address: 'Sapporo Beer Museum Star Hall'
+      },
+      {
+        id: 'l-sap-15', icon: '🥩', name: 'Jingisukan Dinner', cat: 'cuisine',
+        city: 'sapporo', cityLabel: 'Sapporo',
+        desc: 'Hokkaido’s famous Genghis Khan BBQ—succulent lamb grilled over a dome skillet.',
+        lat: 43.0554, lng: 141.3533,
+        address: 'Susukino, Chuo Ward, Sapporo'
+      },
+      {
+        id: 'l-sap-16', icon: '🧊', name: 'Ice Bar', cat: 'culture',
+        city: 'sapporo', cityLabel: 'Sapporo',
+        desc: 'Grab a cocktail served in a glass made entirely of solid ice.',
+        lat: 43.0550, lng: 141.3530,
+        address: 'Susukino Ice Pavilion, Sapporo'
       }
     ]
   };
+  // Sample gallery images per location
+  const LOCATION_GALLERY = {
+  // TOKYO
+  'l-tok-01': [ // Senso-ji Temple
+    { src: 'https://cdn.cheapoguides.com/wp-content/uploads/sites/2/2020/05/sensoji-temple-iStock-1083328636-1024x684.jpg', cap: 'Senso-ji main gate at day' },
+    { src: 'https://traveldudes.com/wp-content/uploads/2020/01/Gate-at-Sensoji-temple-in-Asakusa-Tokyo-Japan.jpg', cap: 'Senso-ji main gate at day' },
+    { src: 'https://images.unsplash.com/photo-1624601573012-efb68931cc8f?w=800&q=80', cap: 'Nakamise shopping street' },
+    { src: 'https://images.unsplash.com/photo-1551818255-e6e10579494b?w=800&q=80', cap: 'Incense smoke at the shrine' },
+  ],
+  'l-tok-02': [ // Tokyo Tower
+    { src: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80', cap: 'Tokyo Tower at twilight' },
+    { src: 'https://images.unsplash.com/photo-1492571350019-22de08371fd3?w=800&q=80', cap: 'Looking up from the base' },
+    { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80', cap: 'City view from observation deck' },
+  ],
+  'l-tok-03': [ // Shinjuku Gyoen
+    { src: 'https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?w=800&q=80', cap: 'Cherry blossoms in full bloom' },
+    { src: 'https://images.unsplash.com/photo-1522383225653-ed111181a951?w=800&q=80', cap: 'French formal garden section' },
+    { src: 'https://images.unsplash.com/photo-1536183922588-166604504d5e?w=800&q=80', cap: 'Autumn foliage in Gyoen' },
+  ],
+  'l-tok-04': [ // Akihabara
+    { src: 'https://images.unsplash.com/photo-1570459027562-4a916cc6113f?w=800&q=80', cap: 'Akihabara neon signs' },
+    { src: 'https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=800&q=80', cap: 'Electronics district by night' },
+    { src: 'https://images.unsplash.com/photo-1560462007-0328e9bdf3e4?w=800&q=80', cap: 'Anime merchandise stalls' },
+  ],
+  'l-tok-05': [ // Imperial Palace
+    { src: 'https://images.unsplash.com/photo-1589452271712-64b8a66c7b71?w=800&q=80', cap: 'Imperial Palace East Gardens' },
+    { src: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80', cap: 'Palace moat in spring' },
+  ],
+  'l-tok-06': [ // Meiji Jingu
+    { src: 'https://images.unsplash.com/photo-1596485802119-94071ea178ed?w=800&q=80', cap: 'Sake barrels at Meiji Jingu' },
+    { src: 'https://images.unsplash.com/photo-1589452271712-64b8a66c7b71?w=800&q=80', cap: 'Torii gate in the forest' },
+  ],
+  'l-tok-07': [ // Shibuya Crossing
+    { src: 'https://images.unsplash.com/photo-1542051812871-7587d8d01f8d?w=800&q=80', cap: 'The scramble at dusk' },
+    { src: 'https://images.unsplash.com/photo-1512963161048-b391782627e7?w=800&q=80', cap: 'Neon rain in Shibuya' },
+  ],
+  'l-tok-08': [ // Sukiyabashi Jiro (Formerly l-q01-a)
+    { src: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=800&q=80', cap: 'Omakase sushi plating' },
+    { src: 'https://images.unsplash.com/photo-1617196034875-3f8e59de5bc4?w=800&q=80', cap: 'Ginza counter dining' },
+  ],
+  'l-tok-09': [ // Toyosu Market (Formerly l-q01-b)
+    { src: 'https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=800&q=80', cap: 'Morning tuna auction' },
+    { src: 'https://images.unsplash.com/photo-1617197342105-4e10cc22a35a?w=800&q=80', cap: 'Fresh catch on display' },
+    { src: 'https://images.unsplash.com/photo-1534482421-64566f976cfa?w=800&q=80', cap: 'Sushi breakfast at market stalls' },
+  ],
+  'l-tok-10': [// Yanaka Ginza
+    { src: 'https://images.unsplash.com/photo-1542055990-25e59b66bb9a?w=800&q=80', cap: 'Retro street food alleys' }
 
-  /* Flat list for the grid section */
-  const ALL_LOCATIONS = Object.values(LOCATIONS_DB).flat();
+  ],
+  'l-tok-11': [// Ueno Park
+    { src: 'https://images.unsplash.com/photo-1522851694291-039c36660fc0?w=800&q=80', cap: 'Cherry blossoms in Ueno' }
+
+  ],
+  'l-tok-12': [// Tokyo Ramen Street
+    { src: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80', cap: 'Legendary Tokyo ramen' }
+
+  ],
+  'l-tok-13': [// Tsukiji Outer Market
+    { src: 'https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=800&q=80', cap: 'Tsukiji Market grazing' }
+
+  ],
+  'l-tok-14': [// Shinjuku Golden Gai
+    { src: 'https://images.unsplash.com/photo-1609951651556-4965f9a3ae6f?w=800&q=80', cap: 'Golden Gai alleyways' }
+
+  ],
+  'l-tok-15': [// Bar High Five
+    { src: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=80', cap: 'Bespoke cocktail crafting' }
+    
+  ],
+  'l-tok-16': [// Kabukicho
+    { src: 'https://images.unsplash.com/photo-1551818255-e6e10579494b?w=800&q=80', cap: 'Kabukicho neon gates' }
+
+  ],
+
+  // OSAKA
+  'l-osa-01': [ // Osaka Castle
+    { src: 'https://images.unsplash.com/photo-1590559899731-a382839e5549?w=800&q=80', cap: 'Osaka Castle and moat' },
+    { src: 'https://images.unsplash.com/photo-1578469645742-46cae010e5d4?w=800&q=80', cap: 'Castle tower in autumn' },
+    { src: 'https://images.unsplash.com/photo-1577493340887-b7bfff550145?w=800&q=80', cap: 'Castle gardens at dawn' },
+  ],
+  'l-osa-02': [ // Kuromon Market
+    { src: 'https://images.unsplash.com/photo-1536183922588-166604504d5e?w=800&q=80', cap: 'Fresh seafood stalls' },
+    { src: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800&q=80', cap: 'Market vendors at midday' },
+  ],
+  'l-osa-03': [ // Umeda Sky Building
+    { src: 'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=800&q=80', cap: 'Umeda Sky Building aerial view' },
+    { src: 'https://images.unsplash.com/photo-1572979530665-a7e4b3d0e0dc?w=800&q=80', cap: 'Floating garden observatory' },
+  ],
+  'l-osa-04': [ // Hozenji Yokocho
+    { src: 'https://images.unsplash.com/photo-1609951651556-4965f9a3ae6f?w=800&q=80', cap: 'Lantern-lit Hozenji alley' },
+    { src: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800&q=80', cap: 'Moss-covered Mizukake Fudo statue' },
+  ],
+  'l-osa-05': [ // Abeno Harukas
+    { src: 'https://images.unsplash.com/photo-1590559899731-a382839e5549?w=800&q=80', cap: 'Abeno Harukas skyline view' },
+  ],
+  'l-osa-06': [ // Don Quijote (Formerly l-c01-a)
+    { src: 'https://images.unsplash.com/photo-1609951651556-4965f9a3ae6f?w=800&q=80', cap: 'Dotonbori neon at night' },
+    { src: 'https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?w=800&q=80', cap: 'Don Quijote storefront' },
+  ],
+  'l-osa-07': [ // Kansai Airport (Formerly l-c01-c)
+    { src: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&q=80', cap: 'Kansai airport terminal' },
+  ],
+  'l-osa-08': [ // Suntory Yamazaki (Formerly l-c03-a)
+    { src: 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=800&q=80', cap: 'Whisky barrels in the warehouse' },
+    { src: 'https://images.unsplash.com/photo-1518791841217-8f162f1912da?w=800&q=80', cap: 'Yamazaki distillery grounds' },
+  ],
+  'l-osa-09': [// Takoyaki Dotonbori
+    { src: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800&q=80', cap: 'Takoyaki tasting' }
+
+  ],
+  'l-osa-10': [// Shinsekai District
+    { src: 'https://images.unsplash.com/photo-1572979530665-a7e4b3d0e0dc?w=800&q=80', cap: 'Shinsekai retro vibes' }
+
+  ],
+  'l-osa-11': [// Okonomiyaki District
+    { src: 'https://images.unsplash.com/photo-1536183922588-166604504d5e?w=800&q=80', cap: 'Hot iron okonomiyaki' }
+
+  ],
+  'l-osa-12': [// Yamazaki Tasting Library
+    { src: 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=800&q=80', cap: 'Whisky tasting library' }
+
+  ],
+
+  // NAGOYA
+  'l-nag-01': [ // Nagoya Castle
+    { src: 'https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?w=800&q=80', cap: 'Nagoya Castle golden shachihoko' },
+    { src: 'https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?w=800&q=80', cap: 'Castle keep in summer' },
+  ],
+  'l-nag-02': [ // Toyota Museum
+    { src: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80', cap: 'Classic Toyota on display' },
+    { src: 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=800&q=80', cap: 'Loom technology exhibit' },
+  ],
+  'l-nag-03': [ // Atsuta Shrine
+    { src: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80', cap: 'Ancient forest at Atsuta Shrine' },
+    { src: 'https://images.unsplash.com/photo-1624601573012-efb68931cc8f?w=800&q=80', cap: 'Shrine lanterns at dusk' },
+  ],
+  'l-nag-04': [ // Nagoya Meshi
+    { src: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800&q=80', cap: 'Miso katsu, Nagoya style' },
+    { src: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80', cap: 'Tebasaki chicken wings' },
+  ],
+  'l-nag-05': [ // Tokugawa Museum
+    { src: 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&q=80', cap: 'Samurai armour collection' },
+    { src: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80', cap: 'Edo-period scroll painting' },
+  ],
+  'l-nag-06': [ // Osu Kannon
+    { src: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80', cap: 'Osu Kannon temple grounds' },
+  ],
+  'l-nag-07': [ // Oasis 21
+    { src: 'https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?w=800&q=80', cap: 'Spaceship Aqua illuminated' },
+  ],
+  'l-nag-08': [// Osu Shopping District
+    { src: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80', cap: 'Osu shopping arcade' }
+  ],
+  'l-nag-09': [// Noritake Garden
+    { src: 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=800&q=80', cap: 'Noritake garden grounds' }
+  ],
+  'l-nag-10': [// Hitsumabushi Dining
+    { src: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80', cap: 'Hitsumabushi eel dinner' }
+  ],
+  'l-nag-11': [// Sakae Izakaya
+    { src: 'https://images.unsplash.com/photo-1609951651556-4965f9a3ae6f?w=800&q=80', cap: 'Sakae izakaya drinks' }
+  ],
+
+  // OKINAWA
+  'l-oki-01': [ // Kerama Islands
+    { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80', cap: 'Kerama Islands turquoise water' },
+    { src: 'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=800&q=80', cap: 'Coral reef snorkeling' },
+    { src: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80', cap: 'Sea turtle at Kerama' },
+  ],
+  'l-oki-02': [ // Shuri Castle
+    { src: 'https://images.unsplash.com/photo-1531566366255-b4da4f65b4f7?w=800&q=80', cap: 'Shuri Castle crimson gate' },
+    { src: 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&q=80', cap: 'Ryukyuan palace interior' },
+  ],
+  'l-oki-03': [ // Blue Cave
+    { src: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80', cap: 'Blue Cave, Cape Maeda' },
+    { src: 'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=800&q=80', cap: 'Tropical fish in the cave' },
+  ],
+  'l-oki-04': [ // Churaumi Aquarium
+    { src: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80', cap: 'Whale shark at Churaumi' },
+    { src: 'https://images.unsplash.com/photo-1453831362806-3d5577f014a4?w=800&q=80', cap: 'Giant manta ray exhibit' },
+  ],
+  'l-oki-05': [ // Kokusai Street
+    { src: 'https://images.unsplash.com/photo-1609951651556-4965f9a3ae6f?w=800&q=80', cap: 'Kokusai Street nightlife' },
+    { src: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80', cap: 'Traditional craft shops' },
+  ],
+  'l-oki-06': [ // Cape Manzamo
+    { src: 'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=800&q=80', cap: 'Sunset over Cape Manzamo' },
+  ],
+  'l-oki-07': [ // American Village
+    { src: 'https://images.unsplash.com/photo-1609951651556-4965f9a3ae6f?w=800&q=80', cap: 'Mihama American Village Ferris Wheel' },
+  ],
+  'l-oki-08': [// Tomari Port
+    { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80', cap: 'Tomari Port departure' }
+  ],
+  'l-oki-09': [// Zamami Beach
+    { src: 'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=800&q=80', cap: 'Zamami Beach sands' }
+
+  ],
+  'l-oki-10': [
+    { src: 'https://images.unsplash.com/photo-1531566366255-b4da4f65b4f7?w=800&q=80', cap: 'Crimson gates of Shuri' }
+  ],
+  'l-oki-11': [
+    { src: 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&q=80', cap: 'Tamaudun stone walls' }
+  ],
+  'l-oki-12': [
+    { src: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80', cap: 'Live sanshin music tavern' }
+  ],
+
+  // SAPPORO
+  'l-sap-01': [ // Niseko
+    { src: 'https://images.unsplash.com/photo-1605209971026-d3c6a54ab58b?w=800&q=80', cap: 'Niseko powder runs' },
+    { src: 'https://images.unsplash.com/photo-1548521386-740a6e3b9bda?w=800&q=80', cap: 'Hokkaido winter landscape' },
+    { src: 'https://images.unsplash.com/photo-1467511961084-1676a85f8f93?w=800&q=80', cap: 'Deep powder skiing' },
+  ],
+  'l-sap-02': [ // Odori Ice Festival
+    { src: 'https://images.unsplash.com/photo-1467511961084-1676a85f8f93?w=800&q=80', cap: 'Ice sculpture festival, Odori' },
+    { src: 'https://images.unsplash.com/photo-1548521386-740a6e3b9bda?w=800&q=80', cap: 'Snow lanterns at night' },
+  ],
+  'l-sap-03': [ // Sapporo Beer Museum
+    { src: 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=800&q=80', cap: 'Historic red brick brewery' },
+    { src: 'https://images.unsplash.com/photo-1532634993-15f421e42ec0?w=800&q=80', cap: 'Sapporo lager tasting' },
+  ],
+  'l-sap-04': [ // Shiretoko Peninsula
+    { src: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=80', cap: 'Shiretoko wilderness' },
+    { src: 'https://images.unsplash.com/photo-1548521386-740a6e3b9bda?w=800&q=80', cap: 'Brown bear spotting' },
+  ],
+  'l-sap-05': [ // Ramen Yokocho
+    { src: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80', cap: 'Sapporo miso ramen' },
+    { src: 'https://images.unsplash.com/photo-1609951651556-4965f9a3ae6f?w=800&q=80', cap: 'Ramen Yokocho alley at night' },
+  ],
+  'l-sap-06': [ // Mount Moiwa
+    { src: 'https://images.unsplash.com/photo-1548521386-740a6e3b9bda?w=800&q=80', cap: 'Night view from Mount Moiwa' },
+  ],
+  'l-sap-07': [ // Moerenuma Park
+    { src: 'https://images.unsplash.com/photo-1532634993-15f421e42ec0?w=800&q=80', cap: 'Glass pyramid at Moerenuma' },
+  ],
+  'l-sap-08': [ // Nikka Yoichi (Formerly l-c03-c)
+    { src: 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=800&q=80', cap: 'Nikka Yoichi stone distillery' },
+    { src: 'https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=800&q=80', cap: 'Coal-fired pot stills' },
+  ],
+  'l-sap-09': [// Niseko Transfer
+    { src: 'https://images.unsplash.com/photo-1548521386-740a6e3b9bda?w=800&q=80', cap: 'Winter road to Niseko' }
+  ],
+  'l-sap-10': [// First Tracks
+    { src: 'https://images.unsplash.com/photo-1605209971026-d3c6a54ab58b?w=800&q=80', cap: 'Fresh morning tracks' }
+  ],
+  'l-sap-11': [// Mountain Lodge Ramen
+    { src: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80', cap: 'Steaming mountain ramen' }
+  ],
+  'l-sap-12': [// Apres-Ski Onsen
+    { src: 'https://images.unsplash.com/photo-1522276498395-f4f68f7f8454?w=800&q=80', cap: 'Outdoor snow onsen' }
+  ],
+  'l-sap-13': [// Historic Brewery
+    { src: 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=800&q=80', cap: 'Historic red brick brewery' }
+  ],
+  'l-sap-14': [// Tasting Flight
+    { src: 'https://images.unsplash.com/photo-1532634993-15f421e42ec0?w=800&q=80', cap: 'Sapporo tasting flight' }
+  ],
+  'l-sap-15': [// Jingisukan Dinner
+    { src: 'https://images.unsplash.com/photo-1544378730-8b51042aa37c?w=800&q=80', cap: 'Jingisukan lamb BBQ' }
+  ],
+  'l-sap-16': [// IceBar
+    { src: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80', cap: 'Ice bar cocktails' }
+  ],
+  };
+
  /* ═══════════════════════════════════════════
      CITY MODAL DATA (Fully fleshed out itineraries)
   ═══════════════════════════════════════════ */
-  const CITY_DATA = {
+    const CITY_DATA = {
     // Tokyo
     tokyo: { 
       tag: 'Tokyo — Kantō', title: 'VISIT TOKYO',
@@ -322,9 +799,9 @@
           activities: [
             // Added locId for Senso-ji (it will be clickable!)
             { time: '08:00 AM', title: 'Senso-ji Temple', desc: 'Beat the crowds at Tokyo’s oldest temple in Asakusa.', locId: 'l-tok-01' },
-            { time: '11:30 AM', title: 'Yanaka Ginza', desc: 'Wander the retro street food alleys and grab a quick bite.' },
-            { time: '02:00 PM', title: 'Ueno Park & Museums', desc: 'Explore the national museum mile and surrounding gardens.' },
-            { time: '06:00 PM', title: 'Ramen Street', desc: 'Finish the day with dinner at a legendary hidden ramen spot.' }
+            { time: '11:30 AM', title: 'Yanaka Ginza', desc: 'Wander the retro street food alleys and grab a quick bite.', locId: 'l-tok-10' },
+            { time: '02:00 PM', title: 'Ueno Park & Museums', desc: 'Explore the national museum mile and surrounding gardens.', locId:'l-tok-11' },
+            { time: '06:00 PM', title: 'Ramen Street', desc: 'Finish the day with dinner at a legendary hidden ramen spot.', locId:'l-tok-12' }
           ]
         },
         { 
@@ -334,8 +811,8 @@
           activities: [
             // Added locId for Toyosu (it will be clickable!)
             { time: '05:00 AM', title: 'Toyosu Wholesale', desc: 'Witness the energy of the early morning seafood logistics.', locId: 'l-tok-09' },
-            { time: '07:30 AM', title: 'Breakfast Sushi', desc: 'Eat the freshest catch right outside the market.' },
-            { time: '10:00 AM', title: 'Tsukiji Outer Market', desc: 'Sample tamagoyaki, wagyu skewers, and matcha.' }
+            { time: '07:30 AM', title: 'Breakfast Sushi', desc: 'Eat the freshest catch right outside the market.', locId:'l-tok-09' },
+            { time: '10:00 AM', title: 'Tsukiji Outer Market', desc: 'Sample tamagoyaki, wagyu skewers, and matcha.', locId:'l-tok-13' }
           ]
         },
         { 
@@ -343,163 +820,171 @@
           duration: 'Evening · 4hrs', 
           price: '¥12,000',
           activities: [
-            { time: '07:00 PM', title: 'Shinjuku Golden Gai', desc: 'Navigate the narrow, lantern-lit alleys of tiny bars.' },
-            { time: '09:00 PM', title: 'Kabukicho', desc: 'Walk through the vibrant neon chaos of the entertainment district.' },
-            { time: '10:30 PM', title: 'Bar High Five', desc: 'End the night with a bespoke cocktail in Ginza.' }
+            { time: '07:00 PM', title: 'Shinjuku Golden Gai', desc: 'Navigate the narrow, lantern-lit alleys of tiny bars.', locId:'l-tok-14' },
+            { time: '09:00 PM', title: 'Kabukicho', desc: 'Walk through the vibrant neon chaos of the entertainment district.', locId:'l-tok-16' },
+            { time: '10:30 PM', title: 'Bar High Five', desc: 'End the night with a bespoke cocktail in Ginza.', locId:'l-tok-15' }
           ]
         }
       ],
       plan: { bestTime: 'Mar–May', budget: '¥15k/day', language: 'Japanese', flight: '~14h from EU', visa: 'Visa-free (90d)', currency: 'JPY ¥' }
     },
-    // Osaka
-    osaka: { 
-      tag: 'Osaka — Kansai', title: 'TASTE OSAKA',
-      subtitle: "Japan's kitchen and comedy capital — takoyaki at midnight and the castle lit vermillion against a winter sky.",
-      tours: [
-        { 
-          name: 'Street Food Safari', 
-          duration: 'Evening · 3hrs', 
-          price: '¥8,500',
-          activities: [
-            { time: '06:00 PM', title: 'Dotonbori Neon Walk', desc: 'Meet under the Glico Man sign to start the culinary journey.' },
-            { time: '06:30 PM', title: 'Takoyaki Tasting', desc: 'Try piping hot octopus balls from a legendary street vendor.' },
-            { time: '07:45 PM', title: 'Kuromon Market', desc: 'Sample grilled scallops and Kobe beef skewers.' },
-            { time: '08:30 PM', title: 'Shinsekai Deep Dive', desc: 'Finish with kushikatsu (fried skewers) in the retro district.' }
-          ]
-        },
-        { 
-          name: 'Suntory Whisky Heritage', 
-          duration: 'Half Day · 4hrs', 
-          price: '¥15,000',
-          activities: [
-            { time: '01:00 PM', title: 'Train to Yamazaki', desc: 'Leave the city center for the misty mountains of Shimamoto.' },
-            { time: '02:00 PM', title: 'Distillery Tour', desc: 'Walk the wood-paneled halls and see the copper pot stills.' },
-            { time: '03:30 PM', title: 'Tasting Library', desc: 'Sample rare, aged single malts directly from the source.' }
-          ]
-        },
-        { 
-          name: 'Castle & History Walk', 
-          duration: 'Half Day · 4hrs', 
-          price: '¥9,000',
-          activities: [
-            { time: '09:00 AM', title: 'Osaka Castle Park', desc: 'Walk the sprawling grounds and photograph the moats.' },
-            { time: '10:30 AM', title: 'Castle Keep', desc: 'Climb the 16th-century fortress for panoramic city views.' },
-            { time: '12:00 PM', title: 'Okonomiyaki Lunch', desc: 'Enjoy savory cabbage pancakes cooked right at your table.' }
-          ]
-        }
-      ],
-      plan: { bestTime: 'Oct–Dec', budget: '¥12k/day', language: 'Japanese', flight: '~13h from EU', visa: 'Visa-free (90d)', currency: 'JPY ¥' }
+// Osaka
+osaka: { 
+  tag: 'Osaka — Kansai', title: 'TASTE OSAKA',
+  subtitle: "Japan's kitchen and comedy capital — takoyaki at midnight and the castle lit vermillion against a winter sky.",
+  tours: [
+    { 
+      name: 'Street Food Safari', 
+      duration: 'Evening · 3hrs', 
+      price: '¥8,500',
+      activities: [
+        { time: '06:00 PM', title: 'Dotonbori Neon Walk', desc: 'Meet under the Glico Man sign to start the culinary journey.', locId: 'l-osa-06' },
+        { time: '06:30 PM', title: 'Takoyaki Tasting', desc: 'Try piping hot octopus balls from a legendary street vendor.', locId: 'l-osa-09' },
+        { time: '07:45 PM', title: 'Kuromon Market', desc: 'Sample grilled scallops and Kobe beef skewers.', locId: 'l-osa-02' },
+        { time: '08:30 PM', title: 'Shinsekai Deep Dive', desc: 'Finish with kushikatsu (fried skewers) in the retro district.', locId: 'l-osa-10' }
+      ]
     },
-    nagoya: {
-      tag: 'Nagoya — Chūbu', title: 'RISE NAGOYA',
-      subtitle: 'The unsung giant of central Japan — fierce castle pride, tebasaki chicken wings, and a design legacy that shapes the world.',
-      tours: [
-        { 
-          name: 'Castle & Shrine Circuit', 
-          duration: 'Full Day · 8hrs', 
-          price: '¥14,000',
-          activities: [
-            { time: '09:00 AM', title: 'Nagoya Castle Grounds', desc: 'Admire the golden shachihoko dolphins atop the fortress roof.' },
-            { time: '11:30 AM', title: 'Tokugawa Art Museum', desc: 'View priceless samurai artifacts and Edo-period scrolls.' },
-            { time: '02:00 PM', title: 'Atsuta Shrine', desc: 'Walk the ancient forest paths of Japan’s most sacred Shinto shrine.' },
-            { time: '04:00 PM', title: 'Osu Shopping District', desc: 'Browse vintage stores and electronics alongside ancient temples.' }
-          ]
-        },
-        { 
-          name: 'Industrial Heritage Tour', 
-          duration: 'Half Day · 4hrs', 
-          price: '¥8,000',
-          activities: [
-            { time: '10:00 AM', title: 'Toyota Museum', desc: 'Discover the birth of Japan’s industrial revolution from looms to cars.' },
-            { time: '12:30 PM', title: 'Noritake Garden', desc: 'Explore the historic red brick buildings of the famous ceramics maker.' }
-          ]
-        },
-        { 
-          name: 'Nagoya Meshi Food Crawl', 
-          duration: 'Evening · 3hrs', 
-          price: '¥11,000',
-          activities: [
-            { time: '06:00 PM', title: 'Hitsumabushi Dinner', desc: 'Enjoy grilled eel on rice eaten three different ways.' },
-            { time: '08:00 PM', title: 'Sakae Izakaya', desc: 'Taste authentic Tebasaki (peppery chicken wings).' }
-          ]
-        }
-      ],
-      plan: { bestTime: 'Apr–Jun', budget: '¥10k/day', language: 'Japanese', flight: '~13h from EU', visa: 'Visa-free (90d)', currency: 'JPY ¥' }
+    { 
+      name: 'Suntory Whisky Heritage', 
+      duration: 'Half Day · 4hrs', 
+      price: '¥15,000',
+      activities: [
+        { time: '01:00 PM', title: 'Train to Yamazaki', desc: 'Leave the city center for the misty mountains of Shimamoto.', locId: 'l-osa-08' },
+        { time: '02:00 PM', title: 'Distillery Tour', desc: 'Walk the wood-paneled halls and see the copper pot stills.', locId: 'l-osa-08' },
+        { time: '03:30 PM', title: 'Tasting Library', desc: 'Sample rare, aged single malts directly from the source.', locId: 'l-osa-12' }
+      ]
     },
-    okinawa: {
-      tag: 'Okinawa — Ryukyu', title: 'DREAM OKINAWA',
-      subtitle: "Japan's tropical paradise: coral reefs, sea turtles in turquoise water, and Ryukyuan culture unlike anywhere else.",
-      tours: [
-        { 
-          name: 'Kerama Islands Snorkel Day', 
-          duration: 'Full Day · 9hrs', 
-          price: '¥28,000',
-          activities: [
-            { time: '08:00 AM', title: 'Depart Naha Port', desc: 'Take the high-speed ferry across the Philippine Sea.' },
-            { time: '09:30 AM', title: 'Turtle Snorkeling', desc: 'Swim alongside wild sea turtles in crystal clear water.' },
-            { time: '12:30 PM', title: 'Beachside Lunch', desc: 'Enjoy fresh island seafood on pristine white sand.' },
-            { time: '02:00 PM', title: 'Coral Reef Free Dive', desc: 'Explore the vibrant tropical fish ecosystems.' }
-          ]
-        },
-        { 
-          name: 'Ryukyu Kingdom History Walk', 
-          duration: 'Half Day · 4hrs', 
-          price: '¥9,500',
-          activities: [
-            { time: '09:00 AM', title: 'Shuri Castle Gates', desc: 'Walk the ancient stone paths of the Ryukyuan kings.' },
-            { time: '11:00 AM', title: 'Tamaudun Mausoleum', desc: 'Visit the UNESCO World Heritage royal tombs.' }
-          ]
-        },
-        { 
-          name: 'Night City & Sanshin Music', 
-          duration: 'Evening · 4hrs', 
-          price: '¥12,000',
-          activities: [
-            { time: '06:00 PM', title: 'Kokusai Street', desc: 'Browse the vibrant, palm-lined shopping avenue.' },
-            { time: '08:00 PM', title: 'Folk Music Tavern', desc: 'Eat Awamori pork and listen to live traditional Sanshin music.' }
-          ]
-        }
-      ],
-      plan: { bestTime: 'May–Oct', budget: '¥14k/day', language: 'Japanese', flight: '~3.5h from Tokyo', visa: 'Visa-free (90d)', currency: 'JPY ¥' }
-    },
-    sapporo: {
-      tag: 'Sapporo — Hokkaido', title: 'SNOW SAPPORO',
-      subtitle: "Japan's northernmost major city: world-class powder snow, ice sculpture festivals, and legendary miso ramen.",
-      tours: [
-        { 
-          name: 'Powder Snow Ski Day', 
-          duration: 'Full Day · 9hrs', 
-          price: '¥35,000',
-          activities: [
-            { time: '07:00 AM', title: 'Niseko Transfer', desc: 'Early morning drive to the snow capital of the world.' },
-            { time: '09:00 AM', title: 'First Tracks', desc: 'Hit the legendary deep powder of Grand Hirafu.' },
-            { time: '01:00 PM', title: 'Mountain Lodge Ramen', desc: 'Warm up with a steaming bowl of spicy miso ramen.' },
-            { time: '03:30 PM', title: 'Après-Ski Onsen', desc: 'Soak in a natural outdoor hot spring surrounded by snow.' }
-          ]
-        },
-        { 
-          name: 'Sapporo Brewery Tasting', 
-          duration: 'Half Day · 3hrs', 
-          price: '¥7,000',
-          activities: [
-            { time: '02:00 PM', title: 'Historic Brewery', desc: 'Tour the red brick buildings of Japan’s first beer brand.' },
-            { time: '04:00 PM', title: 'Tasting Flight', desc: 'Sample exclusive local drafts only available in Hokkaido.' }
-          ]
-        },
-        { 
-          name: 'Susukino Midnight Crawl', 
-          duration: 'Evening · 4hrs', 
-          price: '¥13,000',
-          activities: [
-            { time: '07:00 PM', title: 'Jingisukan Dinner', desc: 'Grill Hokkaido lamb on a traditional domed skillet.' },
-            { time: '09:00 PM', title: 'Ice Bar', desc: 'Have a drink in a bar carved entirely out of ice.' },
-            { time: '10:30 PM', title: 'Ramen Yokocho', desc: 'End the night in the alleyway where miso ramen was invented.' }
-          ]
-        }
-      ],
-      plan: { bestTime: 'Dec–Mar', budget: '¥13k/day', language: 'Japanese', flight: '~1.5h from Tokyo', visa: 'Visa-free (90d)', currency: 'JPY ¥' }
+    { 
+      name: 'Castle & History Walk', 
+      duration: 'Half Day · 4hrs', 
+      price: '¥9,000',
+      activities: [
+        { time: '09:00 AM', title: 'Osaka Castle Park', desc: 'Walk the sprawling grounds and photograph the moats.', locId: 'l-osa-01' },
+        { time: '10:30 AM', title: 'Castle Keep', desc: 'Climb the 16th-century fortress for panoramic city views.', locId: 'l-osa-01' },
+        { time: '12:00 PM', title: 'Okonomiyaki Lunch', desc: 'Enjoy savory cabbage pancakes cooked right at your table.', locId: 'l-osa-11' }
+      ]
     }
+  ],
+  plan: { bestTime: 'Oct–Dec', budget: '¥12k/day', language: 'Japanese', flight: '~13h from EU', visa: 'Visa-free (90d)', currency: 'JPY ¥' }
+},
+// Nagoya
+nagoya: {
+  tag: 'Nagoya — Chūbu', title: 'RISE NAGOYA',
+  subtitle: 'The unsung giant of central Japan — fierce castle pride, tebasaki chicken wings, and a design legacy that shapes the world.',
+  tours: [
+    { 
+      name: 'Castle & Shrine Circuit', 
+      duration: 'Full Day · 8hrs', 
+      price: '¥14,000',
+      activities: [
+        { time: '09:00 AM', title: 'Nagoya Castle Grounds', desc: 'Admire the golden shachihoko dolphins atop the fortress roof.', locId: 'l-nag-01' },
+        { time: '11:30 AM', title: 'Tokugawa Art Museum', desc: 'View priceless samurai artifacts and Edo-period scrolls.', locId: 'l-nag-05' },
+        { time: '02:00 PM', title: 'Atsuta Shrine', desc: 'Walk the ancient forest paths of Japan’s most sacred Shinto shrine.', locId: 'l-nag-03' },
+        { time: '04:00 PM', title: 'Osu Shopping District', desc: 'Browse vintage stores and electronics alongside ancient temples.', locId: 'l-nag-08' }
+      ]
+    },
+    { 
+      name: 'Industrial Heritage Tour', 
+      duration: 'Half Day · 4hrs', 
+      price: '¥8,000',
+      activities: [
+        { time: '10:00 AM', title: 'Toyota Museum', desc: 'Discover the birth of Japan’s industrial revolution from looms to cars.', locId: 'l-nag-02' },
+        { time: '12:30 PM', title: 'Noritake Garden', desc: 'Explore the historic red brick buildings of the famous ceramics maker.', locId: 'l-nag-09' }
+      ]
+    },
+    { 
+      name: 'Nagoya Meshi Food Crawl', 
+      duration: 'Evening · 3hrs', 
+      price: '¥11,000',
+      activities: [
+        { time: '06:00 PM', title: 'Hitsumabushi Dinner', desc: 'Enjoy grilled eel on rice eaten three different ways.', locId: 'l-nag-10' },
+        { time: '08:00 PM', title: 'Sakae Izakaya', desc: 'Taste authentic Tebasaki (peppery chicken wings).', locId: 'l-nag-11' }
+      ]
+    }
+  ],
+  plan: { bestTime: 'Apr–Jun', budget: '¥10k/day', language: 'Japanese', flight: '~13h from EU', visa: 'Visa-free (90d)', currency: 'JPY ¥' }
+},
+// Okinawa
+okinawa: {
+  tag: 'Okinawa — Ryukyu', title: 'DREAM OKINAWA',
+  subtitle: "Japan's tropical paradise: coral reefs, sea turtles in turquoise water, and Ryukyuan culture unlike anywhere else.",
+  tours: [
+    {
+      name: 'Kerama Islands Snorkel Day',
+      duration: 'Full Day · 9hrs',
+      price: '¥28,000',
+      activities: [
+        { time: '08:00 AM', title: 'Depart Naha Port',     desc: 'Take the high-speed ferry across the Philippine Sea.',          locId: 'l-oki-08' },
+        { time: '09:30 AM', title: 'Turtle Snorkeling',    desc: 'Swim alongside wild sea turtles in crystal clear water.',        locId: 'l-oki-01' },
+        { time: '12:30 PM', title: 'Beachside Lunch',      desc: 'Enjoy fresh island seafood on pristine white sand.',             locId: 'l-oki-09' },
+        { time: '02:00 PM', title: 'Coral Reef Free Dive', desc: 'Explore the vibrant tropical fish ecosystems.',                  locId: 'l-oki-01' }
+      ]
+    },
+    {
+      name: 'Ryukyu Kingdom History Walk',
+      duration: 'Half Day · 4hrs',
+      price: '¥9,500',
+      activities: [
+        { time: '09:00 AM', title: 'Shuri Castle Gates',   desc: 'Walk the ancient stone paths of the Ryukyuan kings.',            locId: 'l-oki-10' },
+        { time: '11:00 AM', title: 'Tamaudun Mausoleum',   desc: 'Visit the UNESCO World Heritage royal tombs.',                   locId: 'l-oki-11' }
+      ]
+    },
+    {
+      name: 'Night City & Sanshin Music',
+      duration: 'Evening · 4hrs',
+      price: '¥12,000',
+      activities: [
+        { time: '06:00 PM', title: 'Kokusai Street',       desc: 'Browse the vibrant, palm-lined shopping avenue.',                locId: 'l-oki-05' },
+        { time: '08:00 PM', title: 'Folk Music Tavern',    desc: 'Eat Awamori pork and listen to live traditional Sanshin music.', locId: 'l-oki-12' }
+      ]
+    }
+  ],
+  plan: { bestTime: 'May–Oct', budget: '¥14k/day', language: 'Japanese', flight: '~3.5h from Tokyo', visa: 'Visa-free (90d)', currency: 'JPY ¥' }
+},
+// Sapporo
+sapporo: {
+  tag: 'Sapporo — Hokkaido', title: 'SNOW SAPPORO',
+  subtitle: "Japan's northernmost major city: world-class powder snow, ice sculpture festivals, and legendary miso ramen.",
+  tours: [
+    {
+      name: 'Powder Snow Ski Day',
+      duration: 'Full Day · 9hrs',
+      price: '¥35,000',
+      activities: [
+        { time: '07:00 AM', title: 'Niseko Transfer',       desc: 'Early morning drive to the snow capital of the world.',         locId: 'l-sap-09' },
+        { time: '09:00 AM', title: 'First Tracks',          desc: 'Hit the legendary deep powder of Grand Hirafu.',                locId: 'l-sap-10' },
+        { time: '01:00 PM', title: 'Mountain Lodge Ramen',  desc: 'Warm up with a steaming bowl of spicy miso ramen.',             locId: 'l-sap-11' },
+        { time: '03:30 PM', title: 'Après-Ski Onsen',       desc: 'Soak in a natural outdoor hot spring surrounded by snow.',      locId: 'l-sap-12' }
+      ]
+    },
+    {
+      name: 'Sapporo Brewery Tasting',
+      duration: 'Half Day · 3hrs',
+      price: '¥7,000',
+      activities: [
+        { time: '02:00 PM', title: 'Historic Brewery',      desc: 'Tour the red brick buildings of Japan\'s first beer brand.',    locId: 'l-sap-13' },
+        { time: '04:00 PM', title: 'Tasting Flight',        desc: 'Sample exclusive local drafts only available in Hokkaido.',     locId: 'l-sap-14' }
+      ]
+    },
+    {
+      name: 'Susukino Midnight Crawl',
+      duration: 'Evening · 4hrs', 
+      price: '¥13,000',
+      activities: [
+        { time: '07:00 PM', title: 'Jingisukan Dinner',     desc: 'Grill Hokkaido lamb on a traditional domed skillet.',           locId: 'l-sap-15' },
+        { time: '09:00 PM', title: 'Ice Bar',               desc: 'Have a drink in a bar carved entirely out of ice.',             locId: 'l-sap-16' },
+        { time: '10:30 PM', title: 'Ramen Yokocho',         desc: 'End the night in the alleyway where miso ramen was invented.',  locId: 'l-sap-05' }
+      ]
+    }
+  ],
+  plan: { bestTime: 'Dec–Mar', budget: '¥13k/day', language: 'Japanese', flight: '~1.5h from Tokyo', visa: 'Visa-free (90d)', currency: 'JPY ¥' }
+}
   };
+
+  /* Flat list for the grid section */
+  const ALL_LOCATIONS = Object.values(LOCATIONS_DB).flat();
+
+  window._debug = { CITY_DATA, ALL_LOCATIONS, LOCATION_GALLERY };
 
   /* ═══════════════════════════════════════════
      STATE
@@ -834,175 +1319,7 @@
   const locModal      = document.getElementById('location-modal');
   const locModalClose = document.getElementById('locModalClose');
 
-  // Sample gallery images per location
-  const LOCATION_GALLERY = {
-    // TOKYO
-    'l-tok-01': [ // Senso-ji Temple
-      { src: 'https://cdn.cheapoguides.com/wp-content/uploads/sites/2/2020/05/sensoji-temple-iStock-1083328636-1024x684.jpg', cap: 'Senso-ji main gate at day' },
-      { src: 'https://traveldudes.com/wp-content/uploads/2020/01/Gate-at-Sensoji-temple-in-Asakusa-Tokyo-Japan.jpg', cap: 'Senso-ji main gate at day' },
-      { src: 'https://images.unsplash.com/photo-1624601573012-efb68931cc8f?w=800&q=80', cap: 'Nakamise shopping street' },
-      { src: 'https://images.unsplash.com/photo-1551818255-e6e10579494b?w=800&q=80', cap: 'Incense smoke at the shrine' },
-    ],
-    'l-tok-02': [ // Tokyo Tower
-      { src: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80', cap: 'Tokyo Tower at twilight' },
-      { src: 'https://images.unsplash.com/photo-1492571350019-22de08371fd3?w=800&q=80', cap: 'Looking up from the base' },
-      { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80', cap: 'City view from observation deck' },
-    ],
-    'l-tok-03': [ // Shinjuku Gyoen
-      { src: 'https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?w=800&q=80', cap: 'Cherry blossoms in full bloom' },
-      { src: 'https://images.unsplash.com/photo-1522383225653-ed111181a951?w=800&q=80', cap: 'French formal garden section' },
-      { src: 'https://images.unsplash.com/photo-1536183922588-166604504d5e?w=800&q=80', cap: 'Autumn foliage in Gyoen' },
-    ],
-    'l-tok-04': [ // Akihabara
-      { src: 'https://images.unsplash.com/photo-1570459027562-4a916cc6113f?w=800&q=80', cap: 'Akihabara neon signs' },
-      { src: 'https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=800&q=80', cap: 'Electronics district by night' },
-      { src: 'https://images.unsplash.com/photo-1560462007-0328e9bdf3e4?w=800&q=80', cap: 'Anime merchandise stalls' },
-    ],
-    'l-tok-05': [ // Imperial Palace
-      { src: 'https://images.unsplash.com/photo-1589452271712-64b8a66c7b71?w=800&q=80', cap: 'Imperial Palace East Gardens' },
-      { src: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80', cap: 'Palace moat in spring' },
-    ],
-    'l-tok-06': [ // Meiji Jingu
-      { src: 'https://images.unsplash.com/photo-1596485802119-94071ea178ed?w=800&q=80', cap: 'Sake barrels at Meiji Jingu' },
-      { src: 'https://images.unsplash.com/photo-1589452271712-64b8a66c7b71?w=800&q=80', cap: 'Torii gate in the forest' },
-    ],
-    'l-tok-07': [ // Shibuya Crossing
-      { src: 'https://images.unsplash.com/photo-1542051812871-7587d8d01f8d?w=800&q=80', cap: 'The scramble at dusk' },
-      { src: 'https://images.unsplash.com/photo-1512963161048-b391782627e7?w=800&q=80', cap: 'Neon rain in Shibuya' },
-    ],
-    'l-tok-08': [ // Sukiyabashi Jiro (Formerly l-q01-a)
-      { src: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=800&q=80', cap: 'Omakase sushi plating' },
-      { src: 'https://images.unsplash.com/photo-1617196034875-3f8e59de5bc4?w=800&q=80', cap: 'Ginza counter dining' },
-    ],
-    'l-tok-09': [ // Toyosu Market (Formerly l-q01-b)
-      { src: 'https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=800&q=80', cap: 'Morning tuna auction' },
-      { src: 'https://images.unsplash.com/photo-1617197342105-4e10cc22a35a?w=800&q=80', cap: 'Fresh catch on display' },
-      { src: 'https://images.unsplash.com/photo-1534482421-64566f976cfa?w=800&q=80', cap: 'Sushi breakfast at market stalls' },
-    ],
-
-    // OSAKA
-    'l-osa-01': [ // Osaka Castle
-      { src: 'https://images.unsplash.com/photo-1590559899731-a382839e5549?w=800&q=80', cap: 'Osaka Castle and moat' },
-      { src: 'https://images.unsplash.com/photo-1578469645742-46cae010e5d4?w=800&q=80', cap: 'Castle tower in autumn' },
-      { src: 'https://images.unsplash.com/photo-1577493340887-b7bfff550145?w=800&q=80', cap: 'Castle gardens at dawn' },
-    ],
-    'l-osa-02': [ // Kuromon Market
-      { src: 'https://images.unsplash.com/photo-1536183922588-166604504d5e?w=800&q=80', cap: 'Fresh seafood stalls' },
-      { src: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800&q=80', cap: 'Market vendors at midday' },
-    ],
-    'l-osa-03': [ // Umeda Sky Building
-      { src: 'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=800&q=80', cap: 'Umeda Sky Building aerial view' },
-      { src: 'https://images.unsplash.com/photo-1572979530665-a7e4b3d0e0dc?w=800&q=80', cap: 'Floating garden observatory' },
-    ],
-    'l-osa-04': [ // Hozenji Yokocho
-      { src: 'https://images.unsplash.com/photo-1609951651556-4965f9a3ae6f?w=800&q=80', cap: 'Lantern-lit Hozenji alley' },
-      { src: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800&q=80', cap: 'Moss-covered Mizukake Fudo statue' },
-    ],
-    'l-osa-05': [ // Abeno Harukas
-      { src: 'https://images.unsplash.com/photo-1590559899731-a382839e5549?w=800&q=80', cap: 'Abeno Harukas skyline view' },
-    ],
-    'l-osa-06': [ // Don Quijote (Formerly l-c01-a)
-      { src: 'https://images.unsplash.com/photo-1609951651556-4965f9a3ae6f?w=800&q=80', cap: 'Dotonbori neon at night' },
-      { src: 'https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?w=800&q=80', cap: 'Don Quijote storefront' },
-    ],
-    'l-osa-07': [ // Kansai Airport (Formerly l-c01-c)
-      { src: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&q=80', cap: 'Kansai airport terminal' },
-    ],
-    'l-osa-08': [ // Suntory Yamazaki (Formerly l-c03-a)
-      { src: 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=800&q=80', cap: 'Whisky barrels in the warehouse' },
-      { src: 'https://images.unsplash.com/photo-1518791841217-8f162f1912da?w=800&q=80', cap: 'Yamazaki distillery grounds' },
-    ],
-
-    // NAGOYA
-    'l-nag-01': [ // Nagoya Castle
-      { src: 'https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?w=800&q=80', cap: 'Nagoya Castle golden shachihoko' },
-      { src: 'https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?w=800&q=80', cap: 'Castle keep in summer' },
-    ],
-    'l-nag-02': [ // Toyota Museum
-      { src: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80', cap: 'Classic Toyota on display' },
-      { src: 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=800&q=80', cap: 'Loom technology exhibit' },
-    ],
-    'l-nag-03': [ // Atsuta Shrine
-      { src: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80', cap: 'Ancient forest at Atsuta Shrine' },
-      { src: 'https://images.unsplash.com/photo-1624601573012-efb68931cc8f?w=800&q=80', cap: 'Shrine lanterns at dusk' },
-    ],
-    'l-nag-04': [ // Nagoya Meshi
-      { src: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800&q=80', cap: 'Miso katsu, Nagoya style' },
-      { src: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80', cap: 'Tebasaki chicken wings' },
-    ],
-    'l-nag-05': [ // Tokugawa Museum
-      { src: 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&q=80', cap: 'Samurai armour collection' },
-      { src: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80', cap: 'Edo-period scroll painting' },
-    ],
-    'l-nag-06': [ // Osu Kannon
-      { src: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80', cap: 'Osu Kannon temple grounds' },
-    ],
-    'l-nag-07': [ // Oasis 21
-      { src: 'https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?w=800&q=80', cap: 'Spaceship Aqua illuminated' },
-    ],
-
-    // OKINAWA
-    'l-oki-01': [ // Kerama Islands
-      { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80', cap: 'Kerama Islands turquoise water' },
-      { src: 'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=800&q=80', cap: 'Coral reef snorkeling' },
-      { src: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80', cap: 'Sea turtle at Kerama' },
-    ],
-    'l-oki-02': [ // Shuri Castle
-      { src: 'https://images.unsplash.com/photo-1531566366255-b4da4f65b4f7?w=800&q=80', cap: 'Shuri Castle crimson gate' },
-      { src: 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&q=80', cap: 'Ryukyuan palace interior' },
-    ],
-    'l-oki-03': [ // Blue Cave
-      { src: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80', cap: 'Blue Cave, Cape Maeda' },
-      { src: 'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=800&q=80', cap: 'Tropical fish in the cave' },
-    ],
-    'l-oki-04': [ // Churaumi Aquarium
-      { src: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80', cap: 'Whale shark at Churaumi' },
-      { src: 'https://images.unsplash.com/photo-1453831362806-3d5577f014a4?w=800&q=80', cap: 'Giant manta ray exhibit' },
-    ],
-    'l-oki-05': [ // Kokusai Street
-      { src: 'https://images.unsplash.com/photo-1609951651556-4965f9a3ae6f?w=800&q=80', cap: 'Kokusai Street nightlife' },
-      { src: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80', cap: 'Traditional craft shops' },
-    ],
-    'l-oki-06': [ // Cape Manzamo
-      { src: 'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=800&q=80', cap: 'Sunset over Cape Manzamo' },
-    ],
-    'l-oki-07': [ // American Village
-      { src: 'https://images.unsplash.com/photo-1609951651556-4965f9a3ae6f?w=800&q=80', cap: 'Mihama American Village Ferris Wheel' },
-    ],
-
-    // SAPPORO
-    'l-sap-01': [ // Niseko
-      { src: 'https://images.unsplash.com/photo-1605209971026-d3c6a54ab58b?w=800&q=80', cap: 'Niseko powder runs' },
-      { src: 'https://images.unsplash.com/photo-1548521386-740a6e3b9bda?w=800&q=80', cap: 'Hokkaido winter landscape' },
-      { src: 'https://images.unsplash.com/photo-1467511961084-1676a85f8f93?w=800&q=80', cap: 'Deep powder skiing' },
-    ],
-    'l-sap-02': [ // Odori Ice Festival
-      { src: 'https://images.unsplash.com/photo-1467511961084-1676a85f8f93?w=800&q=80', cap: 'Ice sculpture festival, Odori' },
-      { src: 'https://images.unsplash.com/photo-1548521386-740a6e3b9bda?w=800&q=80', cap: 'Snow lanterns at night' },
-    ],
-    'l-sap-03': [ // Sapporo Beer Museum
-      { src: 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=800&q=80', cap: 'Historic red brick brewery' },
-      { src: 'https://images.unsplash.com/photo-1532634993-15f421e42ec0?w=800&q=80', cap: 'Sapporo lager tasting' },
-    ],
-    'l-sap-04': [ // Shiretoko Peninsula
-      { src: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=80', cap: 'Shiretoko wilderness' },
-      { src: 'https://images.unsplash.com/photo-1548521386-740a6e3b9bda?w=800&q=80', cap: 'Brown bear spotting' },
-    ],
-    'l-sap-05': [ // Ramen Yokocho
-      { src: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80', cap: 'Sapporo miso ramen' },
-      { src: 'https://images.unsplash.com/photo-1609951651556-4965f9a3ae6f?w=800&q=80', cap: 'Ramen Yokocho alley at night' },
-    ],
-    'l-sap-06': [ // Mount Moiwa
-      { src: 'https://images.unsplash.com/photo-1548521386-740a6e3b9bda?w=800&q=80', cap: 'Night view from Mount Moiwa' },
-    ],
-    'l-sap-07': [ // Moerenuma Park
-      { src: 'https://images.unsplash.com/photo-1532634993-15f421e42ec0?w=800&q=80', cap: 'Glass pyramid at Moerenuma' },
-    ],
-    'l-sap-08': [ // Nikka Yoichi (Formerly l-c03-c)
-      { src: 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=800&q=80', cap: 'Nikka Yoichi stone distillery' },
-      { src: 'https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=800&q=80', cap: 'Coal-fired pot stills' },
-    ],
-  };
+  
 
   // Reviews start empty — users post their own
   const CITY_REVIEWS = {
@@ -1910,22 +2227,40 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
     
     if (tour.activities && tour.activities.length > 0) {
       timeline.innerHTML = tour.activities.map(act => {
-        // 1. Dynamic Gallery Image Lookup using the activity's locId
-        let imgHtml = '';
-        if (act.locId && typeof LOCATION_GALLERY !== 'undefined' && LOCATION_GALLERY[act.locId]) {
-          const imgSrc = LOCATION_GALLERY[act.locId][0].src;
-          imgHtml = `
-            <div style="margin: 0.75rem 0; height: 130px; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
-              <img src="${imgSrc}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: 0.3s;" class="tour-stop-img" alt="${act.title}">
-            </div>
-          `;
+        // Clean up formatting and catch missing strings safely
+        const cleanLocId = (act.locId && act.locId !== 'undefined') ? act.locId.trim() : null;
+        
+        // Check if the location genuinely exists in your master array
+        const dbLocationExists = cleanLocId ? ALL_LOCATIONS.find(l => l.id === cleanLocId) : null;
+
+        // 1. Image Resolver
+        let imgSrc = 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80'; // Default Fallback
+        
+        if (cleanLocId && typeof LOCATION_GALLERY !== 'undefined' && LOCATION_GALLERY[cleanLocId] && LOCATION_GALLERY[cleanLocId][0]) {
+          imgSrc = LOCATION_GALLERY[cleanLocId][0].src;
+        } else {
+          const titleLower = act.title.toLowerCase();
+          if (titleLower.includes('ramen') || titleLower.includes('dinner') || titleLower.includes('lunch') || titleLower.includes('tasting') || titleLower.includes('food') || titleLower.includes('izakaya')) {
+            imgSrc = 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80';
+          } else if (titleLower.includes('ski') || titleLower.includes('snow') || titleLower.includes('mountain') || titleLower.includes('tracks') || titleLower.includes('onsen')) {
+            imgSrc = 'https://images.unsplash.com/photo-1605209971026-d3c6a54ab58b?w=800&q=80';
+          } else if (titleLower.includes('beach') || titleLower.includes('snorkel') || titleLower.includes('reef') || titleLower.includes('dive') || titleLower.includes('turtle') || titleLower.includes('port') || titleLower.includes('naha')) {
+            imgSrc = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80';
+          } else if (titleLower.includes('castle') || titleLower.includes('temple') || titleLower.includes('shrine') || titleLower.includes('gate') || titleLower.includes('mausoleum') || titleLower.includes('palace')) {
+            imgSrc = 'https://images.unsplash.com/photo-1542051812871-7587d8d01f8d?w=800&q=80';
+          }
         }
 
-        // 2. Check if the stop can be mapped to a location modal
-        const isInteractive = act.locId ? true : false;
+        const imgHtml = `
+          <div style="margin: 0.75rem 0; height: 130px; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+            <img src="${imgSrc}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: 0.3s;" class="tour-stop-img" alt="${act.title}">
+          </div>
+        `;
+
+        const isInteractive = !!dbLocationExists;
 
         return `
-          <div class="timeline-stop" data-loc-id="${act.locId}" style="border-left: 2px solid #FF4F00; padding-left: 1.2rem; margin-bottom: 2rem; position: relative; ${isInteractive ? 'cursor: pointer;' : ''}">
+          <div class="timeline-stop" data-loc-id="${cleanLocId || ''}" style="border-left: 2px solid #FF4F00; padding-left: 1.2rem; margin-bottom: 2rem; position: relative; ${isInteractive ? 'cursor: pointer;' : ''}">
             <div style="position: absolute; left: -5px; top: 0; width: 8px; height: 8px; background: #FF4F00; border-radius: 50%; box-shadow: 0 0 8px var(--accent-glow);"></div>
             <div style="font-size: 0.75rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;">${act.time}</div>
             
@@ -1943,10 +2278,10 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
         `;
       }).join('');
 
-      // 3. Bind Hover and Click Listeners to Interactive Stops
+      // 3. Bind Hover and Click Listeners stably
       timeline.querySelectorAll('.timeline-stop').forEach(stop => {
         const locId = stop.dataset.locId;
-        if (!locId || locId === 'undefined') return;
+        if (!locId || locId === '' || locId === 'undefined') return;
 
         const img = stop.querySelector('.tour-stop-img');
         const title = stop.querySelector('.stop-title');
@@ -1966,20 +2301,14 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
           }
         });
         
-        // STACK FIX: Close BOTH windows so the Leaflet map is fully revealed
         stop.addEventListener('click', () => {
           const loc = ALL_LOCATIONS.find(l => l.id === locId);
           if (loc) {
-            // Dismiss tour timeline popup modal layer
             document.getElementById('tourDetailBackdrop').classList.remove('open');
-            
-            // Slide down the parent full-screen 'My Itineraries' Dashboard layer
             const itinsDashboard = document.getElementById('itinerariesDashboard');
             if (itinsDashboard) {
               itinsDashboard.classList.remove('open');
             }
-            
-            // Pop open the live map, review, and photo modal view cleanly
             setTimeout(() => openLocationModal(loc), 200);
           }
         });
@@ -2112,7 +2441,7 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
     }
 
     container.innerHTML = `
-      <div style="margin-bottom: 2rem;">
+      <div>
         <h3 style="font-size: 0.85rem; color: var(--accent, #FF4F00); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 1rem; padding: 15px 10px 0px 10px;">Curated Itineraries</h3>
         ${savedTours.map((t, index) => `
           <div class="saved-tour-item" data-index="${index}" style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; border-left: 3px solid var(--accent, #FF4F00); cursor: pointer; transition: background 0.2s;">
@@ -2120,7 +2449,6 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
             <p style="margin: 0; font-size: 0.85rem; opacity: 0.7;">${t.duration} • ${t.activities ? t.activities.length : 0} Stops</p>
           </div>
         `).join('')}
-        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 1.5rem;" />
       </div>
     `;
 
