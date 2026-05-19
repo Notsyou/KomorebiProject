@@ -522,266 +522,265 @@
   // TOKYO
   'l-tok-01': [ // Senso-ji Temple
     { src: 'https://cdn.cheapoguides.com/wp-content/uploads/sites/2/2020/05/sensoji-temple-iStock-1083328636-1024x684.jpg', cap: 'Senso-ji main gate at day' },
-    { src: 'https://traveldudes.com/wp-content/uploads/2020/01/Gate-at-Sensoji-temple-in-Asakusa-Tokyo-Japan.jpg', cap: 'Senso-ji main gate at day' },
-    { src: 'https://images.unsplash.com/photo-1624601573012-efb68931cc8f?w=800&q=80', cap: 'Nakamise shopping street' },
-    { src: 'https://images.unsplash.com/photo-1551818255-e6e10579494b?w=800&q=80', cap: 'Incense smoke at the shrine' },
+    { src: 'https://traveldudes.com/wp-content/uploads/2020/01/Gate-at-Sensoji-temple-in-Asakusa-Tokyo-Japan.jpg', cap: 'Senso-ji main gate at noon' },
+    { src: 'https://static1.squarespace.com/static/5d3ee66abacfa00001df6854/t/5f069ed2fa5c672f37a92656/1594345760363/tokyo-private-tour-nakamise-shopping-street.jpeg?format=1500w', cap: 'Nakamise shopping street' },
+    { src: 'https://c8.alamy.com/comp/AWW6JB/incense-burner-sensoji-temple-asakusa-tokyo-japan-AWW6JB.jpg', cap: 'Incense smoke at the shrine' },
   ],
   'l-tok-02': [ // Tokyo Tower
-    { src: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80', cap: 'Tokyo Tower at twilight' },
-    { src: 'https://images.unsplash.com/photo-1492571350019-22de08371fd3?w=800&q=80', cap: 'Looking up from the base' },
-    { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80', cap: 'City view from observation deck' },
+    { src: 'https://asset.japan.travel/image/upload/v1646014276/tokyo/H_00658_001.jpg', cap: 'Tokyo Tower at twilight' },
+    { src: 'https://i0.wp.com/aglobewelltravelled.com/wp-content/uploads/2025/05/Tokyo-Skytree-vs-Tokyo-Tower.jpg?fit=2200%2C1467&ssl=1', cap: 'Looking up from the base' },
+    { src: 'https://girleatworld.net/wp-content/uploads/2024/01/tokyo-best-view-9-yebisu-sky-lounge.jpg', cap: 'City view from observation deck' },
   ],
   'l-tok-03': [ // Shinjuku Gyoen
-    { src: 'https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?w=800&q=80', cap: 'Cherry blossoms in full bloom' },
-    { src: 'https://images.unsplash.com/photo-1522383225653-ed111181a951?w=800&q=80', cap: 'French formal garden section' },
-    { src: 'https://images.unsplash.com/photo-1536183922588-166604504d5e?w=800&q=80', cap: 'Autumn foliage in Gyoen' },
+    { src: 'https://i0.wp.com/anaroundtheworld.net/wp-content/uploads/2019/03/shinjukugyoen-16-of-33.jpg?fit=2833%2C1882&ssl=1', cap: 'Cherry blossoms in full bloom' },
+    { src: 'https://c8.alamy.com/comp/KC5FYT/french-garden-at-shinjuku-gyoen-national-garden-tokyo-japan-KC5FYT.jpg', cap: 'French formal garden section' },
+    { src: 'https://media.timeout.com/images/106067140/750/422/image.jpg', cap: 'Autumn foliage in Gyoen' },
   ],
   'l-tok-04': [ // Akihabara
-    { src: 'https://images.unsplash.com/photo-1570459027562-4a916cc6113f?w=800&q=80', cap: 'Akihabara neon signs' },
-    { src: 'https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=800&q=80', cap: 'Electronics district by night' },
-    { src: 'https://images.unsplash.com/photo-1560462007-0328e9bdf3e4?w=800&q=80', cap: 'Anime merchandise stalls' },
+    { src: 'https://cdn.cheapoguides.com/wp-content/uploads/sites/2/2020/05/akihabara-iStock-484915982-1024x683.jpg', cap: 'Akihabara neon signs' },
+    { src: 'https://c8.alamy.com/comp/DAXBW5/electronics-district-of-akihabara-tokyo-japan-DAXBW5.jpg', cap: 'Electronics district by night' },
+    { src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEbpkwDx2ruDRAwNyok4wa7mUeCEofWO3mSw&s', cap: 'Anime merchandise stalls' },
   ],
   'l-tok-05': [ // Imperial Palace
-    { src: 'https://images.unsplash.com/photo-1589452271712-64b8a66c7b71?w=800&q=80', cap: 'Imperial Palace East Gardens' },
-    { src: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80', cap: 'Palace moat in spring' },
+    { src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQKq3PnkY_Gu8Hs3aaNIwkA6cDUmES2-foNA&s', cap: 'Imperial Palace East Gardens' },
+    { src: 'https://meguri-japan.com/mgr/wp-content/uploads/2021/12/chidorigafuchi6.jpg', cap: 'Palace moat in spring' },
   ],
   'l-tok-06': [ // Meiji Jingu
-    { src: 'https://images.unsplash.com/photo-1596485802119-94071ea178ed?w=800&q=80', cap: 'Sake barrels at Meiji Jingu' },
-    { src: 'https://images.unsplash.com/photo-1589452271712-64b8a66c7b71?w=800&q=80', cap: 'Torii gate in the forest' },
+    { src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0ifiKqqgtgx0D49zGXF5NPumtSdmQvL97Wg&s', cap: 'Sake barrels at Meiji Jingu' },
+    { src: 'https://cdn.britannica.com/59/60059-050-32487791/Torii-entrance-shrine-Shinto-Mount-Hakone-Honshu.jpg', cap: 'Torii gate in the forest' },
   ],
   'l-tok-07': [ // Shibuya Crossing
-    { src: 'https://images.unsplash.com/photo-1542051812871-7587d8d01f8d?w=800&q=80', cap: 'The scramble at dusk' },
-    { src: 'https://images.unsplash.com/photo-1512963161048-b391782627e7?w=800&q=80', cap: 'Neon rain in Shibuya' },
+    { src: 'https://media.istockphoto.com/id/1093658324/photo/aerial-view-shibuya-crossing-tokyo-japan.jpg?s=612x612&w=0&k=20&c=OJu2nhyJhHAYgmT34DwxsrP1YHWOW56ejPi9npZGDZk=', cap: 'The scramble at dusk' },
+    { src: 'https://i.ytimg.com/vi/HGjNSCqjf14/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDGiQ-w1dbMf7p7Tbnaasx5ojP3Bw', cap: 'Neon rain in Shibuya' },
   ],
   'l-tok-08': [ // Sukiyabashi Jiro (Formerly l-q01-a)
-    { src: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=800&q=80', cap: 'Omakase sushi plating' },
-    { src: 'https://images.unsplash.com/photo-1617196034875-3f8e59de5bc4?w=800&q=80', cap: 'Ginza counter dining' },
+    { src: 'https://i.redd.it/aumi02ggqfv91.jpg', cap: 'Omakase sushi plating' },
+    { src: 'https://images.summitmedia-digital.com/spotph/images/2024/12/11/main-1733906206.jpg', cap: 'Ginza counter dining' },
   ],
   'l-tok-09': [ // Toyosu Market (Formerly l-q01-b)
-    { src: 'https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=800&q=80', cap: 'Morning tuna auction' },
-    { src: 'https://images.unsplash.com/photo-1617197342105-4e10cc22a35a?w=800&q=80', cap: 'Fresh catch on display' },
-    { src: 'https://images.unsplash.com/photo-1534482421-64566f976cfa?w=800&q=80', cap: 'Sushi breakfast at market stalls' },
+    { src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQksKVHFxrrhXsyvDFvAQ1JdCKk9ykgkghN2Q&s', cap: 'Morning tuna auction' },
+    { src: 'https://i.ytimg.com/vi/wWe6KicP2UQ/maxresdefault.jpg', cap: 'Fresh catch on display' },
+    { src: 'https://travel-stained.com/wp-content/uploads/2018/10/37669_10150215839045034_2482551_n.jpg', cap: 'Sushi breakfast at market stalls' },
   ],
   'l-tok-10': [// Yanaka Ginza
-    { src: 'https://images.unsplash.com/photo-1542055990-25e59b66bb9a?w=800&q=80', cap: 'Retro street food alleys' }
+    { src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_nocVkrqCV70uZWtgtX3stAJD8uU3U3C4TQ&s', cap: 'Retro street food alleys' }
 
   ],
   'l-tok-11': [// Ueno Park
-    { src: 'https://images.unsplash.com/photo-1522851694291-039c36660fc0?w=800&q=80', cap: 'Cherry blossoms in Ueno' }
+    { src: 'https://photos.smugmug.com/Tokyo/n-S6Q5Pp/Where-is-the-Best-Place-to-See-Cherry-Blossoms-in-Tokyo/i-tb3Tbkk/0/Kpz4Hb7ZRF7zHBGzTL5K6jFSBR5V8nWvrHKV7zJvx/L/shutterstock_405603244-L.jpg', cap: 'Cherry blossoms in Ueno' }
 
   ],
   'l-tok-12': [// Tokyo Ramen Street
-    { src: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80', cap: 'Legendary Tokyo ramen' }
+    { src: 'https://cdn.cheapoguides.com/wp-content/uploads/sites/2/2017/01/Tokyo-Ramen-Street-2-770x513.jpg', cap: 'Legendary Tokyo ramen' }
 
   ],
   'l-tok-13': [// Tsukiji Outer Market
-    { src: 'https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=800&q=80', cap: 'Tsukiji Market grazing' }
+    { src: 'https://www.japan-guide.com/g18/3021_11.jpg', cap: 'Tsukiji Market grazing' }
 
   ],
   'l-tok-14': [// Shinjuku Golden Gai
-    { src: 'https://images.unsplash.com/photo-1609951651556-4965f9a3ae6f?w=800&q=80', cap: 'Golden Gai alleyways' }
+    { src: 'https://dashboard.japantravel.com/photo/poi-264-219880/1440x960!/tokyo-shinjuku-golden-gai-219880.webp', cap: 'Golden Gai alleyways' }
 
   ],
   'l-tok-15': [// Bar High Five
-    { src: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=80', cap: 'Bespoke cocktail crafting' }
+    { src: 'https://otokonokakurega.com/wp-content/uploads/2019/09/07_1_IMG_9817-5_main-1.jpg', cap: 'Bespoke cocktail crafting' }
     
   ],
   'l-tok-16': [// Kabukicho
-    { src: 'https://images.unsplash.com/photo-1551818255-e6e10579494b?w=800&q=80', cap: 'Kabukicho neon gates' }
+    { src: 'https://travel.rakuten.com/contents/sites/contents/files/styles/max_1300x1300/public/2024-05/things-to-do-kabukicho_8.jpg?itok=ZaD-iB5G', cap: 'Kabukicho neon gates' }
 
   ],
 
   // OSAKA
   'l-osa-01': [ // Osaka Castle
-    { src: 'https://images.unsplash.com/photo-1590559899731-a382839e5549?w=800&q=80', cap: 'Osaka Castle and moat' },
-    { src: 'https://images.unsplash.com/photo-1578469645742-46cae010e5d4?w=800&q=80', cap: 'Castle tower in autumn' },
-    { src: 'https://images.unsplash.com/photo-1577493340887-b7bfff550145?w=800&q=80', cap: 'Castle gardens at dawn' },
+    { src: 'https://thumbs.dreamstime.com/b/osaka-castle-tourist-boat-moat-one-japan-s-most-famous-landmarks-played-major-role-unification-132153062.jpg', cap: 'Osaka Castle and moat' },
+    { src: 'https://media.istockphoto.com/id/469808499/photo/osaka-castle-in-autumn.jpg?s=612x612&w=0&k=20&c=3g_xwBAdrIr6EVzSxd6hj41bkWG7v_sVcjdbXiJXSa4=', cap: 'Castle tower in autumn' },
+    { src: 'https://osakacastle.org/wp-content/uploads/2024/11/Osaka-Castle-Dusk-1024x681.jpg', cap: 'Castle gardens at dawn' },
   ],
   'l-osa-02': [ // Kuromon Market
-    { src: 'https://images.unsplash.com/photo-1536183922588-166604504d5e?w=800&q=80', cap: 'Fresh seafood stalls' },
-    { src: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800&q=80', cap: 'Market vendors at midday' },
+    { src: 'https://www.planmyjapan.com/wp-content/uploads/2024/07/Kuromon-Market-14-635x800.jpg', cap: 'Fresh seafood stalls' },
+    { src: 'https://www.planmyjapan.com/wp-content/uploads/2024/07/Kuromon-Market-29.jpg', cap: 'Market vendors at midday' },
   ],
   'l-osa-03': [ // Umeda Sky Building
-    { src: 'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=800&q=80', cap: 'Umeda Sky Building aerial view' },
-    { src: 'https://images.unsplash.com/photo-1572979530665-a7e4b3d0e0dc?w=800&q=80', cap: 'Floating garden observatory' },
+    { src: 'https://www.nippon.com/en/ncommon/contents/views/45856/45856.jpg', cap: 'Umeda Sky Building aerial view' },
+    { src: 'https://www.agoda.com/wp-content/uploads/2018/10/City-guides_things-to-do-in-Osaka_Japan_Umeda-Sky-Building_floating-garden.jpg%20', cap: 'Floating garden observatory' },
   ],
   'l-osa-04': [ // Hozenji Yokocho
-    { src: 'https://images.unsplash.com/photo-1609951651556-4965f9a3ae6f?w=800&q=80', cap: 'Lantern-lit Hozenji alley' },
-    { src: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800&q=80', cap: 'Moss-covered Mizukake Fudo statue' },
+    { src: '', cap: 'Lantern-lit Hozenji alley' },
+    { src: '', cap: 'Moss-covered Mizukake Fudo statue' },
   ],
   'l-osa-05': [ // Abeno Harukas
-    { src: 'https://images.unsplash.com/photo-1590559899731-a382839e5549?w=800&q=80', cap: 'Abeno Harukas skyline view' },
+    { src: '', cap: 'Abeno Harukas skyline view' },
   ],
   'l-osa-06': [ // Don Quijote (Formerly l-c01-a)
-    { src: 'https://images.unsplash.com/photo-1609951651556-4965f9a3ae6f?w=800&q=80', cap: 'Dotonbori neon at night' },
-    { src: 'https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?w=800&q=80', cap: 'Don Quijote storefront' },
+    { src: '', cap: 'Dotonbori neon at night' },
+    { src: '', cap: 'Don Quijote storefront' },
   ],
   'l-osa-07': [ // Kansai Airport (Formerly l-c01-c)
-    { src: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&q=80', cap: 'Kansai airport terminal' },
+    { src: '', cap: 'Kansai airport terminal' },
   ],
   'l-osa-08': [ // Suntory Yamazaki (Formerly l-c03-a)
-    { src: 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=800&q=80', cap: 'Whisky barrels in the warehouse' },
-    { src: 'https://images.unsplash.com/photo-1518791841217-8f162f1912da?w=800&q=80', cap: 'Yamazaki distillery grounds' },
+    { src: '', cap: 'Whisky barrels in the warehouse' },
+    { src: '', cap: 'Yamazaki distillery grounds' },
   ],
   'l-osa-09': [// Takoyaki Dotonbori
-    { src: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800&q=80', cap: 'Takoyaki tasting' }
+    { src: '', cap: 'Takoyaki tasting' }
 
   ],
   'l-osa-10': [// Shinsekai District
-    { src: 'https://images.unsplash.com/photo-1572979530665-a7e4b3d0e0dc?w=800&q=80', cap: 'Shinsekai retro vibes' }
+    { src: '', cap: 'Shinsekai retro vibes' }
 
   ],
   'l-osa-11': [// Okonomiyaki District
-    { src: 'https://images.unsplash.com/photo-1536183922588-166604504d5e?w=800&q=80', cap: 'Hot iron okonomiyaki' }
+    { src: '', cap: 'Hot iron okonomiyaki' }
 
   ],
   'l-osa-12': [// Yamazaki Tasting Library
-    { src: 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=800&q=80', cap: 'Whisky tasting library' }
+    { src: '', cap: 'Whisky tasting library' }
 
   ],
 
   // NAGOYA
   'l-nag-01': [ // Nagoya Castle
-    { src: 'https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?w=800&q=80', cap: 'Nagoya Castle golden shachihoko' },
-    { src: 'https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?w=800&q=80', cap: 'Castle keep in summer' },
+    { src: '', cap: 'Nagoya Castle golden shachihoko' },
+    { src: '', cap: 'Castle keep in summer' },
   ],
-  'l-nag-02': [ // Toyota Museum
-    { src: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80', cap: 'Classic Toyota on display' },
-    { src: 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=800&q=80', cap: 'Loom technology exhibit' },
+ 'l-nag-02': [ // Toyota Museum
+    { src: '', cap: 'Classic Toyota on display' },
+    { src: '', cap: 'Loom technology exhibit' },
   ],
   'l-nag-03': [ // Atsuta Shrine
-    { src: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80', cap: 'Ancient forest at Atsuta Shrine' },
-    { src: 'https://images.unsplash.com/photo-1624601573012-efb68931cc8f?w=800&q=80', cap: 'Shrine lanterns at dusk' },
+    { src: '', cap: 'Ancient forest at Atsuta Shrine' },
+    { src: '', cap: 'Shrine lanterns at dusk' },
   ],
   'l-nag-04': [ // Nagoya Meshi
-    { src: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800&q=80', cap: 'Miso katsu, Nagoya style' },
-    { src: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80', cap: 'Tebasaki chicken wings' },
+    { src: '', cap: 'Miso katsu, Nagoya style' },
+    { src: '', cap: 'Tebasaki chicken wings' },
   ],
   'l-nag-05': [ // Tokugawa Museum
-    { src: 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&q=80', cap: 'Samurai armour collection' },
-    { src: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80', cap: 'Edo-period scroll painting' },
+    { src: '', cap: 'Samurai armour collection' },
+    { src: '', cap: 'Edo-period scroll painting' },
   ],
   'l-nag-06': [ // Osu Kannon
-    { src: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80', cap: 'Osu Kannon temple grounds' },
+    { src: '', cap: 'Osu Kannon temple grounds' },
   ],
   'l-nag-07': [ // Oasis 21
-    { src: 'https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?w=800&q=80', cap: 'Spaceship Aqua illuminated' },
+    { src: '', cap: 'Spaceship Aqua illuminated' },
   ],
   'l-nag-08': [// Osu Shopping District
-    { src: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80', cap: 'Osu shopping arcade' }
+    { src: '', cap: 'Osu shopping arcade' }
   ],
   'l-nag-09': [// Noritake Garden
-    { src: 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=800&q=80', cap: 'Noritake garden grounds' }
+    { src: '', cap: 'Noritake garden grounds' }
   ],
   'l-nag-10': [// Hitsumabushi Dining
-    { src: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80', cap: 'Hitsumabushi eel dinner' }
+    { src: '', cap: 'Hitsumabushi eel dinner' }
   ],
   'l-nag-11': [// Sakae Izakaya
-    { src: 'https://images.unsplash.com/photo-1609951651556-4965f9a3ae6f?w=800&q=80', cap: 'Sakae izakaya drinks' }
+    { src: '', cap: 'Sakae izakaya drinks' }
   ],
 
   // OKINAWA
   'l-oki-01': [ // Kerama Islands
-    { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80', cap: 'Kerama Islands turquoise water' },
-    { src: 'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=800&q=80', cap: 'Coral reef snorkeling' },
-    { src: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80', cap: 'Sea turtle at Kerama' },
+    { src: '', cap: 'Kerama Islands turquoise water' },
+    { src: '', cap: 'Coral reef snorkeling' },
+    { src: '', cap: 'Sea turtle at Kerama' },
   ],
   'l-oki-02': [ // Shuri Castle
-    { src: 'https://images.unsplash.com/photo-1531566366255-b4da4f65b4f7?w=800&q=80', cap: 'Shuri Castle crimson gate' },
-    { src: 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&q=80', cap: 'Ryukyuan palace interior' },
+    { src: '', cap: 'Shuri Castle crimson gate' },
+    { src: '', cap: 'Ryukyuan palace interior' },
   ],
   'l-oki-03': [ // Blue Cave
-    { src: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80', cap: 'Blue Cave, Cape Maeda' },
-    { src: 'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=800&q=80', cap: 'Tropical fish in the cave' },
+    { src: '', cap: 'Blue Cave, Cape Maeda' },
+    { src: '', cap: 'Tropical fish in the cave' },
   ],
   'l-oki-04': [ // Churaumi Aquarium
-    { src: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80', cap: 'Whale shark at Churaumi' },
-    { src: 'https://images.unsplash.com/photo-1453831362806-3d5577f014a4?w=800&q=80', cap: 'Giant manta ray exhibit' },
+    { src: '', cap: 'Whale shark at Churaumi' },
+    { src: '', cap: 'Giant manta ray exhibit' },
   ],
   'l-oki-05': [ // Kokusai Street
-    { src: 'https://images.unsplash.com/photo-1609951651556-4965f9a3ae6f?w=800&q=80', cap: 'Kokusai Street nightlife' },
-    { src: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80', cap: 'Traditional craft shops' },
+    { src: '', cap: 'Kokusai Street nightlife' },
+    { src: '', cap: 'Traditional craft shops' },
   ],
   'l-oki-06': [ // Cape Manzamo
-    { src: 'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=800&q=80', cap: 'Sunset over Cape Manzamo' },
+    { src: '', cap: 'Sunset over Cape Manzamo' },
   ],
   'l-oki-07': [ // American Village
-    { src: 'https://images.unsplash.com/photo-1609951651556-4965f9a3ae6f?w=800&q=80', cap: 'Mihama American Village Ferris Wheel' },
+    { src: '', cap: 'Mihama American Village Ferris Wheel' },
   ],
   'l-oki-08': [// Tomari Port
-    { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80', cap: 'Tomari Port departure' }
+    { src: '', cap: 'Tomari Port departure' }
   ],
   'l-oki-09': [// Zamami Beach
-    { src: 'https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=800&q=80', cap: 'Zamami Beach sands' }
-
+    { src: '', cap: 'Zamami Beach sands' }
   ],
   'l-oki-10': [
-    { src: 'https://images.unsplash.com/photo-1531566366255-b4da4f65b4f7?w=800&q=80', cap: 'Crimson gates of Shuri' }
+    { src: '', cap: 'Crimson gates of Shuri' }
   ],
   'l-oki-11': [
-    { src: 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&q=80', cap: 'Tamaudun stone walls' }
+    { src: '', cap: 'Tamaudun stone walls' }
   ],
   'l-oki-12': [
-    { src: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80', cap: 'Live sanshin music tavern' }
+    { src: '', cap: 'Live sanshin music tavern' }
   ],
 
   // SAPPORO
   'l-sap-01': [ // Niseko
-    { src: 'https://images.unsplash.com/photo-1605209971026-d3c6a54ab58b?w=800&q=80', cap: 'Niseko powder runs' },
-    { src: 'https://images.unsplash.com/photo-1548521386-740a6e3b9bda?w=800&q=80', cap: 'Hokkaido winter landscape' },
-    { src: 'https://images.unsplash.com/photo-1467511961084-1676a85f8f93?w=800&q=80', cap: 'Deep powder skiing' },
+    { src: '', cap: 'Niseko powder runs' },
+    { src: '', cap: 'Hokkaido winter landscape' },
+    { src: '', cap: 'Deep powder skiing' },
   ],
   'l-sap-02': [ // Odori Ice Festival
-    { src: 'https://images.unsplash.com/photo-1467511961084-1676a85f8f93?w=800&q=80', cap: 'Ice sculpture festival, Odori' },
-    { src: 'https://images.unsplash.com/photo-1548521386-740a6e3b9bda?w=800&q=80', cap: 'Snow lanterns at night' },
+    { src: '', cap: 'Ice sculpture festival, Odori' },
+    { src: '', cap: 'Snow lanterns at night' },
   ],
   'l-sap-03': [ // Sapporo Beer Museum
-    { src: 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=800&q=80', cap: 'Historic red brick brewery' },
-    { src: 'https://images.unsplash.com/photo-1532634993-15f421e42ec0?w=800&q=80', cap: 'Sapporo lager tasting' },
+    { src: '', cap: 'Historic red brick brewery' },
+    { src: '', cap: 'Sapporo lager tasting' },
   ],
   'l-sap-04': [ // Shiretoko Peninsula
-    { src: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=80', cap: 'Shiretoko wilderness' },
-    { src: 'https://images.unsplash.com/photo-1548521386-740a6e3b9bda?w=800&q=80', cap: 'Brown bear spotting' },
+    { src: '', cap: 'Shiretoko wilderness' },
+    { src: '', cap: 'Brown bear spotting' },
   ],
   'l-sap-05': [ // Ramen Yokocho
-    { src: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80', cap: 'Sapporo miso ramen' },
-    { src: 'https://images.unsplash.com/photo-1609951651556-4965f9a3ae6f?w=800&q=80', cap: 'Ramen Yokocho alley at night' },
+    { src: '', cap: 'Sapporo miso ramen' },
+    { src: '', cap: 'Ramen Yokocho alley at night' },
   ],
   'l-sap-06': [ // Mount Moiwa
-    { src: 'https://images.unsplash.com/photo-1548521386-740a6e3b9bda?w=800&q=80', cap: 'Night view from Mount Moiwa' },
+    { src: '', cap: 'Night view from Mount Moiwa' },
   ],
   'l-sap-07': [ // Moerenuma Park
-    { src: 'https://images.unsplash.com/photo-1532634993-15f421e42ec0?w=800&q=80', cap: 'Glass pyramid at Moerenuma' },
+    { src: '', cap: 'Glass pyramid at Moerenuma' },
   ],
-  'l-sap-08': [ // Nikka Yoichi (Formerly l-c03-c)
-    { src: 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=800&q=80', cap: 'Nikka Yoichi stone distillery' },
-    { src: 'https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=800&q=80', cap: 'Coal-fired pot stills' },
+  'l-sap-08': [ // Nikka Yoichi
+    { src: '', cap: 'Nikka Yoichi stone distillery' },
+    { src: '', cap: 'Coal-fired pot stills' },
   ],
   'l-sap-09': [// Niseko Transfer
-    { src: 'https://images.unsplash.com/photo-1548521386-740a6e3b9bda?w=800&q=80', cap: 'Winter road to Niseko' }
+    { src: '', cap: 'Winter road to Niseko' }
   ],
   'l-sap-10': [// First Tracks
-    { src: 'https://images.unsplash.com/photo-1605209971026-d3c6a54ab58b?w=800&q=80', cap: 'Fresh morning tracks' }
+    { src: '', cap: 'Fresh morning tracks' }
   ],
   'l-sap-11': [// Mountain Lodge Ramen
-    { src: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80', cap: 'Steaming mountain ramen' }
+    { src: '', cap: 'Steaming mountain ramen' }
   ],
   'l-sap-12': [// Apres-Ski Onsen
-    { src: 'https://images.unsplash.com/photo-1522276498395-f4f68f7f8454?w=800&q=80', cap: 'Outdoor snow onsen' }
+    { src: '', cap: 'Outdoor snow onsen' }
   ],
   'l-sap-13': [// Historic Brewery
-    { src: 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=800&q=80', cap: 'Historic red brick brewery' }
+    { src: '', cap: 'Historic red brick brewery' }
   ],
   'l-sap-14': [// Tasting Flight
-    { src: 'https://images.unsplash.com/photo-1532634993-15f421e42ec0?w=800&q=80', cap: 'Sapporo tasting flight' }
+    { src: '', cap: 'Sapporo tasting flight' }
   ],
   'l-sap-15': [// Jingisukan Dinner
-    { src: 'https://images.unsplash.com/photo-1544378730-8b51042aa37c?w=800&q=80', cap: 'Jingisukan lamb BBQ' }
+    { src: '', cap: 'Jingisukan lamb BBQ' }
   ],
   'l-sap-16': [// IceBar
-    { src: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80', cap: 'Ice bar cocktails' }
+    { src: '', cap: 'Ice bar cocktails' }
   ],
-  };
+};
 
  /* ═══════════════════════════════════════════
      CITY MODAL DATA (Fully fleshed out itineraries)
