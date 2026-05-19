@@ -1,68 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Komorebi Maps — Japan</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
-  <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#FF4F00">
-  <link rel="stylesheet" href="style.css" />
-  <style>
-/* ═══════════════════════════════════════════
-   MOBILE QUICK LINKS (DISCOVER SCREEN)
-═══════════════════════════════════════════ */
-.mobile-nav-pills {
-  display: none;
-  gap: 10px;
-  margin-top: 24px;
-  flex-wrap: wrap;
-}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Komorebi Maps — Japan</title>
+    <link rel="icon" type="image/png" href="/icon.png" />
 
-.mobile-pill {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-accent);
-  color: var(--text-primary);
-  padding: 8px 16px;
-  border-radius: 30px;
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.2s var(--ease-smooth);
-}
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FF4F00">
+  
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300,400,700,900&family=Inter:wght@300,400,500,600&display=swap" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-.mobile-pill svg {
-  stroke: var(--accent);
-  width: 16px;
-  height: 16px;
-}
-
-.mobile-pill:active {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-}
-
-.mobile-pill:active svg {
-  stroke: #fff;
-}
-
-@media (max-width: 768px) {
-  .mobile-nav-pills {
-    display: flex;
-  }
-}
-  </style>
-</head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+  
+    <link rel="stylesheet" href="style.css" />
+  </head>
 <body>
 
   <!-- ═══════════════════════════════════

@@ -63,6 +63,9 @@ async function query(sql, params = []) {
     rows.rowCount = result.rowCount; 
     return [rows, result.fields ?? []];
   }
+  
+  // 👇 ADD THIS LINE BELOW THE POSTGRES BLOCK FOR LOCAL DOCKER SUPPORT
+  return pool.query(sql, params);
 }
 
 /* ═══════════════════════════════════════════
@@ -400,8 +403,11 @@ app.post('/api/reviews', authenticateToken, async (req, res) => {
 
   if (!locationId || !text)
     return res.status(400).json({ error: 'locationId and text are required.' });
-  if (rating < 1 || rating > 5)
+  
+  // 👇 Added !rating to catch undefined/null submissions
+  if (!rating || rating < 1 || rating > 5)
     return res.status(400).json({ error: 'Rating must be between 1 and 5.' });
+  
   if (text.length > 1000)
     return res.status(400).json({ error: 'Review must be under 1000 characters.' });
 
@@ -694,8 +700,8 @@ app.delete('/api/tours', authenticateToken, async (req, res) => {
       [req.user.id, name.trim()]
     );
 
-    /* Both mysql2 and pg return an object with affectedRows / rowCount */
-    const affected = IS_POSTGRES ? result.rowCount : result.affectedRows;
+    // Safely check for both our custom Postgres array attachment and native MySQL ResultSetHeader
+    const affected = result ? (result.rowCount ?? result.affectedRows ?? 0) : 0;
 
     if (affected === 0)
       return res.status(404).json({ error: 'Tour not found.' });

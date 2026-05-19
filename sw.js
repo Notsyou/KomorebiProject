@@ -1,13 +1,12 @@
-const CACHE_NAME = 'komorebi-cache-v1';
+const CACHE_NAME = 'komorebi-cache-v2';
 const MAP_CACHE = 'komorebi-map-tiles';
 
-// The core files needed to load the site offline
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/style.css',
   '/script.js',
-  'https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap',
+  'https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300,400,700,900&family=Inter:wght@300,400,500,600&display=swap',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
   'https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css',
   'https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css',
@@ -15,10 +14,25 @@ const ASSETS_TO_CACHE = [
   'https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js'
 ];
 
-// Install: Cache core assets
+// Install: Cache assets safely and ignore failed/blocked CDN requests
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS_TO_CACHE))
+    caches.open(CACHE_NAME).then(cache => {
+      const cachePromises = ASSETS_TO_CACHE.map(url => {
+        const request = url.startsWith('http') 
+          ? new Request(url, { mode: 'no-cors' }) 
+          : new Request(url);
+          
+          return fetch(request)
+          .then(response => {
+            // Only cache valid responses — never cache undefined or error responses
+            if (!response || response.type === 'error') return;
+            return cache.put(url, response);
+          })
+          .catch(err => console.warn(`Skipped caching: ${url}`, err));
+      });
+      return Promise.all(cachePromises);
+    })
   );
   self.skipWaiting();
 });
@@ -35,15 +49,16 @@ self.addEventListener('activate', event => {
 });
 
 // Fetch: Intercept requests
+// Fetch: Intercept requests
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
-  // 1. Let API calls go to the network (don't cache dynamic database data)
+  // 1. Let API calls go to the network
   if (url.pathname.startsWith('/api/')) {
     return;
   }
 
-  // 2. Cache Map Tiles dynamically (CartoDB)
+  // 2. Map tiles logic
   if (url.hostname.includes('cartocdn.com')) {
     event.respondWith(
       caches.match(event.request).then(cachedResponse => {
@@ -53,18 +68,17 @@ self.addEventListener('fetch', event => {
             cache.put(event.request, networkResponse.clone());
             return networkResponse;
           });
-        }).catch(() => console.log('Offline: Could not load map tile.'));
+        }).catch(() => new Response('', { status: 503, statusText: 'Offline' }));
       })
     );
     return;
   }
 
-  // 3. Cache-First for everything else (HTML, CSS, JS, Images)
+  // 3. Cache-first fallback for everything else (including manifest)
   event.respondWith(
     caches.match(event.request).then(cachedResponse => {
       return cachedResponse || fetch(event.request).catch(() => {
-        // Fallback if totally offline and not cached
-        console.log('Offline: Resource unavailable.');
+        return new Response('Offline content not available', { status: 503, statusText: 'Offline' });
       });
     })
   );

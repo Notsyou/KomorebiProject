@@ -2833,11 +2833,19 @@ navAuthBtn.addEventListener('click', () => {
           profilePage.classList.remove('open');
           
           // Trigger logout cleanup
-          authState.clear();
-          savedLocations.clear();
-          document.querySelectorAll('.bookmark-btn').forEach(b => b.classList.remove('active'));
+          authState.clearToken();
+          authState.clearUsername();
+          bookmarks.clear();
+          
+          // Clear all active hearts in the UI
+          document.querySelectorAll('.is-saved').forEach(b => {
+            b.classList.remove('is-saved');
+            const svg = b.querySelector('svg');
+            if (svg) svg.setAttribute('fill', 'none');
+          });
+          
           updateSavesBadge();
-          updateAuthUI();
+          updateNavAuth(); // Fix: Was previously calling the non-existent updateAuthUI()
           renderFullItinerariesPage();
           
         } else {

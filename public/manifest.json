@@ -1,0 +1,17 @@
+{
+  "name": "Komorebi Maps",
+  "short_name": "Komorebi",
+  "description": "Curated travel itineraries and maps for Japan.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#FF4F00",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
