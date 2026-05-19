@@ -296,21 +296,6 @@
         address: 'Sakae, Naka Ward, Nagoya'
       },
   
-      /* --- NEW OKINAWA LOCATIONS --- */
-      {
-        id: 'l-oki-08', icon: '🚢', name: 'Tomari Port', cat: 'culture',
-        city: 'okinawa', cityLabel: 'Okinawa',
-        desc: 'The gateway terminal for high-speed ferries departing to the Kerama Islands.',
-        lat: 26.2259, lng: 127.6836,
-        address: '3-25-1 Maejima, Naha, Okinawa'
-      },
-      {
-        id: 'l-oki-09', icon: '🏖️', name: 'Zamami Beach', cat: 'nature',
-        city: 'okinawa', cityLabel: 'Okinawa',
-        desc: 'Pristine white sands and crystal clear waters perfect for a beachside lunch.',
-        lat: 26.2238, lng: 127.3009,
-        address: 'Zamami, Shimajiri District, Okinawa'
-      }
     ],
 
     /* ── OKINAWA ── */
@@ -2177,6 +2162,7 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
 
     if (authState.isLoggedIn()) {
       await syncBookmarksFromDB();
+      await syncToursFromDB();
     }
   });
 
@@ -2542,17 +2528,32 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
     }
   };
 
-  const originalLogoutListener = document.getElementById('logoutConfirm').onclause || Object;
+  /* ═══════════════════════════════════════════
+     GLOBAL BRIDGE — expose private IIFE functions
+     so inline onclick attributes (mobile pills etc.)
+     can reach them from the global scope.
+  ═══════════════════════════════════════════ */
+  window.openSavesDrawer = openSavesDrawer;
+
+  window.openItinerariesDashboard = function() {
+    renderFullItinerariesPage();
+    itinsDashboard.classList.add('open');
+    document.body.classList.add('modal-lock');
+  };
+
+  window.openToursPage = function() {
+    toursPage.classList.add('open');
+    document.body.classList.add('modal-lock');
+  };
+
+  window.openAboutPage = function() {
+    aboutPage.classList.add('open');
+    document.body.classList.add('modal-lock');
+  };
+
   document.getElementById('logoutConfirm').addEventListener('click', () => {
     localStorage.removeItem('komorebi_saved_tours'); // Clean offline states on absolute exit
     localStorage.removeItem('komorebi_saved_locations');
-  });
-
-  // Supplement standard bootstrap sync loop directly inside document ready bounds
-  document.addEventListener('DOMContentLoaded', async () => {
-    if (authState.isLoggedIn()) {
-      await syncToursFromDB();
-    }
   });
 
  /* ═══════════════════════════════════════════

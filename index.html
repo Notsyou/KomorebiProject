@@ -9,6 +9,54 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+/* ═══════════════════════════════════════════
+   MOBILE QUICK LINKS (DISCOVER SCREEN)
+═══════════════════════════════════════════ */
+.mobile-nav-pills {
+  display: none;
+  gap: 10px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.mobile-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-accent);
+  color: var(--text-primary);
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-smooth);
+}
+
+.mobile-pill svg {
+  stroke: var(--accent);
+  width: 16px;
+  height: 16px;
+}
+
+.mobile-pill:active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.mobile-pill:active svg {
+  stroke: #fff;
+}
+
+@media (max-width: 768px) {
+  .mobile-nav-pills {
+    display: flex;
+  }
+}
+  </style>
 </head>
 <body>
 
@@ -268,6 +316,21 @@
         <div class="grid-header__title">
           <h2>All Locations</h2>
           <p>Browse and save your favourite spots across Japan</p>
+        </div>
+
+        <div class="mobile-nav-pills">
+          <button class="mobile-pill" onclick="openItinerariesDashboard()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+            My Itineraries
+          </button>
+          <button class="mobile-pill" onclick="openToursPage()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+            Tours
+          </button>
+          <button class="mobile-pill" onclick="openAboutPage()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            About
+          </button>
         </div>
         <!-- Category filter -->
         <div class="grid-filter" id="gridFilter">
@@ -554,7 +617,7 @@
           <div class="tours-page-card__price">¥28,000</div>
           <p class="tours-page-card__desc">Turquoise water, sea turtles, and coral gardens ranked among the finest snorkeling on Earth.</p>
         </div>
-        <div class="tours-page-card" data-city="hokkaido" data-tour-index="0" style="cursor:pointer;">
+        <div class="tours-page-card" data-city="sapporo" data-tour-index="0" style="cursor:pointer;">
           <div class="tours-page-card__num">05</div>
           <div class="tours-page-card__city">Hokkaido</div>
           <div class="tours-page-card__name">Powder Snow Ski Day</div>
@@ -562,7 +625,7 @@
           <div class="tours-page-card__price">¥35,000</div>
           <p class="tours-page-card__desc">15 metres of annual snowfall, legendary powder, world-class runs. The definitive Niseko ski experience.</p>
         </div>
-        <div class="tours-page-card" data-city="tokyo" data-tour-index="0" style="cursor:pointer;">
+        <div class="tours-page-card" data-city="tokyo" data-tour-index="1" style="cursor:pointer;">
           <div class="tours-page-card__num">06</div>
           <div class="tours-page-card__city">Tokyo</div>
           <div class="tours-page-card__name">Culinary Deep Dive</div>
