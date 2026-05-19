@@ -1306,13 +1306,45 @@ sapporo: {
   
 
   // Reviews start empty — users post their own
-  const CITY_REVIEWS = {
-    tokyo: [],
-    osaka: [],
-    nagoya: [],
-    okinawa: [],
-    sapporo: [],
-  };
+  // ─── Reviews helpers ──────────────────────────────────────────────────────
+
+  function buildReviewHTML(r) {
+    const avatar = r.username ? r.username[0].toUpperCase() : '?';
+    const name   = r.username || 'Anonymous';
+    const stars  = parseInt(r.rating) || 0;
+    const date   = r.created_at
+      ? new Date(r.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+      : 'Just now';
+    return `<div class="review-item">
+      <div class="review-item__header">
+        <div class="review-item__avatar">${avatar}</div>
+        <div class="review-item__meta">
+          <div class="review-item__name">${name}</div>
+          <div class="review-item__date">${date}</div>
+        </div>
+        <div class="review-item__stars">${'\u2605'.repeat(stars)}${'\u2606'.repeat(5 - stars)}</div>
+      </div>
+      <p class="review-item__text">${r.review_text || r.text || ''}</p>
+    </div>`;
+  }
+
+  async function loadReviews(locationId) {
+    const reviewsList = document.getElementById('reviews-list');
+    reviewsList.innerHTML = `<p class="reviews-empty-msg" style="opacity:.5;">Loading reviews…</p>`;
+    try {
+      const res = await fetch(`${API_BASE}/reviews/${locationId}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const reviews = await res.json();
+      if (!reviews.length) {
+        reviewsList.innerHTML = `<p class="reviews-empty-msg">No reviews yet. Be the first to share your experience!</p>`;
+      } else {
+        reviewsList.innerHTML = reviews.map(buildReviewHTML).join('');
+      }
+    } catch (err) {
+      console.error('Failed to load reviews:', err);
+      reviewsList.innerHTML = `<p class="reviews-empty-msg">Couldn't load reviews. Please try again.</p>`;
+    }
+  }
 
   let locLeafletMap = null;
   let locLeafletMarker = null;
@@ -1358,26 +1390,8 @@ sapporo: {
     document.getElementById('map-info-label').textContent = `${loc.address} · ${loc.lat.toFixed(4)}°N, ${loc.lng.toFixed(4)}°E`;
     document.getElementById('map-gmaps-link').href = `https://www.google.com/maps?q=${loc.lat},${loc.lng}`;
 
-    // --- Reviews Tab ---
-    const reviews = CITY_REVIEWS[loc.city] || [];
-    const reviewsList = document.getElementById('reviews-list');
-    if (reviews.length === 0) {
-      reviewsList.innerHTML = `<p class="reviews-empty-msg">No reviews yet. Be the first to share your experience!</p>`;
-    } else {
-      reviewsList.innerHTML = reviews.map(r =>
-        `<div class="review-item">
-          <div class="review-item__header">
-            <div class="review-item__avatar">${r.user}</div>
-            <div class="review-item__meta">
-              <div class="review-item__name">${r.name}</div>
-              <div class="review-item__date">${r.date}</div>
-            </div>
-            <div class="review-item__stars">${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}</div>
-          </div>
-          <p class="review-item__text">${r.text}</p>
-         </div>`
-      ).join('');
-    }
+    // --- Reviews Tab --- (fetched live from API)
+    loadReviews(loc.id);
 
     // Show/hide review compose based on login status
     const reviewCompose = document.getElementById('review-compose');
@@ -1502,44 +1516,57 @@ sapporo: {
     });
   });
 
-  // Submit review
-  document.getElementById('review-submit-btn').addEventListener('click', () => {
+  // Submit review — real POST to /api/reviews
+  document.getElementById('review-submit-btn').addEventListener('click', async () => {
     if (!authState.isLoggedIn()) {
       showToast('Please log in to post a review.');
       openAuthModal('login');
       return;
     }
+    if (!currentLocModalLoc) return;
     const text = document.getElementById('review-input').value.trim();
     if (!text || !starRating) { showToast('Please add a rating and review text.'); return; }
-    const username = authState.getUsername() || 'Guest';
-    const newReview = {
-      user: username[0].toUpperCase(),
-      name: username,
-      stars: starRating,
-      date: 'Just now',
-      text
-    };
-    const reviewsList = document.getElementById('reviews-list');
-    // Remove empty state message if present
-    const emptyMsg = reviewsList.querySelector('.reviews-empty-msg');
-    if (emptyMsg) emptyMsg.remove();
-    const el = document.createElement('div');
-    el.className = 'review-item';
-    el.innerHTML = `
-      <div class="review-item__header">
-        <div class="review-item__avatar">${newReview.user}</div>
-        <div class="review-item__meta">
-          <div class="review-item__name">${newReview.name}</div>
-          <div class="review-item__date">${newReview.date}</div>
-        </div>
-        <div class="review-item__stars">${'★'.repeat(newReview.stars)}${'☆'.repeat(5 - newReview.stars)}</div>
-      </div>
-      <p class="review-item__text">${newReview.text}</p>`;
-    reviewsList.prepend(el);
-    document.getElementById('review-input').value = '';
-    starRating = 0;
-    document.querySelectorAll('#star-picker .star').forEach(s => s.classList.remove('active'));
-    showToast('Review posted!');
+
+    const submitBtn = document.getElementById('review-submit-btn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Posting…';
+
+    try {
+      const res = await fetch(`${API_BASE}/reviews`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authState.getToken()}`
+        },
+        body: JSON.stringify({
+          location_id: currentLocModalLoc.id,
+          rating: starRating,
+          review_text: text
+        })
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        showToast(err.error || 'Failed to post review.');
+        return;
+      }
+
+      // Reset compose UI
+      document.getElementById('review-input').value = '';
+      starRating = 0;
+      document.querySelectorAll('#star-picker .star').forEach(s => s.classList.remove('active'));
+      showToast('Review posted!');
+
+      // Reload the reviews list from the server so the new entry appears with real data
+      await loadReviews(currentLocModalLoc.id);
+
+    } catch (err) {
+      console.error('Review submit error:', err);
+      showToast('Network error — please try again.');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Post Review';
+    }
   });
 
   // Review login wall button
