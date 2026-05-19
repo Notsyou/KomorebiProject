@@ -216,6 +216,52 @@ app.post('/api/signup', authLimiter, async (req, res) => {
 });
 
 /* ═══════════════════════════════════════════
+   USER PROFILE ROUTES
+═══════════════════════════════════════════ */
+
+/* GET /api/user/profile — Fetch email */
+app.get('/api/user/profile', authenticateToken, async (req, res) => {
+  try {
+    const [rows] = await query('SELECT email, created_at FROM users WHERE id = ?', [req.user.id]);
+    if (!rows.length) return res.status(404).json({ error: 'User not found.' });
+    res.json(rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: 'Database error.' });
+  }
+});
+
+/* PUT /api/user/password — Change password */
+app.put('/api/user/password', authenticateToken, async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  if (!currentPassword || !newPassword || newPassword.length < 8) {
+    return res.status(400).json({ error: 'Valid current and new passwords (min 8 chars) are required.' });
+  }
+  try {
+    const [rows] = await query('SELECT password_hash FROM users WHERE id = ?', [req.user.id]);
+    if (!rows.length) return res.status(404).json({ error: 'User not found.' });
+    
+    const valid = await bcrypt.compare(currentPassword, rows[0].password_hash);
+    if (!valid) return res.status(401).json({ error: 'Incorrect current password.' });
+
+    const newHash = await bcrypt.hash(newPassword, SALT_ROUNDS);
+    await query('UPDATE users SET password_hash = ? WHERE id = ?', [newHash, req.user.id]);
+    res.json({ message: 'Password updated successfully.' });
+  } catch (err) {
+    res.status(500).json({ error: 'Database error.' });
+  }
+});
+
+/* DELETE /api/user/profile — Delete account */
+app.delete('/api/user/profile', authenticateToken, async (req, res) => {
+  try {
+    await query('DELETE FROM users WHERE id = ?', [req.user.id]);
+    res.json({ message: 'Account deleted.' });
+  } catch (err) {
+    res.status(500).json({ error: 'Database error.' });
+  }
+});
+
+/* ═══════════════════════════════════════════
    BOOKMARK ROUTES
 ═══════════════════════════════════════════ */
 

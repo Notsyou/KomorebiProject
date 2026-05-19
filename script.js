@@ -1336,10 +1336,33 @@ sapporo: {
       const res = await fetch(`${API_BASE}/reviews/${locationId}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const reviews = await res.json();
+      
       if (!reviews.length) {
         reviewsList.innerHTML = `<p class="reviews-empty-msg">No reviews yet. Be the first to share your experience!</p>`;
       } else {
         reviewsList.innerHTML = reviews.map(buildReviewHTML).join('');
+      }
+
+      // 👇 NEW LOGIC: Check if current user already reviewed this
+      if (authState.isLoggedIn()) {
+        const myReview = reviews.find(r => r.author === authState.getUsername());
+        const submitBtn = document.getElementById('review-submit-btn');
+        
+        if (myReview) {
+          // Pre-fill the form with their existing review
+          document.getElementById('review-input').value = myReview.text;
+          starRating = parseInt(myReview.rating);
+          document.querySelectorAll('#star-picker .star').forEach((s, i) => 
+            s.classList.toggle('active', i < starRating)
+          );
+          submitBtn.textContent = 'Update Review';
+        } else {
+          // Reset to default empty state
+          document.getElementById('review-input').value = '';
+          starRating = 0;
+          document.querySelectorAll('#star-picker .star').forEach(s => s.classList.remove('active'));
+          submitBtn.textContent = 'Post Review';
+        }
       }
     } catch (err) {
       console.error('Failed to load reviews:', err);
@@ -1666,18 +1689,39 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
         if (!leafletMap) {
           leafletMap = L.map('leaflet-map', { zoomControl: true, scrollWheelZoom: false });
           L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            attribution: '© OpenStreetMap contributors © CARTO',
             subdomains: 'abcd', maxZoom: 19
           }).addTo(leafletMap);
         }
         leafletMap.setView(coords, 11);
-        if (leafletMarker) { leafletMarker.remove(); leafletMarker = null; }
+        
+        // 👇 NEW LOGIC: Clear old clusters and build new ones for this city
+        if (window.cityCluster) {
+          leafletMap.removeLayer(window.cityCluster);
+        }
+        window.cityCluster = L.markerClusterGroup({
+          showCoverageOnHover: false,
+          maxClusterRadius: 40 // Groups pins if they are within 40 pixels
+        });
+
+        // Loop through the city's locations and add them to the cluster
+        locs.forEach(loc => {
+          const icon = L.divIcon({
+            className: '',
+            html: `<div style="width:16px;height:16px;background:#FF4F00;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2px solid #fff;box-shadow:0 2px 8px rgba(255,79,0,.5);"></div>`,
+            iconSize: [16, 16], iconAnchor: [8, 16]
+          });
+          const marker = L.marker([loc.lat, loc.lng], { icon })
+            .bindPopup(`<strong>${loc.name}</strong><br><small>${loc.cat}</small>`);
+          
+          window.cityCluster.addLayer(marker);
+        });
+
+        // Add the finished cluster to the map
+        leafletMap.addLayer(window.cityCluster);
         leafletMap.invalidateSize();
       }, 100);
     }
-    document.querySelector('.modal__tab[data-tab="map"]').style.display = '';
-    activateModalTab('highlights');
-    modalBackdrop.classList.add('open');
   }
 
   function closeCityModal() { modalBackdrop.classList.remove('open'); }
@@ -2003,24 +2047,25 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
   }
 
   // Nav auth button hover → show "Logout?" when logged in
-  navAuthBtn.addEventListener('mouseenter', () => {
-    if (navAuthBtn.dataset.loggedIn === 'true') {
-      navAuthLabel.textContent = 'Logout?';
-      navAuthBtn.classList.add('is-logout-hover');
-    }
-  });
-  navAuthBtn.addEventListener('mouseleave', () => {
-    if (navAuthBtn.dataset.loggedIn === 'true') {
-      const u = authState.getUsername() || 'Profile';
-      navAuthLabel.textContent = u[0].toUpperCase() + u.slice(1);
-      navAuthBtn.classList.remove('is-logout-hover');
-    }
-  });
-  navAuthBtn.addEventListener('click', () => {
-    if (navAuthBtn.dataset.loggedIn === 'true') {
-      openLogoutConfirm();
-    }
-  });
+// Nav auth button hover & click logic
+navAuthBtn.addEventListener('mouseenter', () => {
+  if (navAuthBtn.dataset.loggedIn === 'true') {
+    navAuthLabel.textContent = 'Profile';
+  }
+});
+navAuthBtn.addEventListener('mouseleave', () => {
+  if (navAuthBtn.dataset.loggedIn === 'true') {
+    const u = authState.getUsername() || 'Profile';
+    navAuthLabel.textContent = u[0].toUpperCase() + u.slice(1);
+  }
+});
+navAuthBtn.addEventListener('click', () => {
+  if (navAuthBtn.dataset.loggedIn === 'true') {
+    openProfilePage();
+  } else {
+    openAuthModal();
+  }
+});
 
   // Custom logout confirm window
   const logoutBackdrop = document.getElementById('logoutBackdrop');
@@ -2702,4 +2747,106 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
     });
   }
   
+  /* ═══════════════════════════════════════════
+     PROFILE PAGE LOGIC
+  ═══════════════════════════════════════════ */
+  const profilePage = document.getElementById('profilePage');
+  
+  if (document.getElementById('profilePageClose')) {
+    document.getElementById('profilePageClose').addEventListener('click', () => {
+      profilePage.classList.remove('open');
+      document.body.classList.remove('modal-lock');
+    });
+  }
+
+  async function openProfilePage() {
+    profilePage.classList.add('open');
+    document.body.classList.add('modal-lock');
+    document.getElementById('profileUsername').textContent = authState.getUsername();
+    document.getElementById('profileEmail').textContent = 'Loading...';
+    
+    try {
+      const res = await fetch(`${API_BASE}/user/profile`, {
+        headers: { 'Authorization': `Bearer ${authState.getToken()}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        document.getElementById('profileEmail').textContent = data.email;
+      }
+    } catch (e) {
+      document.getElementById('profileEmail').textContent = 'Error loading email';
+    }
+  }
+
+  // Update Password
+  if (document.getElementById('profUpdatePwBtn')) {
+    document.getElementById('profUpdatePwBtn').addEventListener('click', async () => {
+      const current = document.getElementById('profCurrentPw').value;
+      const newPw = document.getElementById('profNewPw').value;
+      if (!current || newPw.length < 8) return showToast('Please provide a valid new password (min 8 chars).');
+      
+      const btn = document.getElementById('profUpdatePwBtn');
+      btn.textContent = 'Updating...';
+      
+      try {
+        const res = await fetch(`${API_BASE}/user/password`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authState.getToken()}`
+          },
+          body: JSON.stringify({ currentPassword: current, newPassword: newPw })
+        });
+        const data = await res.json();
+        showToast(res.ok ? 'Password updated!' : data.error);
+        if (res.ok) {
+          document.getElementById('profCurrentPw').value = '';
+          document.getElementById('profNewPw').value = '';
+        }
+      } catch(e) {
+        showToast('Network error');
+      }
+      btn.textContent = 'Update Password';
+    });
+  }
+
+  // Log Out from inside Profile
+  if (document.getElementById('profLogoutBtn')) {
+    document.getElementById('profLogoutBtn').addEventListener('click', () => {
+      profilePage.classList.remove('open');
+      openLogoutConfirm();
+    });
+  }
+
+  // Delete Account
+  if (document.getElementById('profDeleteBtn')) {
+    document.getElementById('profDeleteBtn').addEventListener('click', async () => {
+      if (!confirm('Are you absolutely sure? This cannot be undone and will permanently delete all your itineraries, reviews, and saves.')) return;
+      
+      try {
+        const res = await fetch(`${API_BASE}/user/profile`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${authState.getToken()}` }
+        });
+        if (res.ok) {
+          showToast('Account deleted.');
+          profilePage.classList.remove('open');
+          
+          // Trigger logout cleanup
+          authState.clear();
+          savedLocations.clear();
+          document.querySelectorAll('.bookmark-btn').forEach(b => b.classList.remove('active'));
+          updateSavesBadge();
+          updateAuthUI();
+          renderFullItinerariesPage();
+          
+        } else {
+          showToast('Failed to delete account.');
+        }
+      } catch(e) {
+        showToast('Network error');
+      }
+    });
+  }
+
 })();

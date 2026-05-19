@@ -8,6 +8,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+  <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
   <link rel="stylesheet" href="style.css" />
   <style>
 /* ═══════════════════════════════════════════
@@ -732,6 +735,39 @@
         </div>
     </div>
   </div>
+
+  <div class="page-overlay" id="profilePage">
+    <div class="page-overlay__inner" style="max-width: 500px;">
+      <button class="page-overlay__close" id="profilePageClose">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="page-overlay__header">
+        <span class="page-overlay__eyebrow">◆ MY ACCOUNT</span>
+        <h2 class="page-overlay__title" id="profileUsername">Profile</h2>
+        <p class="page-overlay__sub" id="profileEmail">Loading...</p>
+      </div>
+      
+      <div style="margin-top: 2rem;">
+        <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Change Password</h3>
+        <div class="auth-field">
+          <input class="auth-field__input" id="profCurrentPw" type="password" placeholder="Current Password" />
+        </div>
+        <div class="auth-field">
+          <input class="auth-field__input" id="profNewPw" type="password" placeholder="New Password (min 8 chars)" />
+        </div>
+        <button class="auth-submit" id="profUpdatePwBtn">Update Password</button>
+      </div>
+
+      <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0;" />
+
+      <div>
+        <h3 style="margin-bottom: 1rem; font-size: 1.1rem; color: #ff4a4a;">Danger Zone</h3>
+        <button class="auth-submit" id="profLogoutBtn" style="background: rgba(255,255,255,0.1); margin-bottom: 1rem;">Log Out</button>
+        <button class="auth-submit" id="profDeleteBtn" style="background: transparent; border: 1px solid #ff4a4a; color: #ff4a4a;">Delete Account</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="script.js"></script>
