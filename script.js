@@ -1309,11 +1309,12 @@ sapporo: {
   // ─── Reviews helpers ──────────────────────────────────────────────────────
 
   function buildReviewHTML(r) {
-    const avatar = r.username ? r.username[0].toUpperCase() : '?';
-    const name   = r.username || 'Anonymous';
+    // GET /api/reviews returns: { author, text, rating, date }
+    const avatar = r.author ? r.author[0].toUpperCase() : '?';
+    const name   = r.author || 'Anonymous';
     const stars  = parseInt(r.rating) || 0;
-    const date   = r.created_at
-      ? new Date(r.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+    const date   = r.date
+      ? new Date(r.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
       : 'Just now';
     return `<div class="review-item">
       <div class="review-item__header">
@@ -1324,7 +1325,7 @@ sapporo: {
         </div>
         <div class="review-item__stars">${'\u2605'.repeat(stars)}${'\u2606'.repeat(5 - stars)}</div>
       </div>
-      <p class="review-item__text">${r.review_text || r.text || ''}</p>
+      <p class="review-item__text">${r.text || ''}</p>
     </div>`;
   }
 
@@ -1539,9 +1540,9 @@ sapporo: {
           'Authorization': `Bearer ${authState.getToken()}`
         },
         body: JSON.stringify({
-          location_id: currentLocModalLoc.id,
+          locationId: currentLocModalLoc.id,
           rating: starRating,
-          review_text: text
+          text
         })
       });
 

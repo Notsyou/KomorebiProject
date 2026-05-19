@@ -69,7 +69,7 @@ services:
     ports:
       - "5500:80"
     volumes:
-      - ./public:/usr/share/nginx/html:ro
+      - ./:/usr/share/nginx/html
     networks:
       - komorebi_net
 
