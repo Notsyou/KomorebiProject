@@ -58,11 +58,11 @@ async function query(sql, params = []) {
   if (IS_POSTGRES) {
     const pgSql = convertPlaceholders(sql);
     const result = await pool.query(pgSql, params);
-    // Mirror mysql2's [rows, fields] tuple so all route code stays identical
-    return [result.rows, result.fields ?? []];
+    // 👇 Attach rowCount so the DELETE route can read it!
+    const rows = result.rows || [];
+    rows.rowCount = result.rowCount; 
+    return [rows, result.fields ?? []];
   }
-  // mysql2 already returns [rows, fields]
-  return pool.query(sql, params);
 }
 
 /* ═══════════════════════════════════════════
