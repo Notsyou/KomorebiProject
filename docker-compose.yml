@@ -21,6 +21,12 @@ services:
       - db_data:/var/lib/mysql
     networks:
       - komorebi_net
+    # 👇 Moved healthcheck to the actual database container
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -36,7 +42,7 @@ services:
       - db
     networks:
       - komorebi_net
-
+      
   backend:
     build: .
     container_name: komorebi_backend
@@ -49,12 +55,13 @@ services:
       - DB_PASSWORD=komorebipassword
       - DB_NAME=komorebi_maps
       - JWT_SECRET=supersecretlocaltoken
+    # 👇 Fixed the object syntax format here
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - komorebi_net
 
-  # ─── NEW FRONTEND CONTAINER ───
   frontend:
     image: nginx:alpine
     container_name: komorebi_frontend
