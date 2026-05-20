@@ -738,37 +738,42 @@
   </div>
 </div>
 
-  <div class="page-overlay" id="profilePage">
-    <div class="page-overlay__inner" style="max-width: 500px;">
-      <button class="page-overlay__close" id="profilePageClose">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-      </button>
-      <div class="page-overlay__header">
-        <span class="page-overlay__eyebrow">◆ MY ACCOUNT</span>
-        <h2 class="page-overlay__title" id="profileUsername">Profile</h2>
-        <p class="page-overlay__sub" id="profileEmail">Loading...</p>
-      </div>
-      
-      <div style="margin-top: 2rem;">
-        <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Change Password</h3>
-        <div class="auth-field">
-          <input class="auth-field__input" id="profCurrentPw" type="password" placeholder="Current Password" />
-        </div>
-        <div class="auth-field">
-          <input class="auth-field__input" id="profNewPw" type="password" placeholder="New Password (min 8 chars)" />
-        </div>
-        <button class="auth-submit" id="profUpdatePwBtn">Update Password</button>
-      </div>
+<div class="page-overlay" id="profilePage">
+  <div class="page-overlay__inner profile-overlay">
+    <button class="page-overlay__close" id="profilePageClose">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6 6 18M6 6l12 12"/>
+      </svg>
+    </button>
 
-      <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0;" />
+    <header class="page-overlay__header">
+      <span class="page-overlay__eyebrow">◆ MY ACCOUNT</span>
+      <h2 class="page-overlay__title" id="profileUsername">Profile</h2>
+      <p class="page-overlay__sub" id="profileEmail">Loading...</p>
+    </header>
 
-      <div>
-        <h3 style="margin-bottom: 1rem; font-size: 1.1rem; color: #ff4a4a;">Danger Zone</h3>
-        <button class="auth-submit" id="profLogoutBtn" style="background: rgba(255,255,255,0.1); margin-bottom: 1rem;">Log Out</button>
-        <button class="auth-submit" id="profDeleteBtn" style="background: transparent; border: 1px solid #ff4a4a; color: #ff4a4a;">Delete Account</button>
+    <section class="profile-section">
+      <h3 class="profile-section__title">Change Password</h3>
+      <div class="auth-field">
+        <label class="auth-field__label" for="profCurrentPw">Current Password</label>
+        <input class="auth-field__input" id="profCurrentPw" type="password" placeholder="Enter current password" />
       </div>
-    </div>
+      <div class="auth-field">
+        <label class="auth-field__label" for="profNewPw">New Password</label>
+        <input class="auth-field__input" id="profNewPw" type="password" placeholder="Minimum 8 characters" />
+      </div>
+      <button class="auth-submit" id="profUpdatePwBtn">Update Password</button>
+    </section>
+
+    <hr class="profile-divider" />
+
+    <section class="profile-section profile-section--danger">
+      <h3 class="profile-section__title profile-section__title--danger">Danger Zone</h3>
+      <button class="auth-submit profile-btn--logout" id="profLogoutBtn">Log Out</button>
+      <button class="auth-submit profile-btn--delete" id="profDeleteBtn">Delete Account</button>
+    </section>
   </div>
+</div>
 
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

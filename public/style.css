@@ -2426,16 +2426,69 @@ body.modal-lock {
   visibility: visible;
 }
 
+/* ═══════════════════════════════════════════
+   PAGE OVERLAY INNER — Shinjuku at Night Redesign
+   Layered glassmorphism · Warm gradient cap · Left-bar header · Refined dividers
+═══════════════════════════════════════════ */
+
 .page-overlay__inner {
   position: relative;
-  background: var(--bg-surface);
-  border: 1px solid var(--glass-border);
-  border-radius: 0 0 20px 20px;
+  /* Layered glassmorphism: deep dark base + warm tint + aggressive blur */
+  background:
+    linear-gradient(160deg, rgba(34, 28, 24, 0.82) 0%, rgba(22, 26, 31, 0.88) 100%);
+  border: 1px solid rgba(240, 237, 232, 0.09);
+  border-top: none; /* top edge handled by ::before warm cap */
+  border-radius: 0 0 24px 24px;
+  backdrop-filter: blur(40px) saturate(180%) brightness(0.95);
+  -webkit-backdrop-filter: blur(40px) saturate(180%) brightness(0.95);
   width: 100%;
   max-width: 1000px;
   min-height: 100vh;
-  padding: 80px 60px 80px;
-  box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+  padding: 88px 68px 96px;
+  box-shadow:
+    0 48px 120px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    inset 0 1px 0 0 rgba(255, 79, 0, 0.08);
+  overflow: hidden; /* contain the ::before / ::after pseudo decorations */
+}
+
+/* Warm gradient cap — the "neon-lit awning" across the top edge */
+.page-overlay__inner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent            0%,
+    rgba(255, 79, 0, 0.18) 15%,
+    rgba(255, 79, 0, 0.55) 38%,
+    rgba(255, 160, 60, 0.7) 50%,
+    rgba(255, 79, 0, 0.55) 62%,
+    rgba(255, 79, 0, 0.18) 85%,
+    transparent            100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Ambient warm glow radiating down from the cap */
+.page-overlay__inner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 180px;
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(255, 79, 0, 0.07) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 1;
 }
 
 .page-overlay__close {
@@ -2462,38 +2515,71 @@ body.modal-lock {
   color: var(--accent);
 }
 
+/* Header — left-edge vermillion accent bar */
 .page-overlay__header {
+  position: relative;
   margin-bottom: 56px;
+  padding-left: 22px;
+  border-left: 2px solid var(--accent);
+}
+
+/* Subtle glow on the accent bar */
+.page-overlay__header::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--accent);
+  box-shadow: 0 0 12px 2px var(--accent-glow);
+  pointer-events: none;
 }
 
 .page-overlay__eyebrow {
   display: inline-block;
   font-family: var(--font-sans);
-  font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 0.3em;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
+  opacity: 0.9;
 }
 
 .page-overlay__title {
   font-family: var(--font-serif);
-  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  font-size: clamp(2.6rem, 5vw, 4.2rem);
   font-weight: 900;
   color: var(--text-primary);
   letter-spacing: -0.03em;
   line-height: 0.95;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .page-overlay__sub {
   font-family: var(--font-sans);
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 300;
   color: var(--text-secondary);
   line-height: 1.7;
   max-width: 560px;
+}
+
+/* Refined section divider — replaces bare <hr> */
+.profile-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 79, 0, 0.25) 20%,
+    rgba(240, 237, 232, 0.1) 50%,
+    rgba(255, 79, 0, 0.25) 80%,
+    transparent 100%
+  );
+  margin: 2.5rem 0;
 }
 
 /* Tours page grid */
@@ -3889,6 +3975,70 @@ body.modal-lock {
 
 
 /* ─────────────────────────────────────────────
+   PROFILE OVERLAY — semantic classes
+───────────────────────────────────────────── */
+
+/* Constrain the profile panel to a focused card width */
+.profile-overlay {
+  max-width: 520px !important;
+}
+
+/* Profile sections */
+.profile-section {
+  margin-top: 2.25rem;
+}
+
+.profile-section__title {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.profile-section__title--danger {
+  color: #e05555;
+  border-bottom-color: rgba(220, 60, 60, 0.2);
+}
+
+/* Logout — ghost style */
+.profile-btn--logout {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-secondary) !important;
+  margin-bottom: 0.85rem;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease !important;
+}
+
+.profile-btn--logout:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(240, 237, 232, 0.2) !important;
+  color: var(--text-primary) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Delete — danger outline */
+.profile-btn--delete {
+  background: transparent !important;
+  border: 1px solid rgba(220, 60, 60, 0.45) !important;
+  color: #e05555 !important;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.profile-btn--delete:hover {
+  background: rgba(220, 60, 60, 0.1) !important;
+  border-color: rgba(220, 60, 60, 0.7) !important;
+  box-shadow: 0 0 16px rgba(220, 60, 60, 0.2) !important;
+  transform: none !important;
+}
+
+
+/* ─────────────────────────────────────────────
    MOBILE
 ───────────────────────────────────────────── */
 @media (max-width: 768px) {
@@ -3923,5 +4073,48 @@ body.modal-lock {
 
   .card-visual {
     height: 180px;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   MOBILE RESPONSIVE OVERRIDES
+───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .page-overlay__inner {
+    padding: 72px 36px 80px;
+    border-radius: 0 0 16px 16px;
+  }
+
+  .page-overlay__header {
+    padding-left: 16px;
+    margin-bottom: 40px;
+  }
+
+  .profile-overlay {
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-overlay__inner {
+    padding: 64px 20px 72px;
+    border-radius: 0; /* full-bleed sheet on narrow screens */
+  }
+
+  .page-overlay__header {
+    padding-left: 14px;
+    margin-bottom: 32px;
+  }
+
+  .page-overlay__title {
+    font-size: clamp(2rem, 10vw, 2.8rem);
+  }
+
+  .profile-section__title {
+    font-size: 0.64rem;
+  }
+
+  .profile-divider {
+    margin: 1.75rem 0;
   }
 }
