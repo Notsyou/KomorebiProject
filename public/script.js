@@ -988,7 +988,7 @@ sapporo: {
   const _host = window.location.hostname;
   const API_BASE = (_host === 'localhost' || _host === '127.0.0.1' || _host === '')
     ? 'http://localhost:3000/api'
-    : 'https://komorebproject-backend.onrender.com/api';
+    : 'https://komorebiproject-backend.onrender.com/api';
 
   const authState = {
     getToken:    () => localStorage.getItem('komorebi_jwt'),
