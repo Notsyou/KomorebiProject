@@ -1,9 +1,9 @@
 FROM node:18-alpine
 WORKDIR /app
 
-# Copy the lockfile too, and run 'ci' for a strict, production-ready build
-COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+# Only copy package.json and let npm generate a fresh lockfile
+COPY package.json ./
+RUN npm install
 
 COPY . .
 EXPOSE 3000

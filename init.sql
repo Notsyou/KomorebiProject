@@ -1,12 +1,10 @@
 -- ─────────────────────────────────────────────────────────────
--- Render PostgreSQL init.sql
--- Note: Render automatically creates and connects to your database, 
--- so we don't need CREATE DATABASE or USE commands here.
+-- MySQL init.sql (Local & Docker)
 -- ─────────────────────────────────────────────────────────────
 
 -- DDL: Users
 CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
@@ -15,11 +13,10 @@ CREATE TABLE users (
 
 -- DDL: Locations
 CREATE TABLE locations (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     prefecture VARCHAR(50) NOT NULL,
     description TEXT NOT NULL,
-    -- Converted ENUM to VARCHAR with a CHECK constraint for Postgres compatibility
     category VARCHAR(50) NOT NULL CHECK (category IN ('culture', 'cuisine', 'craft', 'nature', 'ritual')),
     image_url VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -27,21 +24,19 @@ CREATE TABLE locations (
 
 -- DDL: Bookmarks
 CREATE TABLE bookmarks (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     location_id VARCHAR(50) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    -- Postgres uses CONSTRAINT ... UNIQUE instead of UNIQUE KEY
     CONSTRAINT unique_bookmark UNIQUE (user_id, location_id)
 );
 
 -- DDL: Reviews
 CREATE TABLE reviews (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     location_id VARCHAR(50) NOT NULL,
-    -- Converted TINYINT (MySQL) to SMALLINT (Postgres)
     rating SMALLINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
     text TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -52,11 +47,12 @@ CREATE TABLE reviews (
 
 -- DDL: Saved Tours 
 CREATE TABLE saved_tours (
-    id          SERIAL PRIMARY KEY,
+    id          INT AUTO_INCREMENT PRIMARY KEY,
     user_id     INT          NOT NULL,
     name        VARCHAR(150) NOT NULL,
     duration    VARCHAR(100) NOT NULL,
     price       VARCHAR(50)  DEFAULT NULL, 
+    share_token VARCHAR(64)  UNIQUE DEFAULT NULL,
     created_at  TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
     updated_at  TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
@@ -65,7 +61,7 @@ CREATE TABLE saved_tours (
 
 -- DDL: Saved Tour Activities 
 CREATE TABLE saved_tour_activities (
-    id          SERIAL PRIMARY KEY,
+    id          INT AUTO_INCREMENT PRIMARY KEY,
     tour_id     INT          NOT NULL,
     step_index  SMALLINT     NOT NULL,
     loc_id      VARCHAR(20)  DEFAULT NULL, 

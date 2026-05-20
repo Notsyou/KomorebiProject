@@ -1452,27 +1452,45 @@ sapporo: {
   locModalClose.addEventListener('click', closeLocModal);
   locModal.addEventListener('click', e => { if (e.target === locModal) closeLocModal(); });
 
-  // Modal heart button — toggles bookmark for the currently-open location
-  document.getElementById('locModalHeart').addEventListener('click', () => {
+// Modal heart button — toggles bookmark for the currently-open location
+document.getElementById('locModalHeart').addEventListener('click', () => {
+  if (!currentLocModalLoc) return;
+  const btn = document.getElementById('locModalHeart');
+  toggleBookmarkOptimistic(currentLocModalLoc, btn);
+  // Also sync the matching grid card heart if it's rendered
+  const gridCard = document.querySelector(`.loc-card__heart[data-id="${currentLocModalLoc.id}"]`);
+  if (gridCard) {
+    const saved = bookmarks.has(currentLocModalLoc.id);
+    gridCard.classList.toggle('is-saved', saved);
+    gridCard.querySelector('svg').setAttribute('fill', saved ? 'currentColor' : 'none');
+  }
+});
+
+// 👇 PASTE THE NEW SHARE LOGIC RIGHT HERE 👇
+const locModalShareBtn = document.getElementById('locModalShare');
+if (locModalShareBtn) {
+  locModalShareBtn.addEventListener('click', async () => {
     if (!currentLocModalLoc) return;
-    const btn = document.getElementById('locModalHeart');
-    toggleBookmarkOptimistic(currentLocModalLoc, btn);
-    // Also sync the matching grid card heart if it's rendered
-    const gridCard = document.querySelector(`.loc-card__heart[data-id="${currentLocModalLoc.id}"]`);
-    if (gridCard) {
-      const saved = bookmarks.has(currentLocModalLoc.id);
-      gridCard.classList.toggle('is-saved', saved);
-      gridCard.querySelector('svg').setAttribute('fill', saved ? 'currentColor' : 'none');
+    
+    // Build the URL (e.g., http://localhost:5500/?loc=l-tok-01)
+    const shareUrl = `${window.location.origin}/?loc=${currentLocModalLoc.id}`;
+    
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      showToast('Location link copied to clipboard!');
+    } catch (err) {
+      showToast('Failed to copy link.');
     }
   });
+}
+// 👆 END OF NEW SHARE LOGIC 👆
 
-  function activateLocModalTab(targetId) {
-    document.querySelectorAll('#location-modal .modal-tab').forEach(t =>
-      t.classList.toggle('is-active', t.dataset.modalTarget === targetId)
-    );
-    document.querySelectorAll('#location-modal .modal-panel').forEach(p =>
-      p.classList.toggle('is-active', p.id === targetId)
-    );
+
+function activateLocModalTab(targetId) {
+  document.querySelectorAll('#location-modal .modal-tab').forEach(t =>
+    t.classList.toggle('is-active', t.dataset.modalTarget === targetId)
+  );
+  // ... rest of the code continues ...
 
     if (targetId === 'mtab-map') {
       setTimeout(() => {
@@ -2858,6 +2876,86 @@ navAuthBtn.addEventListener('click', () => {
   }
 
   /* ═══════════════════════════════════════════
+     SHAREABLE ITINERARIES LOGIC
+  ═══════════════════════════════════════════ */
+  
+  // 1. Generate & Copy Link
+  if (document.getElementById('shareTourBtn')) {
+    document.getElementById('shareTourBtn').addEventListener('click', async () => {
+      if (!currentModalTour) return;
+      if (!authState.isLoggedIn()) {
+        showToast('Please log in to share itineraries.');
+        openAuthModal('login');
+        return;
+      }
+
+      const btn = document.getElementById('shareTourBtn');
+      btn.style.opacity = '0.5';
+
+      try {
+        const res = await fetch(`${API_BASE}/tours/share`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authState.getToken()}`
+          },
+          body: JSON.stringify({ name: currentModalTour.name })
+        });
+
+        const data = await res.json();
+        
+        if (res.ok) {
+          await navigator.clipboard.writeText(data.link);
+          showToast('Link copied to clipboard!');
+        } else {
+          showToast(data.error || 'Failed to generate link.');
+        }
+      } catch (err) {
+        showToast('Network error while sharing.');
+      } finally {
+        btn.style.opacity = '1';
+      }
+    });
+  }
+// 2. Load Shared Itinerary OR Location on Page Load
+window.addEventListener('DOMContentLoaded', async () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const sharedTourToken = urlParams.get('tour');
+  const sharedLocId = urlParams.get('loc'); // 👈 NEW: Check for individual location ID
+  
+  if (sharedTourToken) {
+    try {
+      // Strip the URL param
+      window.history.replaceState({}, document.title, window.location.pathname);
+      
+      const res = await fetch(`${API_BASE}/tours/shared/${sharedTourToken}`);
+      if (res.ok) {
+        const sharedTour = await res.json();
+        // Add author tag
+        sharedTour.duration = `${sharedTour.duration} • Curated by ${sharedTour.author}`;
+        setTimeout(() => openTourDetail(sharedTour), 500);
+      } else {
+        showToast('Shared link is invalid or expired.');
+      }
+    } catch (e) {
+      console.error('Failed to load shared tour:', e);
+    }
+  } 
+  // 👇 NEW: Handle single location sharing
+  else if (sharedLocId) {
+    const loc = ALL_LOCATIONS.find(l => l.id === sharedLocId);
+    if (loc) {
+      // Clean URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+      // Wait for map/loader to settle, then pop the modal
+      setTimeout(() => openLocationModal(loc), 600);
+    } else {
+      showToast('Location not found.');
+    }
+  }
+});
+  
+  /* ═══════════════════════════════════════════
      PWA SERVICE WORKER REGISTRATION
   ═══════════════════════════════════════════ */
   if ('serviceWorker' in navigator) {
@@ -2867,5 +2965,7 @@ navAuthBtn.addEventListener('click', () => {
         .catch(err => console.error('Service Worker failed:', err));
     });
   }
+
+  
 
 })();

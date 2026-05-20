@@ -1,4 +1,4 @@
-const CACHE_NAME = 'komorebi-cache-v2';
+const CACHE_NAME = 'komorebi-cache-v3';
 const MAP_CACHE = 'komorebi-map-tiles';
 
 const ASSETS_TO_CACHE = [
@@ -49,13 +49,17 @@ self.addEventListener('activate', event => {
 });
 
 // Fetch: Intercept requests
-// Fetch: Intercept requests
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
   // 1. Let API calls go to the network
   if (url.pathname.startsWith('/api/')) {
     return;
+  }
+
+  // 👇 ADD THIS NEW CHECK: Ignore Google Fonts entirely
+  if (url.hostname.includes('fonts.googleapis.com') || url.hostname.includes('fonts.gstatic.com')) {
+    return; 
   }
 
   // 2. Map tiles logic

@@ -21,9 +21,9 @@ services:
       - db_data:/var/lib/mysql
     networks:
       - komorebi_net
-    # 👇 Moved healthcheck to the actual database container
+    # 👇 Update the password flag to use the variable
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD}"]
       interval: 10s
       timeout: 5s
       retries: 5

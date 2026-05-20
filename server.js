@@ -3,6 +3,7 @@ import cors from 'cors';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import rateLimit from 'express-rate-limit';
+import crypto from 'crypto';
 
 /* ═══════════════════════════════════════════
    DATABASE BOOTSTRAP — MySQL ↔ PostgreSQL
@@ -163,7 +164,11 @@ app.post('/api/login', authLimiter, async (req, res) => {
     return res.status(400).json({ error: 'Username and password are required.' });
 
   try {
-    const [rows] = await query('SELECT * FROM users WHERE username = ?', [username]);
+    // Check both username and email columns for a match
+    const [rows] = await query(
+      'SELECT * FROM users WHERE username = ? OR email = ?', 
+      [username, username] 
+    );
     const user = rows[0];
     if (!user || !(await bcrypt.compare(password, user.password_hash)))
       return res.status(401).json({ error: 'Invalid credentials.' });
@@ -581,6 +586,72 @@ app.post('/api/tours', authenticateToken, async (req, res) => {
     if (!act.time || !act.title)
       return res.status(400).json({ error: `Activity at index ${i} is missing time or title.` });
   }
+
+  /* ─── POST /api/tours/share ───────────────────────────────────────────────
+   Generates or retrieves a public share token for a specific tour.
+────────────────────────────────────────────────────────────────────────────── */
+app.post('/api/tours/share', authenticateToken, async (req, res) => {
+  const { name } = req.body;
+  if (!name) return res.status(400).json({ error: 'Tour name required.' });
+
+  try {
+    const [rows] = await query('SELECT share_token FROM saved_tours WHERE user_id = ? AND name = ?', [req.user.id, name.trim()]);
+    if (rows.length === 0) return res.status(404).json({ error: 'Tour not found. Save it first!' });
+
+    let token = rows[0].share_token;
+    if (!token) {
+      token = crypto.randomBytes(6).toString('hex'); // e.g. "a1b2c3d4e5f6"
+      await query('UPDATE saved_tours SET share_token = ? WHERE user_id = ? AND name = ?', [token, req.user.id, name.trim()]);
+    }
+    
+    // Dynamically get the frontend URL so it works locally and on Render
+    const origin = req.headers.origin || 'http://localhost:5500';
+    res.json({ token, link: `${origin}/?tour=${token}` });
+  } catch (err) {
+    console.error('Share generation error:', err);
+    res.status(500).json({ error: 'Database error.' });
+  }
+});
+
+/* ─── GET /api/tours/shared/:token ──────────────────────────────────────────
+   Public route to fetch a shared itinerary without authentication.
+────────────────────────────────────────────────────────────────────────────── */
+app.get('/api/tours/shared/:token', async (req, res) => {
+  try {
+    const [tourRows] = await query(
+      `SELECT t.id, t.name, t.duration, t.price, u.username as author 
+       FROM saved_tours t 
+       JOIN users u ON t.user_id = u.id 
+       WHERE t.share_token = ?`, 
+      [req.params.token]
+    );
+
+    if (tourRows.length === 0) return res.status(404).json({ error: 'Invalid or expired share link.' });
+    
+    const tour = tourRows[0];
+    
+    const [actRows] = await query(
+      'SELECT loc_id, time, title, description FROM saved_tour_activities WHERE tour_id = ? ORDER BY step_index ASC',
+      [tour.id]
+    );
+
+    res.json({
+      name: tour.name,
+      duration: tour.duration,
+      price: tour.price,
+      author: tour.author, // Tells the recipient who curated it!
+      activities: actRows.map(a => ({
+        locId: a.loc_id,
+        time: a.time,
+        title: a.title,
+        desc: a.description
+      }))
+    });
+  } catch (err) {
+    console.error('Shared fetch error:', err);
+    res.status(500).json({ error: 'Database error.' });
+  }
+});
 
   if (IS_POSTGRES) {
     /* ── PostgreSQL path — explicit transaction via pool.connect() ── */
