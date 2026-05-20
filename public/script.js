@@ -1839,16 +1839,13 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
         }
         leafletMap.setView(coords, 11);
         
-        // Initialize MarkerClusterGroup for the selected city context
+        // Clear previous markers
         if (window.cityCluster) {
           leafletMap.removeLayer(window.cityCluster);
         }
-        window.cityCluster = L.markerClusterGroup({
-          showCoverageOnHover: false,
-          maxClusterRadius: 40 // Groups pins if they are within 40 pixels
-        });
+        window.cityCluster = L.layerGroup();
 
-        // Loop through the city's locations and add them to the cluster
+        // Loop through the city's locations and add markers
         locs.forEach(loc => {
           const icon = L.divIcon({
             className: '',
@@ -1861,7 +1858,7 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
           window.cityCluster.addLayer(marker);
         });
 
-        // Add the finished cluster to the map
+        // Add markers to the map
         leafletMap.addLayer(window.cityCluster);
         leafletMap.invalidateSize();
       }, 100);
