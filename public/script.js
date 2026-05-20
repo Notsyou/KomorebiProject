@@ -781,7 +781,7 @@
           duration: 'Full Day · 8hrs', 
           price: '¥18,000',
           activities: [
-            // Link activity to location database entity
+            // Added locId for Senso-ji (it will be clickable!)
             { time: '08:00 AM', title: 'Senso-ji Temple', desc: 'Beat the crowds at Tokyo’s oldest temple in Asakusa.', locId: 'l-tok-01' },
             { time: '11:30 AM', title: 'Yanaka Ginza', desc: 'Wander the retro street food alleys and grab a quick bite.', locId: 'l-tok-10' },
             { time: '02:00 PM', title: 'Ueno Park & Museums', desc: 'Explore the national museum mile and surrounding gardens.', locId:'l-tok-11' },
@@ -793,7 +793,7 @@
           duration: 'Half Day · 5hrs', 
           price: '¥22,000',
           activities: [
-            // Link activity to location database entity
+            // Added locId for Toyosu (it will be clickable!)
             { time: '05:00 AM', title: 'Toyosu Wholesale', desc: 'Witness the energy of the early morning seafood logistics.', locId: 'l-tok-09' },
             { time: '07:30 AM', title: 'Breakfast Sushi', desc: 'Eat the freshest catch right outside the market.', locId:'l-tok-09' },
             { time: '10:00 AM', title: 'Tsukiji Outer Market', desc: 'Sample tamagoyaki, wagyu skewers, and matcha.', locId:'l-tok-13' }
@@ -988,7 +988,7 @@ sapporo: {
   const _host = window.location.hostname;
   const API_BASE = (_host === 'localhost' || _host === '127.0.0.1' || _host === '')
     ? 'http://localhost:3000/api'
-    : 'https://komorebiproject-backend.onrender.com/api';
+    : 'https://komorebproject-backend.onrender.com/api';
 
   const authState = {
     getToken:    () => localStorage.getItem('komorebi_jwt'),
@@ -1452,7 +1452,7 @@ sapporo: {
         reviewsList.innerHTML = reviews.map(buildReviewHTML).join('');
       }
 
-      // Pre-populate form if user has an existing review
+      // 👇 NEW LOGIC: Check if current user already reviewed this
       if (authState.isLoggedIn()) {
         const myReview = reviews.find(r => r.author === authState.getUsername());
         const submitBtn = document.getElementById('review-submit-btn');
@@ -1580,7 +1580,7 @@ document.getElementById('locModalHeart').addEventListener('click', () => {
   }
 });
 
-/* ── Share Location Link Generator ── */
+// 👇 PASTE THE NEW SHARE LOGIC RIGHT HERE 👇
 const locModalShareBtn = document.getElementById('locModalShare');
 if (locModalShareBtn) {
   locModalShareBtn.addEventListener('click', async () => {
@@ -1597,7 +1597,7 @@ if (locModalShareBtn) {
     }
   });
 }
-
+// 👆 END OF NEW SHARE LOGIC 👆
 
 
 function activateLocModalTab(targetId) {
@@ -1839,13 +1839,16 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
         }
         leafletMap.setView(coords, 11);
         
-        // Clear previous markers
+        // 👇 NEW LOGIC: Clear old clusters and build new ones for this city
         if (window.cityCluster) {
           leafletMap.removeLayer(window.cityCluster);
         }
-        window.cityCluster = L.layerGroup();
+        window.cityCluster = L.markerClusterGroup({
+          showCoverageOnHover: false,
+          maxClusterRadius: 40 // Groups pins if they are within 40 pixels
+        });
 
-        // Loop through the city's locations and add markers
+        // Loop through the city's locations and add them to the cluster
         locs.forEach(loc => {
           const icon = L.divIcon({
             className: '',
@@ -1858,7 +1861,7 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
           window.cityCluster.addLayer(marker);
         });
 
-        // Add markers to the map
+        // Add the finished cluster to the map
         leafletMap.addLayer(window.cityCluster);
         leafletMap.invalidateSize();
       }, 100);
@@ -2263,7 +2266,7 @@ navAuthBtn.addEventListener('click', () => {
     
     renderSavesDrawer(); // Renders database locations
     
-    // Initialize local itinerary rendering
+    // Add this to render the LocalStorage tours whenever the drawer opens!
     if (typeof renderSavedToursDrawer === 'function') {
       renderSavedToursDrawer();
     }
@@ -2676,7 +2679,16 @@ navAuthBtn.addEventListener('click', () => {
 
   // localStorage cleanup is handled in the logoutConfirm listener above
 
- /* ═══════════════════════════════════════════
+ /* ═══════════════════════════════════════════════════════════════
+   KOMOREBI MAPS — "My Saves" Dashboard  (script.js replacement)
+   ═══════════════════════════════════════════════════════════════
+   INSTRUCTION:
+     Replace the existing "MY ITINERARIES DASHBOARD VIEW" block
+     (from the comment line "MY ITINERARIES DASHBOARD VIEW" down
+     to — but NOT including — "PROFILE PAGE LOGIC") with this block.
+   ─────────────────────────────────────────────────────────────── */
+
+/* ═══════════════════════════════════════════
    MY SAVES DASHBOARD (Itineraries + Locations)
 ═══════════════════════════════════════════ */
 
@@ -2996,7 +3008,13 @@ function _refreshDashIfOpen() {
 }
 // Call _refreshDashIfOpen anywhere the badge is updated (add at end of updateSavesBadge calls if needed)
 
-/* ═══════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════════════
+   END OF My Saves Dashboard Block
+   ─────────────────────────────────────────────────────────────
+   The "PROFILE PAGE LOGIC" section continues immediately below.
+═══════════════════════════════════════════════════════════════ */
+
+  /* ═══════════════════════════════════════════
      PROFILE PAGE LOGIC
   ═══════════════════════════════════════════ */
   const profilePage = document.getElementById('profilePage');
@@ -3094,7 +3112,7 @@ function _refreshDashIfOpen() {
           });
           
           updateSavesBadge();
-          updateNavAuth(); 
+          updateNavAuth(); // Fix: Was previously calling the non-existent updateAuthUI()
           renderFullItinerariesPage();
           
         } else {
