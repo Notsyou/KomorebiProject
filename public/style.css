@@ -572,7 +572,7 @@ body {
 }
 
 #tourDetailBackdrop {
-  z-index: 600 !important;
+  z-index: 450 !important;
 }
 
 
@@ -1278,13 +1278,6 @@ body::before {
   color: var(--accent);
 }
 
-/* Dashboard remove button — red on hover so it's clearly destructive */
-.dash-remove-btn.is-saved:hover {
-  background: rgba(220, 40, 40, 0.18);
-  border-color: rgba(220, 40, 40, 0.5);
-  color: #e05555;
-}
-
 .loc-card__icon {
   font-size: 2rem;
   margin-bottom: 12px;
@@ -1923,7 +1916,7 @@ body.modal-lock {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  z-index: 600 !important;
+  z-index: 500 !important;
   background: rgba(0,0,0,0.65);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -2428,23 +2421,14 @@ body.modal-lock {
 
 .page-overlay__inner {
   position: relative;
-  /* Layered glassmorphism: deep dark base + warm tint + aggressive blur */
-  background:
-    linear-gradient(160deg, rgba(34, 28, 24, 0.82) 0%, rgba(22, 26, 31, 0.88) 100%);
-  border: 1px solid rgba(240, 237, 232, 0.09);
-  border-top: none; /* top edge handled by ::before warm cap */
-  border-radius: 0 0 24px 24px;
-  backdrop-filter: blur(40px) saturate(180%) brightness(0.95);
-  -webkit-backdrop-filter: blur(40px) saturate(180%) brightness(0.95);
+  background: var(--bg-surface);
+  border: 1px solid var(--glass-border);
+  border-radius: 0 0 20px 20px;
   width: 100%;
   max-width: 1000px;
   min-height: 100vh;
-  padding: 88px 68px 96px;
-  box-shadow:
-    0 48px 120px rgba(0, 0, 0, 0.75),
-    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
-    inset 0 1px 0 0 rgba(255, 79, 0, 0.08);
-  overflow: hidden; /* contain the ::before / ::after pseudo decorations */
+  padding: 80px 60px 80px;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.7);
 }
 
 .page-overlay__close {
@@ -2465,43 +2449,6 @@ body.modal-lock {
   z-index: 10;
 }
 
-.page-overlay__inner::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 10%;
-  right: 10%;
-  height: 180px;
-  background: radial-gradient(
-    ellipse at 50% 0%,
-    rgba(255, 79, 0, 0.07) 0%,
-    transparent 70%
-  );
-  pointer-events: none;
-  z-index: 1;
-}
-
-.page-overlay__inner::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(
-    90deg,
-    transparent            0%,
-    rgba(255, 79, 0, 0.18) 15%,
-    rgba(255, 79, 0, 0.55) 38%,
-    rgba(255, 160, 60, 0.7) 50%,
-    rgba(255, 79, 0, 0.55) 62%,
-    rgba(255, 79, 0, 0.18) 85%,
-    transparent            100%
-  );
-  pointer-events: none;
-  z-index: 2;
-}
-
 .page-overlay__close:hover {
   background: var(--accent-dim);
   border-color: var(--border-accent);
@@ -2509,174 +2456,37 @@ body.modal-lock {
 }
 
 .page-overlay__header {
-  position: relative;
   margin-bottom: 56px;
-  padding-left: 22px;
-  border-left: 2px solid var(--accent);
-}
-
-/* Subtle glow on the accent bar */
-.page-overlay__header::before {
-  content: '';
-  position: absolute;
-  left: -1px;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: var(--accent);
-  box-shadow: 0 0 12px 2px var(--accent-glow);
-  pointer-events: none;
 }
 
 .page-overlay__eyebrow {
   display: inline-block;
   font-family: var(--font-sans);
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 0.35em;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 14px;
-  opacity: 0.9;
+  margin-bottom: 16px;
 }
 
 .page-overlay__title {
   font-family: var(--font-serif);
-  font-size: clamp(2.6rem, 5vw, 4.2rem);
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
   font-weight: 900;
   color: var(--text-primary);
   letter-spacing: -0.03em;
   line-height: 0.95;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .page-overlay__sub {
   font-family: var(--font-sans);
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 300;
   color: var(--text-secondary);
   line-height: 1.7;
   max-width: 560px;
-}
-
-.profile-divider {
-  border: none;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 79, 0, 0.25) 20%,
-    rgba(240, 237, 232, 0.1) 50%,
-    rgba(255, 79, 0, 0.25) 80%,
-    transparent 100%
-  );
-  margin: 2.5rem 0;
-}
-
-/* ─────────────────────────────────────────────
-   PROFILE OVERLAY — semantic classes
-───────────────────────────────────────────── */
-
-/* Constrain the profile panel to a focused card width */
-.profile-overlay {
-  max-width: 520px !important;
-}
-
-/* Profile sections */
-.profile-section {
-  margin-top: 2.25rem;
-}
-
-.profile-section__title {
-  font-family: var(--font-sans);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-  margin-bottom: 1.25rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--border);
-}
-
-.profile-section__title--danger {
-  color: #e05555;
-  border-bottom-color: rgba(220, 60, 60, 0.2);
-}
-
-/* Logout — ghost style */
-.profile-btn--logout {
-  background: rgba(255, 255, 255, 0.07) !important;
-  border: 1px solid var(--border) !important;
-  color: var(--text-secondary) !important;
-  margin-bottom: 0.85rem;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease !important;
-}
-
-.profile-btn--logout:hover {
-  background: rgba(255, 255, 255, 0.12) !important;
-  border-color: rgba(240, 237, 232, 0.2) !important;
-  color: var(--text-primary) !important;
-  transform: none !important;
-  box-shadow: none !important;
-}
-
-/* Delete — danger outline */
-.profile-btn--delete {
-  background: transparent !important;
-  border: 1px solid rgba(220, 60, 60, 0.45) !important;
-  color: #e05555 !important;
-  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
-}
-
-.profile-btn--delete:hover {
-  background: rgba(220, 60, 60, 0.1) !important;
-  border-color: rgba(220, 60, 60, 0.7) !important;
-  box-shadow: 0 0 16px rgba(220, 60, 60, 0.2) !important;
-  transform: none !important;
-}
-
-/* ─────────────────────────────────────────────
-   MOBILE RESPONSIVE OVERRIDES
-───────────────────────────────────────────── */
-@media (max-width: 768px) {
-  .page-overlay__inner {
-    padding: 72px 36px 80px;
-    border-radius: 0 0 16px 16px;
-  }
-
-  .page-overlay__header {
-    padding-left: 16px;
-    margin-bottom: 40px;
-  }
-
-  .profile-overlay {
-    max-width: 100% !important;
-  }
-}
-
-@media (max-width: 600px) {
-  .page-overlay__inner {
-    padding: 64px 20px 72px;
-    border-radius: 0; /* full-bleed sheet on narrow screens */
-  }
-
-  .page-overlay__header {
-    padding-left: 14px;
-    margin-bottom: 32px;
-  }
-
-  .page-overlay__title {
-    font-size: clamp(2rem, 10vw, 2.8rem);
-  }
-
-  .profile-section__title {
-    font-size: 0.64rem;
-  }
-
-  .profile-divider {
-    margin: 1.75rem 0;
-  }
 }
 
 /* Tours page grid */
@@ -2812,7 +2622,7 @@ body.modal-lock {
   opacity: 0.8;
 }
 
-/* Responsive CTA adjustments */
+/* Fix: "Discover All" button visibility at smaller widths */
 .hero-scroll-cta {
   position: fixed;
   bottom: 48px;
@@ -2872,7 +2682,7 @@ body.modal-lock {
   }
 }
 
-/* Header button layout adjustments */
+/* Fix: modal__close button not colliding with save button in header */
 .modal__header-top {
   padding-right: 48px; /* space for absolute close btn */
 }
@@ -3135,7 +2945,7 @@ body.modal-lock {
   color: var(--accent);
 }
 
-/* CTA layer positioning */
+/* Discover All Locations button — fix z-index at smaller widths */
 @media (max-width: 900px) {
   .hero-scroll-cta {
     z-index: 110;
@@ -3285,18 +3095,15 @@ body.modal-lock {
 }
 
 .itineraries-dashboard__nav {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 16px;
-  padding: 1.6rem 5%;
-  border-bottom: 1px solid var(--border);
-  background: rgba(26, 29, 33, 0.96);
-  backdrop-filter: blur(16px);
-  flex-shrink: 0;
+  padding: 2rem 5%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(26, 29, 33, 0.95);
+  backdrop-filter: blur(10px);
 }
 
-/* Nav h2 is inside .dash-header-content — this is the legacy rule kept for safety */
 .itineraries-dashboard__nav h2 {
   font-family: var(--font-serif);
   font-size: 2.2rem;
@@ -3305,51 +3112,33 @@ body.modal-lock {
   letter-spacing: 1px;
 }
 
-/* Header content block — left column of the 3-col grid */
-.dash-header-content {
-  justify-self: start;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-/* Close button — right column of the 3-col grid */
 .itineraries-dashboard__close {
-  justify-self: end;
   background: none;
   border: none;
-  color: var(--text-secondary);
+  color: #fff;
   cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
-  transition: color 0.25s, transform 0.35s var(--ease-smooth), background 0.25s;
+  opacity: 0.6;
+  transition: 0.3s ease;
+  padding: 10px;
 }
 
 .itineraries-dashboard__close:hover {
-  color: var(--accent);
-  background: var(--accent-dim);
+  opacity: 1;
+  color: var(--accent, #FF4F00);
   transform: rotate(90deg);
 }
 
 .itineraries-dashboard__content {
   flex: 1;
   overflow-y: auto;
-  padding: 3.5rem 5% 6rem;
-  scrollbar-width: thin;
-  scrollbar-color: var(--accent-dim) transparent;
-}
-
-.itineraries-dashboard__content::-webkit-scrollbar { width: 4px; }
-.itineraries-dashboard__content::-webkit-scrollbar-thumb {
-  background: var(--accent-dim);
-  border-radius: 4px;
+  padding: 4rem 5%;
 }
 
 /* Dashboard Grid */
 .itineraries-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 28px;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 2.5rem;
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -3533,6 +3322,16 @@ body.modal-lock {
   }
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   KOMOREBI MAPS — "My Saves" Dashboard  (append to style.css)
+   ═══════════════════════════════════════════════════════════════
+   Instructions:
+     1. Remove (or comment out) the existing "PREMIUM DASHBOARD UPGRADES"
+        block from line 3325 to the end of style.css.
+     2. Paste this entire block in its place.
+   ─────────────────────────────────────────────────────────────── */
+
+
 /* ─────────────────────────────────────────────
    DASHBOARD SHELL
 ───────────────────────────────────────────── */
@@ -3563,15 +3362,16 @@ body.modal-lock {
    NAV BAR
 ───────────────────────────────────────────── */
 .itineraries-dashboard__nav {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 24px;
   padding: 1.6rem 5%;
   border-bottom: 1px solid var(--border);
   background: rgba(26, 29, 33, 0.96);
   backdrop-filter: blur(16px);
   flex-shrink: 0;
+  flex-wrap: wrap;
 }
 
 .dash-header-content {
@@ -3611,15 +3411,13 @@ body.modal-lock {
   border: 1px solid var(--border);
   /* keeps tabs from collapsing on wrap */
   flex-shrink: 0;
-  justify-self: center;  /* center within grid column */
 }
 
 .dash-tab {
   position: relative;
-  flex: 1;               /* equal width so indicator always covers full tab */
   background: none;
   border: none;
-  padding: 10px 24px;
+  padding: 10px 28px;
   color: var(--text-muted);
   font-family: var(--font-sans);
   font-size: 0.72rem;
@@ -3630,16 +3428,12 @@ body.modal-lock {
   transition: color 0.3s ease;
   z-index: 2;
   white-space: nowrap;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
 }
 
 .dash-tab span {         /* count badge */
   font-size: 0.58rem;
   font-weight: 700;
-  margin-left: 0;
+  margin-left: 6px;
   background: var(--bg-elevated);
   color: var(--text-muted);
   padding: 2px 6px;
@@ -3652,8 +3446,8 @@ body.modal-lock {
 }
 
 .dash-tab.active span {
-  background: rgba(255, 255, 255, 0.25);
-  color: #fff;
+  background: rgba(255, 79, 0, 0.2);
+  color: var(--accent);
 }
 
 /* Sliding pill */
@@ -3678,8 +3472,71 @@ body.modal-lock {
 
 
 /* ─────────────────────────────────────────────
-   CLOSE BUTTON — position handled by grid in __nav
+   CLOSE BUTTON
 ───────────────────────────────────────────── */
+.itineraries-dashboard__close {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: color 0.25s, transform 0.35s var(--ease-smooth), background 0.25s;
+  flex-shrink: 0;
+}
+
+.itineraries-dashboard__close:hover {
+  color: var(--accent);
+  background: var(--accent-dim);
+  transform: rotate(90deg);
+}
+
+
+/* ─────────────────────────────────────────────
+   CONTENT AREA & PANELS
+───────────────────────────────────────────── */
+.itineraries-dashboard__content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 3.5rem 5% 6rem;
+  /* custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-dim) transparent;
+}
+
+.itineraries-dashboard__content::-webkit-scrollbar {
+  width: 4px;
+}
+.itineraries-dashboard__content::-webkit-scrollbar-thumb {
+  background: var(--accent-dim);
+  border-radius: 4px;
+}
+
+.dash-panel {
+  /* Panels fade & slide when switching tabs */
+  animation: dashPanelIn 0.5s var(--ease-smooth) both;
+}
+
+.dash-panel--hidden {
+  display: none;
+}
+
+@keyframes dashPanelIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ─────────────────────────────────────────────
+   GRID
+───────────────────────────────────────────── */
+.itineraries-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 28px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
 
 
 /* ─────────────────────────────────────────────
@@ -3729,147 +3586,104 @@ body.modal-lock {
 ───────────────────────────────────────────── */
 .card-visual {
   position: relative;
-  height: 210px;
+  height: 200px;
   overflow: hidden;
-  background:
-    radial-gradient(ellipse at 30% 60%, rgba(255,79,0,0.07) 0%, transparent 65%),
-    var(--bg-elevated);
+  background: var(--bg-elevated);
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Subtle top border accent line */
-  border-bottom: 1px solid var(--border);
 }
 
 .card-visual img {
-  position: absolute;
-  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.72;
-  transition:
-    transform 0.75s var(--ease-smooth),
-    opacity   0.4s ease;
+  opacity: 0.75;
+  transition: transform 0.7s var(--ease-smooth), opacity 0.4s ease;
 }
 
 .premium-entry:hover .card-visual img {
-  transform: scale(1.07);
-  opacity: 0.95;
+  transform: scale(1.08);
+  opacity: 1;
 }
 
-/* Bottom-fade gradient so badge text always reads */
+/* Gradient overlay on image */
 .card-visual::after {
   content: '';
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(to top,  rgba(26,29,33,0.92) 0%,  transparent 48%),
-    linear-gradient(to bottom, rgba(26,29,33,0.45) 0%, transparent 35%);
+  background: linear-gradient(
+    to top,
+    rgba(26, 29, 33, 0.9) 0%,
+    transparent 55%
+  );
   pointer-events: none;
-  z-index: 1;
 }
 
-/* No-image fallback: emoji centred on a patterned bg */
+/* Large emoji for location cards with no photo */
 .loc-icon-large {
-  position: relative;
-  z-index: 2;
-  font-size: 4rem;
-  line-height: 1;
-  /* Layered glow so it pops on the dark bg */
-  filter:
-    drop-shadow(0 0 18px var(--accent-glow))
-    drop-shadow(0 0 40px rgba(255,79,0,0.2));
-  /* Gentle float */
-  animation: iconFloat 3.5s ease-in-out infinite alternate;
-}
-
-@keyframes iconFloat {
-  from { transform: translateY(0px);  }
-  to   { transform: translateY(-7px); }
+  font-size: 4.5rem;
+  filter: drop-shadow(0 0 24px var(--accent-glow));
+  z-index: 1;
 }
 
 /* City / category badge */
 .card-badge {
   position: absolute;
-  bottom: 14px;
-  left: 14px;
-  z-index: 3;
-  /* Glassy pill */
-  background: rgba(10, 11, 14, 0.72);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border-accent);
+  bottom: 12px;
+  left: 12px;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 4px 12px;
   border-radius: 30px;
-  padding: 5px 13px;
-  /* Text */
-  font-family: var(--font-sans);
-  font-size: 0.6rem;
+  font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accent);
-  /* Soft inner glow */
-  box-shadow: inset 0 0 8px rgba(255,79,0,0.08), 0 2px 8px rgba(0,0,0,0.4);
-  /* Smooth in with the card */
-  transition: opacity 0.3s ease;
-  white-space: nowrap;
-  max-width: calc(100% - 60px); /* never overlap the delete btn */
-  overflow: hidden;
-  text-overflow: ellipsis;
+  border: 1px solid var(--border-accent);
+  z-index: 2;
 }
 
-/* Delete button — always slightly visible, fully revealed on hover */
+/* Delete button — revealed on hover */
 .card-delete-btn {
   position: absolute;
   top: 12px;
   right: 12px;
-  z-index: 10;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  /* Glassy dark base */
-  background: rgba(10, 11, 14, 0.6);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.55);
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Start dim and dropped — reveal on hover */
-  opacity: 0.25;
-  transform: scale(0.85) translateY(-4px);
+  opacity: 0;
+  transform: scale(0.8) translateY(-6px);
   transition:
-    opacity    0.28s ease,
-    transform  0.28s var(--ease-smooth),
-    background 0.2s  ease,
+    opacity 0.3s ease,
+    transform 0.3s var(--ease-smooth),
+    background 0.2s ease,
     border-color 0.2s ease,
-    color      0.2s  ease,
-    box-shadow 0.2s  ease;
+    color 0.2s ease;
+  z-index: 10;
 }
 
-/* Reveal fully when the card wrapper is hovered */
 .premium-entry:hover .card-delete-btn {
   opacity: 1;
   transform: scale(1) translateY(0);
 }
 
-/* Danger state on direct button hover */
 .card-delete-btn:hover {
-  background: rgba(220, 40, 40, 0.85);
-  border-color: rgba(255, 80, 80, 0.6);
+  background: var(--accent);
+  border-color: var(--accent);
   color: #fff;
-  box-shadow: 0 0 14px rgba(220,40,40,0.5);
-}
-
-/* Touch devices: always show delete (no hover) */
-@media (hover: none) {
-  .card-delete-btn {
-    opacity: 0.7;
-    transform: scale(1) translateY(0);
-  }
+  box-shadow: 0 0 12px var(--accent-glow);
 }
 
 
@@ -3978,97 +3792,10 @@ body.modal-lock {
 
 
 /* ─────────────────────────────────────────────
-   CONTENT AREA — scrollable body below the nav
-───────────────────────────────────────────── */
-.itineraries-dashboard__content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 3rem 5% 5rem;
-  /* Custom scrollbar to match theme */
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-accent) transparent;
-}
-
-.itineraries-dashboard__content::-webkit-scrollbar {
-  width: 4px;
-}
-
-.itineraries-dashboard__content::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.itineraries-dashboard__content::-webkit-scrollbar-thumb {
-  background: var(--border-accent);
-  border-radius: 4px;
-}
-
-
-/* ─────────────────────────────────────────────
-   PANEL — fade-in on tab switch
-───────────────────────────────────────────── */
-.dash-panel {
-  animation: dashPanelIn 0.4s var(--ease-smooth) both;
-}
-
-@keyframes dashPanelIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.dash-panel--hidden {
-  display: none !important;
-}
-
-
-/* ─────────────────────────────────────────────
-   GRID — responsive card layout
-───────────────────────────────────────────── */
-.itineraries-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 28px;
-  align-content: start;
-}
-
-
-/* ─────────────────────────────────────────────
-   CLOSE BUTTON — right-justified in nav grid
-───────────────────────────────────────────── */
-.itineraries-dashboard__close {
-  justify-self: end;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--text-secondary);
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s var(--ease-smooth);
-}
-
-.itineraries-dashboard__close:hover {
-  background: var(--accent-dim);
-  border-color: var(--border-accent);
-  color: var(--accent);
-  transform: rotate(90deg);
-}
-
-
-/* ─────────────────────────────────────────────
    MOBILE
 ───────────────────────────────────────────── */
 @media (max-width: 768px) {
   .itineraries-dashboard__nav {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
     padding: 1.2rem 1.4rem;
     gap: 14px;
   }
@@ -4076,7 +3803,6 @@ body.modal-lock {
   .dash-tabs {
     width: 100%;
     order: 3; /* push below title row */
-    justify-self: unset;
   }
 
   .dash-tab {
