@@ -5,6 +5,8 @@ WORKDIR /app
 COPY package.json ./
 RUN npm install
 
+# NOTE: _env is excluded via .dockerignore — secrets must be injected at
+# runtime via docker-compose environment: or --env-file, never baked in.
 COPY . .
 EXPOSE 3000
 CMD ["node", "server.js"]

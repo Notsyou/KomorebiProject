@@ -54,7 +54,8 @@ services:
       - DB_USER=komorebi_user
       - DB_PASSWORD=${DB_APP_PASSWORD}
       - DB_NAME=komorebi_maps
-      - JWT_SECRET=${JWT_SECRET_KEY}
+      - JWT_SECRET=${JWT_SECRET}
+      - FRONTEND_URL=http://localhost:5500
     # 👇 Fixed the object syntax format here
     depends_on:
       db:

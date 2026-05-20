@@ -32,7 +32,7 @@ if (IS_POSTGRES) {
   pool = mysql.default.createPool({
     host:     process.env.DB_HOST     || 'localhost',
     user:     process.env.DB_USER     || 'komorebi_user',
-    password: process.env.DB_PASSWORD || 'komorebipassword',
+    password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME     || 'komorebi_maps',
     waitForConnections: true,
     connectionLimit: 10
@@ -59,10 +59,12 @@ async function query(sql, params = []) {
   if (IS_POSTGRES) {
     const pgSql = convertPlaceholders(sql);
     const result = await pool.query(pgSql, params);
-    // 👇 Attach rowCount so the DELETE route can read it!
+    // Return rows as first element, and a metadata object as second.
+    // The metadata carries rowCount so DELETE/UPDATE routes can check
+    // affected rows without touching the (empty) rows array.
     const rows = result.rows || [];
-    rows.rowCount = result.rowCount; 
-    return [rows, result.fields ?? []];
+    const meta = { rowCount: result.rowCount ?? 0, fields: result.fields ?? [] };
+    return [rows, meta];
   }
   
   // 👇 ADD THIS LINE BELOW THE POSTGRES BLOCK FOR LOCAL DOCKER SUPPORT
@@ -102,7 +104,19 @@ const authLimiter = rateLimit({
     res.status(429).json({ error: 'Too many requests, please try again later.' })
 });
 
-app.use('/api/', limiter);
+// Auth routes get their own strict limiter applied at the middleware level so
+// authLimiter is always the FIRST middleware that runs for login/signup —
+// no path-skip logic needed inside the general limiter.
+app.use('/api/login',  authLimiter);
+app.use('/api/signup', authLimiter);
+
+// General limiter for all other /api/* routes.
+// The path guard below is kept as a safety net so the general limiter can never
+// double-count login/signup hits even if the middleware order changes.
+app.use('/api/', (req, res, next) => {
+  if (req.path === '/login' || req.path === '/signup') return next();
+  limiter(req, res, next);
+});
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -138,7 +152,11 @@ app.options('*', cors());
 
 app.use(express.json());
 
-const JWT_SECRET  = process.env.JWT_SECRET || 'fallback_secret';
+const JWT_SECRET  = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  console.error('FATAL: JWT_SECRET environment variable is not set. Refusing to start.');
+  process.exit(1);
+}
 const SALT_ROUNDS = 10;
 
 /* ─── Middleware: Verify JWT ─── */
@@ -201,7 +219,11 @@ app.post('/api/signup', authLimiter, async (req, res) => {
     let newUserId;
 
     if (IS_POSTGRES) {
-      // RETURNING id — Postgres does not support insertId
+      // RETURNING id — Postgres supports RETURNING; MySQL uses insertId instead.
+      // IMPORTANT: this branch must never execute against MySQL — the RETURNING
+      // clause will cause a syntax error. IS_POSTGRES is set once at startup from
+      // DATABASE_URL; if that env var is misconfigured this will throw, which is
+      // the correct fail-fast behaviour.
       const [rows] = await query(
         'INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?) RETURNING id',
         [username, email, hash]
@@ -358,11 +380,11 @@ app.post('/api/bookmarks/sync', authenticateToken, async (req, res) => {
     } else {
       /* ── MySQL: multi-row INSERT IGNORE in one round-trip ── */
       const rows = trimmed.map(id => [req.user.id, id]);
-      const [result] = await pool.query(
+      const [result] = await query(
         'INSERT IGNORE INTO bookmarks (user_id, location_id) VALUES ?',
         [rows]
       );
-      inserted = result.affectedRows;
+      inserted = result ? (result.affectedRows ?? 0) : 0;
     }
 
     res.json({
@@ -439,6 +461,7 @@ app.post('/api/reviews', authenticateToken, async (req, res) => {
     let newReviewId;
 
     if (IS_POSTGRES) {
+      // RETURNING id — Postgres only. Must never execute against MySQL.
       const [rows] = await query(
         'INSERT INTO reviews (user_id, location_id, rating, text) VALUES (?, ?, ?, ?) RETURNING id',
         [req.user.id, locationId, rating, text]
@@ -461,6 +484,28 @@ app.post('/api/reviews', authenticateToken, async (req, res) => {
     });
   } catch (err) {
     console.error('Review post error:', err);
+    res.status(500).json({ error: 'Database operation failed.' });
+  }
+});
+
+/* DELETE /api/reviews/:locationId — auth required, own review only */
+app.delete('/api/reviews/:locationId', authenticateToken, async (req, res) => {
+  const { locationId } = req.params;
+  try {
+    // MySQL returns [ResultSetHeader, fields] — destructure the header as 'result'.
+    // Postgres wrapper returns [rows, meta] where meta.rowCount carries affected rows.
+    const [result, meta] = await query(
+      'DELETE FROM reviews WHERE user_id = ? AND location_id = ?',
+      [req.user.id, locationId]
+    );
+    const affected = IS_POSTGRES
+      ? (meta?.rowCount ?? 0)
+      : (result?.affectedRows ?? 0);
+    if (affected === 0)
+      return res.status(404).json({ error: 'Review not found or not yours.' });
+    res.json({ message: 'Review deleted.' });
+  } catch (err) {
+    console.error('Review delete error:', err);
     res.status(500).json({ error: 'Database operation failed.' });
   }
 });
@@ -587,72 +632,7 @@ app.post('/api/tours', authenticateToken, async (req, res) => {
       return res.status(400).json({ error: `Activity at index ${i} is missing time or title.` });
   }
 
-  /* ─── POST /api/tours/share ───────────────────────────────────────────────
-   Generates or retrieves a public share token for a specific tour.
-────────────────────────────────────────────────────────────────────────────── */
-app.post('/api/tours/share', authenticateToken, async (req, res) => {
-  const { name } = req.body;
-  if (!name) return res.status(400).json({ error: 'Tour name required.' });
-
-  try {
-    const [rows] = await query('SELECT share_token FROM saved_tours WHERE user_id = ? AND name = ?', [req.user.id, name.trim()]);
-    if (rows.length === 0) return res.status(404).json({ error: 'Tour not found. Save it first!' });
-
-    let token = rows[0].share_token;
-    if (!token) {
-      token = crypto.randomBytes(6).toString('hex'); // e.g. "a1b2c3d4e5f6"
-      await query('UPDATE saved_tours SET share_token = ? WHERE user_id = ? AND name = ?', [token, req.user.id, name.trim()]);
-    }
-    
-    // Dynamically get the frontend URL so it works locally and on Render
-    const origin = req.headers.origin || 'http://localhost:5500';
-    res.json({ token, link: `${origin}/?tour=${token}` });
-  } catch (err) {
-    console.error('Share generation error:', err);
-    res.status(500).json({ error: 'Database error.' });
-  }
-});
-
-/* ─── GET /api/tours/shared/:token ──────────────────────────────────────────
-   Public route to fetch a shared itinerary without authentication.
-────────────────────────────────────────────────────────────────────────────── */
-app.get('/api/tours/shared/:token', async (req, res) => {
-  try {
-    const [tourRows] = await query(
-      `SELECT t.id, t.name, t.duration, t.price, u.username as author 
-       FROM saved_tours t 
-       JOIN users u ON t.user_id = u.id 
-       WHERE t.share_token = ?`, 
-      [req.params.token]
-    );
-
-    if (tourRows.length === 0) return res.status(404).json({ error: 'Invalid or expired share link.' });
-    
-    const tour = tourRows[0];
-    
-    const [actRows] = await query(
-      'SELECT loc_id, time, title, description FROM saved_tour_activities WHERE tour_id = ? ORDER BY step_index ASC',
-      [tour.id]
-    );
-
-    res.json({
-      name: tour.name,
-      duration: tour.duration,
-      price: tour.price,
-      author: tour.author, // Tells the recipient who curated it!
-      activities: actRows.map(a => ({
-        locId: a.loc_id,
-        time: a.time,
-        title: a.title,
-        desc: a.description
-      }))
-    });
-  } catch (err) {
-    console.error('Shared fetch error:', err);
-    res.status(500).json({ error: 'Database error.' });
-  }
-});
-
+  /* ── Transaction: save the tour ── */
   if (IS_POSTGRES) {
     /* ── PostgreSQL path — explicit transaction via pool.connect() ── */
     const client = await pool.connect();
@@ -665,10 +645,11 @@ app.get('/api/tours/shared/:token', async (req, res) => {
         [req.user.id, safeName]
       );
 
-      /* Insert fresh parent row, capture new ID via RETURNING */
+      /* Insert fresh parent row, capture new ID via RETURNING.
+         updated_at is set explicitly — Postgres has no ON UPDATE trigger. */
       const tourResult = await client.query(
-        `INSERT INTO saved_tours (user_id, name, duration, price)
-         VALUES ($1, $2, $3, $4) RETURNING id`,
+        `INSERT INTO saved_tours (user_id, name, duration, price, updated_at)
+         VALUES ($1, $2, $3, $4, NOW()) RETURNING id`,
         [req.user.id, safeName, safeDuration, safePrice]
       );
       const newTourId = tourResult.rows[0].id;
@@ -750,6 +731,72 @@ app.get('/api/tours/shared/:token', async (req, res) => {
   }
 });
 
+/* ─── POST /api/tours/share ─────────────────────────────────────────────────
+   Generates or retrieves a public share token for a specific tour.
+────────────────────────────────────────────────────────────────────────────── */
+app.post('/api/tours/share', authenticateToken, async (req, res) => {
+  const { name } = req.body;
+  if (!name) return res.status(400).json({ error: 'Tour name required.' });
+
+  try {
+    const [rows] = await query('SELECT share_token FROM saved_tours WHERE user_id = ? AND name = ?', [req.user.id, name.trim()]);
+    if (rows.length === 0) return res.status(404).json({ error: 'Tour not found. Save it first!' });
+
+    let token = rows[0].share_token;
+    if (!token) {
+      token = crypto.randomBytes(24).toString('hex');
+      await query('UPDATE saved_tours SET share_token = ? WHERE user_id = ? AND name = ?', [token, req.user.id, name.trim()]);
+    }
+
+    const baseUrl = process.env.FRONTEND_URL || 'http://localhost:5500';
+    res.json({ token, link: `${baseUrl}/?tour=${token}` });
+  } catch (err) {
+    console.error('Share generation error:', err);
+    res.status(500).json({ error: 'Database error.' });
+  }
+});
+
+/* ─── GET /api/tours/shared/:token ──────────────────────────────────────────
+   Public route to fetch a shared itinerary without authentication.
+   Rate-limited to prevent brute-force enumeration of share tokens.
+────────────────────────────────────────────────────────────────────────────── */
+app.get('/api/tours/shared/:token', limiter, async (req, res) => {
+  try {
+    const [tourRows] = await query(
+      `SELECT t.id, t.name, t.duration, t.price, u.username as author 
+       FROM saved_tours t 
+       JOIN users u ON t.user_id = u.id 
+       WHERE t.share_token = ?`,
+      [req.params.token]
+    );
+
+    if (tourRows.length === 0) return res.status(404).json({ error: 'Invalid or expired share link.' });
+
+    const tour = tourRows[0];
+
+    const [actRows] = await query(
+      'SELECT loc_id, time, title, description FROM saved_tour_activities WHERE tour_id = ? ORDER BY step_index ASC',
+      [tour.id]
+    );
+
+    res.json({
+      name: tour.name,
+      duration: tour.duration,
+      price: tour.price,
+      author: tour.author,
+      activities: actRows.map(a => ({
+        locId: a.loc_id,
+        time: a.time,
+        title: a.title,
+        desc: a.description
+      }))
+    });
+  } catch (err) {
+    console.error('Shared fetch error:', err);
+    res.status(500).json({ error: 'Database error.' });
+  }
+});
+
 /* ─── DELETE /api/tours ─────────────────────────────────────────────────────
    Deletes a named tour for the authenticated user.
 
@@ -766,13 +813,16 @@ app.delete('/api/tours', authenticateToken, async (req, res) => {
     return res.status(400).json({ error: 'Tour name is required.' });
 
   try {
-    const [result] = await query(
+    // MySQL returns [ResultSetHeader, fields] — destructure the header as 'result'.
+    // Postgres wrapper returns [rows, meta] where meta.rowCount carries affected rows.
+    const [result, meta] = await query(
       'DELETE FROM saved_tours WHERE user_id = ? AND name = ?',
       [req.user.id, name.trim()]
     );
 
-    // Safely check for both our custom Postgres array attachment and native MySQL ResultSetHeader
-    const affected = result ? (result.rowCount ?? result.affectedRows ?? 0) : 0;
+    const affected = IS_POSTGRES
+      ? (meta?.rowCount ?? 0)
+      : (result?.affectedRows ?? 0);
 
     if (affected === 0)
       return res.status(404).json({ error: 'Tour not found.' });

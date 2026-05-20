@@ -65,7 +65,7 @@
         id: 'l-tok-08', icon: '🍣', name: 'Sukiyabashi Jiro', cat: 'cuisine',
         city: 'tokyo', cityLabel: 'Tokyo',
         desc: 'The legendary Michelin-starred sushi counter in a Ginza subway station.',
-        lat: 35.6722, lng: 139.7629,
+        lat: 35.6713, lng: 139.7641,
         address: 'Tsukamoto Sogyo Building B1, 2-15 Ginza, Chuo, Tokyo'
       },
       {
@@ -318,7 +318,7 @@
         id: 'l-oki-03', icon: '🐢', name: 'Cape Maeda Blue Cave', cat: 'nature',
         city: 'okinawa', cityLabel: 'Okinawa',
         desc: 'Blue Cave diving with sea turtles and tropical fish.',
-        lat: 26.4419, lng: 127.7181,
+        lat: 26.6338, lng: 127.8609,
         address: 'Maeda, Okinawa City, Okinawa'
       },
       {
@@ -781,7 +781,7 @@
           duration: 'Full Day · 8hrs', 
           price: '¥18,000',
           activities: [
-            // Added locId for Senso-ji (it will be clickable!)
+            // Link activity to location database entity
             { time: '08:00 AM', title: 'Senso-ji Temple', desc: 'Beat the crowds at Tokyo’s oldest temple in Asakusa.', locId: 'l-tok-01' },
             { time: '11:30 AM', title: 'Yanaka Ginza', desc: 'Wander the retro street food alleys and grab a quick bite.', locId: 'l-tok-10' },
             { time: '02:00 PM', title: 'Ueno Park & Museums', desc: 'Explore the national museum mile and surrounding gardens.', locId:'l-tok-11' },
@@ -793,7 +793,7 @@
           duration: 'Half Day · 5hrs', 
           price: '¥22,000',
           activities: [
-            // Added locId for Toyosu (it will be clickable!)
+            // Link activity to location database entity
             { time: '05:00 AM', title: 'Toyosu Wholesale', desc: 'Witness the energy of the early morning seafood logistics.', locId: 'l-tok-09' },
             { time: '07:30 AM', title: 'Breakfast Sushi', desc: 'Eat the freshest catch right outside the market.', locId:'l-tok-09' },
             { time: '10:00 AM', title: 'Tsukiji Outer Market', desc: 'Sample tamagoyaki, wagyu skewers, and matcha.', locId:'l-tok-13' }
@@ -968,7 +968,7 @@ sapporo: {
   /* Flat list for the grid section */
   const ALL_LOCATIONS = Object.values(LOCATIONS_DB).flat();
 
-  window._debug = { CITY_DATA, ALL_LOCATIONS, LOCATION_GALLERY };
+  /* window._debug intentionally omitted in production */
 
   /* ═══════════════════════════════════════════
      STATE
@@ -1059,25 +1059,134 @@ sapporo: {
 
   async function syncBookmarksFromDB() {
     if (!authState.isLoggedIn()) return;
+    
     try {
       const res = await fetch(`${API_BASE}/bookmarks`, {
         headers: { 'Authorization': `Bearer ${authState.getToken()}` }
       });
+
+      // 1. Intercept bad statuses (like 403 Forbidden)
+      if (!res.ok) {
+        throw new Error(`Server rejected request with status: ${res.status}`);
+      }
+
       const rows = await res.json();
+      
+      // 2. Failsafe: Ensure the backend actually gave us an array
+      if (!Array.isArray(rows)) {
+        throw new Error('Expected an array of bookmarks, but got an object.');
+      }
+
       bookmarks.clear();
       rows.forEach(row => {
-        const locId = row.location_id || row.locationId || row.id;
+        const locId = row.location_id;
         const loc = ALL_LOCATIONS.find(l => l.id === locId);
         if (loc) bookmarks.set(loc.id, loc);
       });
+      
       updateSavesBadge();
       renderSavesDrawer();
-      renderLocationGrid();
-      persistBookmarksToStorage();
+      // renderLocationGrid lives inside DOMContentLoaded — guard in case
+      // this sync runs before the DOM callback has finished registering it
+      if (typeof renderLocationGrid === 'function') renderLocationGrid();
+      if (typeof persistBookmarksToStorage === 'function') persistBookmarksToStorage();
+      
     } catch (err) {
       console.error('Bookmark sync error:', err);
+      // Auto-logout on 403 — token has expired or is invalid
+      if (err.message && err.message.includes('403')) {
+        authState.clearToken();
+        authState.clearUsername();
+        bookmarks.clear();
+        // updateSavesBadge/renderSavesDrawer may not be defined yet if called early,
+        // so guard with typeof
+        if (typeof updateSavesBadge === 'function') updateSavesBadge();
+        if (typeof renderSavesDrawer === 'function') renderSavesDrawer();
+        if (typeof updateNavAuth === 'function') updateNavAuth();
+      }
     }
   }
+
+  /* ═══════════════════════════════════════════
+     UI HELPERS — defined before DOMContentLoaded
+     so syncBookmarksFromDB can call them safely
+     on page load before the DOM callback fires.
+  ═══════════════════════════════════════════ */
+  function updateSavesBadge() {
+    const badgeEl = document.getElementById('savesBadge');
+    if (!badgeEl) return;
+    const savedTours = JSON.parse(localStorage.getItem('komorebi_saved_tours') || '[]');
+    const totalSaves = bookmarks.size + savedTours.length;
+    badgeEl.textContent = totalSaves;
+  }
+
+  function renderSavesDrawer() {
+    // Seed the in-memory Map from localStorage for guest sessions (mirrors tour pattern)
+    if (bookmarks.size === 0) {
+      const stored = JSON.parse(localStorage.getItem('komorebi_saved_locations') || '[]');
+      stored.forEach(loc => bookmarks.set(loc.id, loc));
+    }
+
+    // Use getElementById directly so this function is safe to call before DOMContentLoaded
+    const sub       = document.getElementById('savesDrawerSub');
+    const savesGrid = document.getElementById('savesGrid');
+    const savesEmpty = document.getElementById('savesEmpty');
+    if (!sub || !savesGrid || !savesEmpty) return; // DOM not ready yet
+
+    sub.textContent = `${bookmarks.size} saved location${bookmarks.size !== 1 ? 's' : ''}`;
+
+    // Remove all cards but keep empty state
+    savesGrid.querySelectorAll('.saves-card').forEach(c => c.remove());
+
+    const filtered = [...bookmarks.values()].filter(loc =>
+      savesFilter === 'all' || loc.cat === savesFilter
+    );
+
+    if (filtered.length === 0) {
+      savesEmpty.style.display = 'block';
+      return;
+    }
+    savesEmpty.style.display = 'none';
+
+    filtered.forEach(loc => {
+      const card = document.createElement('div');
+      card.className = 'saves-card';
+      card.innerHTML = `
+        <div class="saves-card__icon">${loc.icon}</div>
+        <div class="saves-card__body">
+          <div class="saves-card__city">${loc.cityLabel}</div>
+          <div class="saves-card__name">${loc.name}</div>
+          <div class="saves-card__desc">${loc.desc}</div>
+        </div>
+        <button class="saves-card__remove" aria-label="Remove save" data-id="${loc.id}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      `;
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.saves-card__remove')) return;
+        if (typeof window.closeSavesDrawer === 'function') window.closeSavesDrawer();
+        setTimeout(() => { if (typeof window.openLocationModal === 'function') window.openLocationModal(loc); }, 200);
+      });
+      card.querySelector('.saves-card__remove').addEventListener('click', () => {
+        bookmarks.delete(loc.id);
+        persistBookmarksToStorage();
+        updateSavesBadge();
+        renderSavesDrawer();
+        renderLocationGrid();
+        if (authState.isLoggedIn()) apiToggleBookmark(loc.id).catch(() => {});
+        showToast(`Removed "${loc.name}"`);
+      });
+      savesGrid.appendChild(card);
+    });
+  }
+
+
+  /* ═══════════════════════════════════════════
+     DOM-DEPENDENT INIT
+     Everything below touches the DOM and must
+     wait for DOMContentLoaded.
+  ═══════════════════════════════════════════ */
+  document.addEventListener('DOMContentLoaded', function onDOMReady() {
 
   /* ═══════════════════════════════════════════
      SLIDE ENGINE (untouched from prototype)
@@ -1343,7 +1452,7 @@ sapporo: {
         reviewsList.innerHTML = reviews.map(buildReviewHTML).join('');
       }
 
-      // 👇 NEW LOGIC: Check if current user already reviewed this
+      // Pre-populate form if user has an existing review
       if (authState.isLoggedIn()) {
         const myReview = reviews.find(r => r.author === authState.getUsername());
         const submitBtn = document.getElementById('review-submit-btn');
@@ -1394,9 +1503,11 @@ sapporo: {
     }
 
     // --- Gallery Tab (per-location) ---
-    const imgs = LOCATION_GALLERY[loc.id] || [
-      { src: `https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80`, cap: loc.name }
-    ];
+    const rawImgs = LOCATION_GALLERY[loc.id] || [];
+    // Filter out placeholder entries with no URL — fall back to Unsplash default
+    const FALLBACK_IMG = { src: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80', cap: loc.name };
+    const imgs = rawImgs.filter(img => img.src && img.src.trim());
+    if (imgs.length === 0) imgs.push(FALLBACK_IMG);
     lbImages = imgs;
     lbIndex = 0;
     const galleryGrid = document.getElementById('gallery-grid');
@@ -1447,6 +1558,9 @@ sapporo: {
     locModal.classList.remove('open');
     document.body.classList.remove('modal-lock');
     closeLightbox();
+    // Strip is-active so panels don't block clicks when the modal is closed
+    document.querySelectorAll('#location-modal .modal-panel').forEach(p => p.classList.remove('is-active'));
+    document.querySelectorAll('#location-modal .modal-tab').forEach(t => t.classList.remove('is-active'));
   }
 
   locModalClose.addEventListener('click', closeLocModal);
@@ -1466,7 +1580,7 @@ document.getElementById('locModalHeart').addEventListener('click', () => {
   }
 });
 
-// 👇 PASTE THE NEW SHARE LOGIC RIGHT HERE 👇
+/* ── Share Location Link Generator ── */
 const locModalShareBtn = document.getElementById('locModalShare');
 if (locModalShareBtn) {
   locModalShareBtn.addEventListener('click', async () => {
@@ -1483,18 +1597,27 @@ if (locModalShareBtn) {
     }
   });
 }
-// 👆 END OF NEW SHARE LOGIC 👆
+
 
 
 function activateLocModalTab(targetId) {
   document.querySelectorAll('#location-modal .modal-tab').forEach(t =>
     t.classList.toggle('is-active', t.dataset.modalTarget === targetId)
   );
-  // ... rest of the code continues ...
+  document.querySelectorAll('#location-modal .modal-panel').forEach(p =>
+    p.classList.toggle('is-active', p.id === targetId)
+  );
 
     if (targetId === 'mtab-map') {
       setTimeout(() => {
-        if (!locLeafletMap && currentLocModalLoc) {
+        if (currentLocModalLoc) {
+          // Destroy and recreate the map when the location has changed to avoid
+          // stale tile layers and event listener accumulation.
+          if (locLeafletMap) {
+            locLeafletMap.remove();
+            locLeafletMap = null;
+            locLeafletMarker = null;
+          }
           locLeafletMap = L.map('leaflet-map-loc', { zoomControl: true, scrollWheelZoom: false });
           L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
@@ -1607,7 +1730,10 @@ function activateLocModalTab(targetId) {
       showToast('Network error — please try again.');
     } finally {
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Post Review';
+      // Don't reset the label here — loadReviews() already sets it correctly
+      // to either 'Post Review' or 'Update Review' after the server reload above.
+      // Only restore the label on error paths where loadReviews was never called.
+      if (submitBtn.textContent === 'Posting…') submitBtn.textContent = 'Post Review';
     }
   });
 
@@ -1672,7 +1798,7 @@ function activateLocModalTab(targetId) {
 const toursListEl = document.getElementById('toursList');
 toursListEl.innerHTML = d.tours.map((t, i) =>
   `<div class="tour-item" data-index="${i}" style="cursor:pointer; transition: background 0.2s; border-radius: 6px;">
-    <div class="tour-item__num">0${i+1}</div>
+    <div class="tour-item__num">${String(i+1).padStart(2,'0')}</div>
     <div class="tour-item__info">
       <div class="tour-item__name">${t.name}</div>
       <div class="tour-item__meta">${t.duration}</div>
@@ -1713,7 +1839,7 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
         }
         leafletMap.setView(coords, 11);
         
-        // 👇 NEW LOGIC: Clear old clusters and build new ones for this city
+        // Initialize MarkerClusterGroup for the selected city context
         if (window.cityCluster) {
           leafletMap.removeLayer(window.cityCluster);
         }
@@ -1740,6 +1866,10 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
         leafletMap.invalidateSize();
       }, 100);
     }
+
+    // Show the modal and reset to the highlights tab
+    modalBackdrop.classList.add('open');
+    activateModalTab('highlights');
   }
 
   function closeCityModal() { modalBackdrop.classList.remove('open'); }
@@ -1770,9 +1900,11 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
   }
 
   function loadCityModalGalleryForLoc(locId) {
-    const imgs  = LOCATION_GALLERY[locId] || [
-      { src: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80', cap: 'No photos yet' }
-    ];
+    const rawImgs = LOCATION_GALLERY[locId] || [];
+    // Filter out placeholder entries with no URL — fall back to Unsplash default
+    const FALLBACK_IMG = { src: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80', cap: 'No photos yet' };
+    const imgs = rawImgs.filter(img => img.src && img.src.trim());
+    if (imgs.length === 0) imgs.push(FALLBACK_IMG);
     cityModalLbImages = imgs;
     cityModalLbIndex  = 0;
     const gridEl = document.getElementById('cityModalGalleryGrid');
@@ -1892,7 +2024,7 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
 
   let wAcc = 0, wTimer = null, wLock = false;
   window.addEventListener('wheel', (e) => {
-    if (modalBackdrop.classList.contains('open') || wLock || inGridView) return;
+    if (modalBackdrop.classList.contains('open') || document.body.classList.contains('modal-lock') || wLock || inGridView) return;
     wAcc += Math.abs(e.deltaX) >= Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
     clearTimeout(wTimer);
     wTimer = setTimeout(() => {
@@ -1911,7 +2043,7 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
   let tx = 0, ty = 0;
   document.addEventListener('touchstart', (e) => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
   document.addEventListener('touchend', (e) => {
-    if (modalBackdrop.classList.contains('open') || inGridView) return;
+    if (modalBackdrop.classList.contains('open') || document.body.classList.contains('modal-lock') || inGridView) return;
     const dx = tx - e.changedTouches[0].clientX;
     const dy = ty - e.changedTouches[0].clientY;
     if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
@@ -2009,6 +2141,11 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
       if (bookmarks.size > 0) await syncBookmarksToServer();
       await syncBookmarksFromDB();
 
+      // Sync tours from server after login
+      await syncToursToServer();
+      await syncToursFromDB();
+      if (typeof renderFullItinerariesPage === 'function') renderFullItinerariesPage();
+
       closeAuthModal();
       updateNavAuth();
       showToast(`Welcome, ${authState.getUsername() || identifier} ✓`);
@@ -2100,7 +2237,11 @@ navAuthBtn.addEventListener('click', () => {
     closeLogoutConfirm();
     authState.clearToken();
     authState.clearUsername();
+    // Clear localStorage FIRST so renderSavesDrawer's re-hydration guard finds nothing
+    localStorage.removeItem('komorebi_saved_tours');
+    localStorage.removeItem('komorebi_saved_locations');
     bookmarks.clear();
+    savesFilter = 'all';
     updateNavAuth();
     updateSavesBadge();
     renderSavesDrawer();
@@ -2109,20 +2250,6 @@ navAuthBtn.addEventListener('click', () => {
   });
   logoutBackdrop.addEventListener('click', e => { if (e.target === logoutBackdrop) closeLogoutConfirm(); });
 
-  function updateSavesBadge() {
-    // 1. Grab the badge element using the correct ID from your HTML
-    const badgeEl = document.getElementById('savesBadge');
-    if (!badgeEl) return;
-
-    // 2. Count the tours in LocalStorage
-    const savedTours = JSON.parse(localStorage.getItem('komorebi_saved_tours') || '[]');
-    
-    // 3. Add them to the database bookmarks count
-    const totalSaves = bookmarks.size + savedTours.length;
-    
-    // 4. Update the text
-    badgeEl.textContent = totalSaves;
-  }
   /* ═══════════════════════════════════════════
      SAVES DRAWER
   ═══════════════════════════════════════════ */
@@ -2139,7 +2266,7 @@ navAuthBtn.addEventListener('click', () => {
     
     renderSavesDrawer(); // Renders database locations
     
-    // Add this to render the LocalStorage tours whenever the drawer opens!
+    // Initialize local itinerary rendering
     if (typeof renderSavedToursDrawer === 'function') {
       renderSavedToursDrawer();
     }
@@ -2167,60 +2294,7 @@ navAuthBtn.addEventListener('click', () => {
     });
   });
 
-  function renderSavesDrawer() {
-    // Seed the in-memory Map from localStorage for guest sessions (mirrors tour pattern)
-    if (bookmarks.size === 0) {
-      const stored = JSON.parse(localStorage.getItem('komorebi_saved_locations') || '[]');
-      stored.forEach(loc => bookmarks.set(loc.id, loc));
-    }
 
-    const sub = document.getElementById('savesDrawerSub');
-    sub.textContent = `${bookmarks.size} saved location${bookmarks.size !== 1 ? 's' : ''}`;
-
-    // Remove all cards but keep empty state
-    savesGrid.querySelectorAll('.saves-card').forEach(c => c.remove());
-
-    const filtered = [...bookmarks.values()].filter(loc =>
-      savesFilter === 'all' || loc.cat === savesFilter
-    );
-
-    if (filtered.length === 0) {
-      savesEmpty.style.display = 'block';
-      return;
-    }
-    savesEmpty.style.display = 'none';
-
-    filtered.forEach(loc => {
-      const card = document.createElement('div');
-      card.className = 'saves-card';
-      card.innerHTML = `
-        <div class="saves-card__icon">${loc.icon}</div>
-        <div class="saves-card__body">
-          <div class="saves-card__city">${loc.cityLabel}</div>
-          <div class="saves-card__name">${loc.name}</div>
-          <div class="saves-card__desc">${loc.desc}</div>
-        </div>
-        <button class="saves-card__remove" aria-label="Remove save" data-id="${loc.id}">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-        </button>
-      `;
-      card.addEventListener('click', (e) => {
-        if (e.target.closest('.saves-card__remove')) return;
-        closeSavesDrawer();
-        setTimeout(() => openLocationModal(loc), 200);
-      });
-      card.querySelector('.saves-card__remove').addEventListener('click', () => {
-        bookmarks.delete(loc.id);
-        persistBookmarksToStorage();
-        updateSavesBadge();
-        renderSavesDrawer();
-        renderLocationGrid();
-        if (authState.isLoggedIn()) apiToggleBookmark(loc.id).catch(() => {});
-        showToast(`Removed "${loc.name}"`);
-      });
-      savesGrid.appendChild(card);
-    });
-  }
 
   /* ═══════════════════════════════════════════
      TOAST
@@ -2246,16 +2320,7 @@ navAuthBtn.addEventListener('click', () => {
   /* ═══════════════════════════════════════════
      INIT
   ═══════════════════════════════════════════ */
-  document.addEventListener('DOMContentLoaded', async () => {
-    updateNavAuth();
-    updateSavesBadge();
-    goTo(0, true);
-
-    if (authState.isLoggedIn()) {
-      await syncBookmarksFromDB();
-      await syncToursFromDB();
-    }
-  });
+  // (INIT is now handled by the onDOMReady wrapper above)
 
   /* ═══════════════════════════════════════════
      LIVE JST CLOCK
@@ -2312,8 +2377,9 @@ navAuthBtn.addEventListener('click', () => {
         // 1. Image Resolver
         let imgSrc = 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80'; // Default Fallback
         
-        if (cleanLocId && typeof LOCATION_GALLERY !== 'undefined' && LOCATION_GALLERY[cleanLocId] && LOCATION_GALLERY[cleanLocId][0]) {
-          imgSrc = LOCATION_GALLERY[cleanLocId][0].src;
+        const galleryEntry = cleanLocId && LOCATION_GALLERY[cleanLocId]?.[0];
+        if (galleryEntry && galleryEntry.src && galleryEntry.src.trim()) {
+          imgSrc = galleryEntry.src;
         } else {
           const titleLower = act.title.toLowerCase();
           if (titleLower.includes('ramen') || titleLower.includes('dinner') || titleLower.includes('lunch') || titleLower.includes('tasting') || titleLower.includes('food') || titleLower.includes('izakaya')) {
@@ -2589,48 +2655,17 @@ navAuthBtn.addEventListener('click', () => {
     }
   }
 
-/* ═══════════════════════════════════════════
-     UNIFIED CLOUD AUTHENTICATION SYNC LIFECYCLE
-  ═══════════════════════════════════════════ */
-  const originalHandleAuthSubmit = handleAuthSubmit;
-  handleAuthSubmit = async function() {
-    // 1. Execute the core authentication logic, credential processing, and token caching
-    await originalHandleAuthSubmit();
-    
-    // 2. If login is successful, run both sync streams sequentially to prevent thread collisions
-    if (authState.isLoggedIn()) {
-      try {
-        // Explicitly run single-location bookmark sync streams first
-        if (bookmarks.size > 0) await syncBookmarksToServer();
-        await syncBookmarksFromDB();
-        
-        // Next, process your dynamic dashboard itineraries 
-        await syncToursToServer();
-        await syncToursFromDB();
-        
-        // Force layout view trees to refresh simultaneously
-        updateSavesBadge();
-        renderSavesDrawer();
-        if (typeof renderFullItinerariesPage === 'function') renderFullItinerariesPage();
-        
-      } catch (syncError) {
-        console.error("Full cloud dataset sync sequence encountered an execution collision:", syncError);
-      }
-    }
-  };
+/* ── Tours sync is triggered from handleAuthSubmit directly (see above) ── */
 
   /* ═══════════════════════════════════════════
      GLOBAL BRIDGE — expose private IIFE functions
      so inline onclick attributes (mobile pills etc.)
      can reach them from the global scope.
   ═══════════════════════════════════════════ */
-  window.openSavesDrawer = openSavesDrawer;
-
-  window.openItinerariesDashboard = function() {
-    renderFullItinerariesPage();
-    itinsDashboard.classList.add('open');
-    document.body.classList.add('modal-lock');
-  };
+  window.openSavesDrawer   = openSavesDrawer;
+  window.closeSavesDrawer  = closeSavesDrawer;
+  window.openLocationModal = openLocationModal;
+  window.openTourDetail    = openTourDetail;
 
   window.openToursPage = function() {
     toursPage.classList.add('open');
@@ -2642,130 +2677,329 @@ navAuthBtn.addEventListener('click', () => {
     document.body.classList.add('modal-lock');
   };
 
-  document.getElementById('logoutConfirm').addEventListener('click', () => {
-    localStorage.removeItem('komorebi_saved_tours'); // Clean offline states on absolute exit
-    localStorage.removeItem('komorebi_saved_locations');
-  });
+  // localStorage cleanup is handled in the logoutConfirm listener above
 
  /* ═══════════════════════════════════════════
-     MY ITINERARIES DASHBOARD VIEW
-  ═══════════════════════════════════════════ */
-  const itinsDashboard = document.getElementById('itinerariesDashboard');
-  const navItinerariesBtn = document.getElementById('navItinerariesBtn');
-  const closeItinerariesBtn = document.getElementById('closeItinerariesBtn');
+   MY SAVES DASHBOARD (Itineraries + Locations)
+═══════════════════════════════════════════ */
 
-  if (navItinerariesBtn) {
-    navItinerariesBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (!itinsDashboard) {
-        console.error("Dashboard HTML element reference was missing.");
-        return;
-      }
-      renderFullItinerariesPage();
-      itinsDashboard.classList.add('open');
-      document.body.classList.add('modal-lock');
-    });
+const itinsDashboard   = document.getElementById('itinerariesDashboard');
+const dashTabs         = document.getElementById('dashTabs');
+const tabItineraries   = document.getElementById('tabItineraries');
+const tabLocations     = document.getElementById('tabLocations');
+const tabIndicator     = document.getElementById('tabIndicator');
+const tabItinCount     = document.getElementById('tabItinCount');
+const tabLocCount      = document.getElementById('tabLocCount');
+const panelItineraries = document.getElementById('panelItineraries');
+const panelLocations   = document.getElementById('panelLocations');
+
+let activeDashTab = 'itineraries';
+
+/* ── Open / Close ── */
+window.openItinerariesDashboard = function () {
+  if (!itinsDashboard) return;
+  activeDashTab = 'itineraries';
+  _syncTabUI();
+  renderFullItinerariesPage();
+  renderSavedLocationsPanel();
+  itinsDashboard.classList.add('open');
+  document.body.classList.add('modal-lock');
+};
+
+const navItinerariesBtn  = document.getElementById('navItinerariesBtn');
+const closeItinerariesBtn = document.getElementById('closeItinerariesBtn');
+
+if (navItinerariesBtn) {
+  navItinerariesBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.openItinerariesDashboard();
+  });
+}
+
+if (closeItinerariesBtn) {
+  closeItinerariesBtn.addEventListener('click', () => {
+    if (itinsDashboard) {
+      itinsDashboard.classList.remove('open');
+      document.body.classList.remove('modal-lock');
+    }
+  });
+}
+
+/* Escape key closes dashboard */
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && itinsDashboard && itinsDashboard.classList.contains('open')) {
+    itinsDashboard.classList.remove('open');
+    document.body.classList.remove('modal-lock');
+  }
+});
+
+/* ── Tab switching ── */
+function _syncTabUI() {
+  // Indicator slide
+  if (dashTabs) dashTabs.dataset.active = activeDashTab;
+
+  // Active class on buttons
+  [tabItineraries, tabLocations].forEach(btn => {
+    if (!btn) return;
+    const isActive = btn.dataset.tab === activeDashTab;
+    btn.classList.toggle('active', isActive);
+    btn.setAttribute('aria-selected', String(isActive));
+  });
+
+  // Panel visibility with re-entrance animation
+  [panelItineraries, panelLocations].forEach(panel => {
+    if (!panel) return;
+    const isVisible = panel.id === `panel${activeDashTab.charAt(0).toUpperCase() + activeDashTab.slice(1)}`;
+    if (isVisible) {
+      panel.classList.remove('dash-panel--hidden');
+      // Trigger re-animation by toggling class
+      panel.style.animation = 'none';
+      requestAnimationFrame(() => {
+        panel.style.animation = '';
+        panel.classList.add('dash-panel');
+      });
+    } else {
+      panel.classList.add('dash-panel--hidden');
+    }
+  });
+}
+
+function _switchTab(tab) {
+  if (activeDashTab === tab) return;
+  activeDashTab = tab;
+  _syncTabUI();
+  if (tab === 'itineraries') renderFullItinerariesPage();
+  else                        renderSavedLocationsPanel();
+}
+
+if (tabItineraries) tabItineraries.addEventListener('click', () => _switchTab('itineraries'));
+if (tabLocations)   tabLocations.addEventListener('click',   () => _switchTab('locations'));
+
+
+/* ─────────────────────────────────────────
+   HELPER: Build a premium card wrapper
+───────────────────────────────────────── */
+function _makeCardWrapper(index) {
+  const el = document.createElement('div');
+  el.className = 'premium-entry';
+  el.style.setProperty('--i', index);
+  return el;
+}
+
+/* ─────────────────────────────────────────
+   ITINERARIES PANEL
+───────────────────────────────────────── */
+function renderFullItinerariesPage() {
+  const grid = document.getElementById('itinerariesGrid');
+  if (!grid) return;
+
+  const savedTours = JSON.parse(localStorage.getItem('komorebi_saved_tours') || '[]');
+
+  // Update count badge
+  if (tabItinCount) tabItinCount.textContent = savedTours.length;
+
+  if (savedTours.length === 0) {
+    grid.innerHTML = _emptyState(
+      '旅',
+      'No itineraries yet',
+      'Explore the Tours page and save curated trips to see them here.'
+    );
+    return;
   }
 
-  if (closeItinerariesBtn) {
-    closeItinerariesBtn.addEventListener('click', () => {
-      if (itinsDashboard) {
-        itinsDashboard.classList.remove('open');
-        document.body.classList.remove('modal-lock');
+  grid.innerHTML = '';
+  savedTours.forEach((tour, index) => {
+    // Cover image: first gallery image matching any activity locId
+    let coverImg = 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80';
+    if (tour.activities) {
+      const firstLoc = tour.activities.find(act => act.locId && LOCATION_GALLERY[act.locId]);
+      if (firstLoc) {
+        const gallery = (LOCATION_GALLERY[firstLoc.locId] || []).find(img => img.src && img.src.trim());
+        if (gallery) coverImg = gallery.src;
       }
-    });
-  }
-
-  function renderFullItinerariesPage() {
-    const grid = document.getElementById('itinerariesGrid');
-    if (!grid) return;
-
-    const savedTours = JSON.parse(localStorage.getItem('komorebi_saved_tours') || '[]');
-
-    if (savedTours.length === 0) {
-      grid.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 6rem 0; opacity: 0.5;">
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="margin-bottom: 1rem;"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-          <h3 style="font-size: 1.8rem; font-weight: 300; margin-bottom: 0.5rem;">No itineraries saved yet</h3>
-          <p style="font-size: 1.1rem;">Explore the tours page and start curating your journey.</p>
-        </div>
-      `;
-      return;
     }
 
-    grid.innerHTML = savedTours.map((tour, index) => {
-      let coverImg = 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80';
-      if (tour.activities) {
-        const firstLoc = tour.activities.find(act => act.locId && LOCATION_GALLERY[act.locId]);
-        if (firstLoc) coverImg = LOCATION_GALLERY[firstLoc.locId][0].src;
-      }
+    const stops = tour.activities ? tour.activities.length : 0;
+    const wrapper = _makeCardWrapper(index);
 
-      return `
-        <div class="itin-card" data-index="${index}">
-          
-          <div class="itin-card__delete" data-tour-name="${tour.name}" title="Delete Itinerary">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-          </div>
+    wrapper.innerHTML = `
+      <div class="itin-card">
 
-          <div class="itin-card__cover-wrapper">
-            <img src="${coverImg}" alt="${tour.name}" class="itin-card__cover">
-          </div>
-          
-          <div class="itin-card__info">
-            <h4 class="itin-card__title">${tour.name}</h4>
-            <div class="itin-card__meta">
-              <span>${tour.duration}</span>
-              <span style="color: var(--accent);">${tour.activities ? tour.activities.length : 0} Stops</span>
-            </div>
+        <div class="card-visual">
+          <img src="${coverImg}" alt="${_esc(tour.name)}" loading="lazy">
+          <div class="card-badge">${_esc(tour.duration)}</div>
+          <button class="card-delete-btn" data-tour-name="${_esc(tour.name)}" title="Delete itinerary" aria-label="Delete ${_esc(tour.name)}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="card-content">
+          <span class="card-tag">Itinerary</span>
+          <h3>${_esc(tour.name)}</h3>
+          <div class="card-footer">
+            <span>${_esc(tour.duration)}</span>
+            <strong>${stops} Stop${stops !== 1 ? 's' : ''}</strong>
           </div>
         </div>
-      `;
-    }).join('');
 
-    grid.querySelectorAll('.itin-card').forEach(card => {
-      card.addEventListener('click', (e) => {
-        if (e.target.closest('.itin-card__delete')) return;
-        
-        const index = card.dataset.index;
-        const tourToOpen = savedTours[index];
-        openTourDetail(tourToOpen); 
-      });
+      </div>
+    `;
 
-      const deleteBtn = card.querySelector('.itin-card__delete');
-      if (deleteBtn) {
-        deleteBtn.addEventListener('click', async (e) => {
-          e.stopPropagation();
-          const tourName = deleteBtn.dataset.tourName;
-          
-          // Filter out locally
-          const updatedTours = savedTours.filter(t => t.name !== tourName);
-          localStorage.setItem('komorebi_saved_tours', JSON.stringify(updatedTours));
-          
-          // Clear backend persistence tables matching user indices
-          if (authState.isLoggedIn()) {
-            try {
-              await fetch(`${API_BASE}/tours`, {
-                method: 'DELETE',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${authState.getToken()}`
-                },
-                body: JSON.stringify({ name: tourName })
-              });
-            } catch (err) {
-              console.error('Cloud tour deletion synchronization sync crash:', err);
-            }
-          }
-
-          if (typeof showToast === 'function') showToast('Itinerary deleted.');
-          if (typeof updateSavesBadge === 'function') updateSavesBadge();
-          renderFullItinerariesPage();
-        });
-      }
+    // Click opens detail
+    wrapper.addEventListener('click', (e) => {
+      if (e.target.closest('.card-delete-btn')) return;
+      if (typeof window.openTourDetail === 'function') window.openTourDetail(tour);
     });
+
+    // Delete
+    wrapper.querySelector('.card-delete-btn').addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const tourName = e.currentTarget.dataset.tourName;
+      const updated  = savedTours.filter(t => t.name !== tourName);
+      localStorage.setItem('komorebi_saved_tours', JSON.stringify(updated));
+
+      if (authState.isLoggedIn()) {
+        try {
+          await fetch(`${API_BASE}/tours`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${authState.getToken()}`
+            },
+            body: JSON.stringify({ name: tourName })
+          });
+        } catch (err) {
+          console.error('Cloud tour deletion error:', err);
+        }
+      }
+
+      showToast('Itinerary deleted.');
+      updateSavesBadge();
+      renderFullItinerariesPage();
+    });
+
+    grid.appendChild(wrapper);
+  });
+}
+
+
+/* ─────────────────────────────────────────
+   LOCATIONS PANEL
+───────────────────────────────────────── */
+function renderSavedLocationsPanel() {
+  const grid = document.getElementById('locationsGrid');
+  if (!grid) return;
+
+  // bookmarks is a Map of locationId → location object
+  const savedIds  = bookmarks instanceof Map ? [...bookmarks.keys()] : [...(bookmarks || new Set())];
+  const savedLocs = savedIds
+    .map(id => ALL_LOCATIONS.find(l => l.id === id))
+    .filter(Boolean);
+
+  // Update count badge
+  if (tabLocCount) tabLocCount.textContent = savedLocs.length;
+
+  if (savedLocs.length === 0) {
+    grid.innerHTML = _emptyState(
+      '♡',
+      'No saved locations',
+      'Tap the heart on any location card to save it here.'
+    );
+    return;
   }
-  
-  /* ═══════════════════════════════════════════
+
+  grid.innerHTML = '';
+  savedLocs.forEach((loc, index) => {
+    const wrapper = _makeCardWrapper(index);
+
+    wrapper.innerHTML = `
+      <div class="loc-card">
+        <button class="loc-card__heart is-saved dash-remove-btn" data-loc-id="${_esc(loc.id)}" title="Remove from saves" aria-label="Remove ${_esc(loc.name)}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </button>
+        <div class="loc-card__icon">${loc.icon || '📍'}</div>
+        <div class="loc-card__city">${_esc(loc.cityLabel)}</div>
+        <h3 class="loc-card__name">${_esc(loc.name)}</h3>
+        <p class="loc-card__desc">${_esc(loc.desc)}</p>
+        <span class="loc-card__cat">${_esc(loc.cat)}</span>
+      </div>
+    `;
+
+    // Click opens location modal (dashboard stays open behind)
+    wrapper.addEventListener('click', (e) => {
+      if (e.target.closest('.dash-remove-btn')) return;
+      openLocationModal(loc);
+    });
+
+    // Unsave / remove bookmark
+    wrapper.querySelector('.dash-remove-btn').addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const locId = e.currentTarget.dataset.locId;
+      const targetLoc = ALL_LOCATIONS.find(l => l.id === locId);
+      if (!targetLoc) return;
+
+      // Use the existing heart-toggle path so state stays in sync
+      const heartBtn = document.querySelector(`.loc-card__heart[data-id="${locId}"]`);
+      toggleBookmarkOptimistic(targetLoc, heartBtn || e.currentTarget);
+
+      showToast('Location removed from saves.');
+      updateSavesBadge();
+      renderSavedLocationsPanel();
+    });
+
+    grid.appendChild(wrapper);
+  });
+}
+
+
+/* ─────────────────────────────────────────
+   EMPTY STATE TEMPLATE
+───────────────────────────────────────── */
+function _emptyState(glyph, title, body) {
+  return `
+    <div class="dash-empty-state premium-entry" style="--i:0">
+      <div class="empty-glyph">${glyph}</div>
+      <div class="empty-rule"></div>
+      <h3>${title}</h3>
+      <p>${body}</p>
+    </div>
+  `;
+}
+
+
+/* ─────────────────────────────────────────
+   UTILITY: HTML-escape
+───────────────────────────────────────── */
+function _esc(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+
+/* ─────────────────────────────────────────
+   RE-RENDER when dashboard is open and
+   saves badge / bookmark state changes
+───────────────────────────────────────── */
+const _origUpdateSavesBadge = typeof updateSavesBadge === 'function' ? updateSavesBadge : null;
+// Patch: after badge updates, also refresh open location panel
+function _refreshDashIfOpen() {
+  if (itinsDashboard && itinsDashboard.classList.contains('open')) {
+    if (activeDashTab === 'locations') renderSavedLocationsPanel();
+    else renderFullItinerariesPage();
+  }
+}
+// Call _refreshDashIfOpen anywhere the badge is updated (add at end of updateSavesBadge calls if needed)
+
+/* ═══════════════════════════════════════════
      PROFILE PAGE LOGIC
   ═══════════════════════════════════════════ */
   const profilePage = document.getElementById('profilePage');
@@ -2863,7 +3097,7 @@ navAuthBtn.addEventListener('click', () => {
           });
           
           updateSavesBadge();
-          updateNavAuth(); // Fix: Was previously calling the non-existent updateAuthUI()
+          updateNavAuth(); 
           renderFullItinerariesPage();
           
         } else {
@@ -2917,54 +3151,51 @@ navAuthBtn.addEventListener('click', () => {
       }
     });
   }
-// 2. Load Shared Itinerary OR Location on Page Load
-window.addEventListener('DOMContentLoaded', async () => {
+  // ── Shared tour / location deep-link handler ──
   const urlParams = new URLSearchParams(window.location.search);
   const sharedTourToken = urlParams.get('tour');
-  const sharedLocId = urlParams.get('loc'); // 👈 NEW: Check for individual location ID
-  
+  const sharedLocId     = urlParams.get('loc');
+
   if (sharedTourToken) {
-    try {
-      // Strip the URL param
-      window.history.replaceState({}, document.title, window.location.pathname);
-      
-      const res = await fetch(`${API_BASE}/tours/shared/${sharedTourToken}`);
-      if (res.ok) {
-        const sharedTour = await res.json();
-        // Add author tag
-        sharedTour.duration = `${sharedTour.duration} • Curated by ${sharedTour.author}`;
-        setTimeout(() => openTourDetail(sharedTour), 500);
-      } else {
-        showToast('Shared link is invalid or expired.');
+    (async () => {
+      try {
+        window.history.replaceState({}, document.title, window.location.pathname);
+        const res = await fetch(`${API_BASE}/tours/shared/${sharedTourToken}`);
+        if (res.ok) {
+          const sharedTour = await res.json();
+          sharedTour.duration = `${sharedTour.duration} • Curated by ${sharedTour.author}`;
+          // Use requestAnimationFrame after a short delay instead of a hardcoded 500ms guess,
+          // ensuring the DOM setup within DOMContentLoaded has fully committed before opening.
+          requestAnimationFrame(() => setTimeout(() => openTourDetail(sharedTour), 100));
+        } else {
+          showToast('Shared link is invalid or expired.');
+        }
+      } catch (e) {
+        console.error('Failed to load shared tour:', e);
       }
-    } catch (e) {
-      console.error('Failed to load shared tour:', e);
-    }
-  } 
-  // 👇 NEW: Handle single location sharing
-  else if (sharedLocId) {
+    })();
+  } else if (sharedLocId) {
     const loc = ALL_LOCATIONS.find(l => l.id === sharedLocId);
     if (loc) {
-      // Clean URL
       window.history.replaceState({}, document.title, window.location.pathname);
-      // Wait for map/loader to settle, then pop the modal
       setTimeout(() => openLocationModal(loc), 600);
     } else {
       showToast('Location not found.');
     }
   }
-});
-  
-  /* ═══════════════════════════════════════════
-     PWA SERVICE WORKER REGISTRATION
-  ═══════════════════════════════════════════ */
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then(reg => console.log('Service Worker registered!', reg.scope))
-        .catch(err => console.error('Service Worker failed:', err));
-    });
+
+  /* ── INIT calls ── */
+  // Clear any is-active classes baked into the HTML for location modal panels/tabs
+  document.querySelectorAll('#location-modal .modal-panel').forEach(p => p.classList.remove('is-active'));
+  document.querySelectorAll('#location-modal .modal-tab').forEach(t => t.classList.remove('is-active'));
+  updateNavAuth();
+  updateSavesBadge();
+  goTo(0, true);
+  if (authState.isLoggedIn()) {
+    syncBookmarksFromDB().then(() => syncToursFromDB());
   }
+
+  }); // end DOMContentLoaded
 
   
 

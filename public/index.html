@@ -5,21 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Komorebi Maps — Japan</title>
     <link rel="icon" type="image/png" href="/icon.png" />
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon" />
 
-    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#FF4F00">
   
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
     
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
-    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
-  
+
     <link rel="stylesheet" href="style.css" />
   </head>
 <body>
@@ -48,7 +43,7 @@
       <li><a href="#" data-scroll-to="grid">Discover</a></li>
       <li><a href="#" id="navToursLink">Tours</a></li>
       <li><a href="#" id="navAboutLink">About</a></li>
-      <li><a href="#" class="nav__link" id="navItinerariesBtn">My Itineraries</a></li>
+      <li><a href="#" class="nav__link" id="navItinerariesBtn">My-Saves</a></li>
     </ul>
     <div class="global-nav__actions">
       <!-- AUTH BUTTON — toggled by JS -->
@@ -694,54 +689,92 @@
     </div>
   </div>
 
-  <div class="itineraries-dashboard" id="itinerariesDashboard">
-    <div class="itineraries-dashboard__nav">
-      <h2>My Curated Trips</h2>
-      <button class="itineraries-dashboard__close" id="closeItinerariesBtn" aria-label="Close Dashboard">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    <div class="itineraries-dashboard" id="itinerariesDashboard">
+
+  <!-- ── NAV BAR ── -->
+  <div class="itineraries-dashboard__nav">
+
+    <div class="dash-header-content">
+      <span class="dash-eyebrow">◆ KOMOREBI MAPS</span>
+      <h2 class="dash-main-title">My Saves</h2>
+    </div>
+
+    <!-- TAB SWITCHER -->
+    <div class="dash-tabs" role="tablist" id="dashTabs">
+      <button class="dash-tab active" data-tab="itineraries" role="tab" aria-selected="true" id="tabItineraries">
+        Itineraries <span id="tabItinCount">0</span>
       </button>
+      <button class="dash-tab" data-tab="locations" role="tab" aria-selected="false" id="tabLocations">
+        Locations <span id="tabLocCount">0</span>
+      </button>
+      <!-- Sliding pill indicator -->
+      <div class="tab-indicator" id="tabIndicator" aria-hidden="true"></div>
     </div>
-    
-    <div class="itineraries-dashboard__content">
-      <div class="itineraries-grid" id="itinerariesGrid">
-        </div>
-    </div>
+
+    <button class="itineraries-dashboard__close" id="closeItinerariesBtn" aria-label="Close Dashboard">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M18 6 6 18M6 6l12 12"/>
+      </svg>
+    </button>
   </div>
 
-  <div class="page-overlay" id="profilePage">
-    <div class="page-overlay__inner" style="max-width: 500px;">
-      <button class="page-overlay__close" id="profilePageClose">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-      </button>
-      <div class="page-overlay__header">
-        <span class="page-overlay__eyebrow">◆ MY ACCOUNT</span>
-        <h2 class="page-overlay__title" id="profileUsername">Profile</h2>
-        <p class="page-overlay__sub" id="profileEmail">Loading...</p>
-      </div>
-      
-      <div style="margin-top: 2rem;">
-        <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Change Password</h3>
-        <div class="auth-field">
-          <input class="auth-field__input" id="profCurrentPw" type="password" placeholder="Current Password" />
-        </div>
-        <div class="auth-field">
-          <input class="auth-field__input" id="profNewPw" type="password" placeholder="New Password (min 8 chars)" />
-        </div>
-        <button class="auth-submit" id="profUpdatePwBtn">Update Password</button>
-      </div>
+  <!-- ── CONTENT PANELS ── -->
+  <div class="itineraries-dashboard__content">
 
-      <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0;" />
-
-      <div>
-        <h3 style="margin-bottom: 1rem; font-size: 1.1rem; color: #ff4a4a;">Danger Zone</h3>
-        <button class="auth-submit" id="profLogoutBtn" style="background: rgba(255,255,255,0.1); margin-bottom: 1rem;">Log Out</button>
-        <button class="auth-submit" id="profDeleteBtn" style="background: transparent; border: 1px solid #ff4a4a; color: #ff4a4a;">Delete Account</button>
-      </div>
+    <!-- ITINERARIES PANEL -->
+    <div class="dash-panel" id="panelItineraries" role="tabpanel">
+      <div class="itineraries-grid" id="itinerariesGrid"></div>
     </div>
-  </div>
 
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="script.js"></script>
+    <!-- LOCATIONS PANEL -->
+    <div class="dash-panel dash-panel--hidden" id="panelLocations" role="tabpanel">
+      <div class="itineraries-grid" id="locationsGrid"></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="page-overlay" id="profilePage">
+  <div class="page-overlay__inner profile-overlay">
+    <button class="page-overlay__close" id="profilePageClose">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6 6 18M6 6l12 12"/>
+      </svg>
+    </button>
+
+    <header class="page-overlay__header">
+      <span class="page-overlay__eyebrow">◆ MY ACCOUNT</span>
+      <h2 class="page-overlay__title" id="profileUsername">Profile</h2>
+      <p class="page-overlay__sub" id="profileEmail">Loading...</p>
+    </header>
+
+    <section class="profile-section">
+      <h3 class="profile-section__title">Change Password</h3>
+      <div class="auth-field">
+        <label class="auth-field__label" for="profCurrentPw">Current Password</label>
+        <input class="auth-field__input" id="profCurrentPw" type="password" placeholder="Enter current password" />
+      </div>
+      <div class="auth-field">
+        <label class="auth-field__label" for="profNewPw">New Password</label>
+        <input class="auth-field__input" id="profNewPw" type="password" placeholder="Minimum 8 characters" />
+      </div>
+      <button class="auth-submit" id="profUpdatePwBtn">Update Password</button>
+    </section>
+
+    <hr class="profile-divider" />
+
+    <section class="profile-section profile-section--danger">
+      <h3 class="profile-section__title profile-section__title--danger">Danger Zone</h3>
+      <button class="auth-submit profile-btn--logout" id="profLogoutBtn">Log Out</button>
+      <button class="auth-submit profile-btn--delete" id="profDeleteBtn">Delete Account</button>
+    </section>
+  </div>
+</div>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.js"></script>
+  <script src="script.js" defer></script>
+
 </body>
 </html>

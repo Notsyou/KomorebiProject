@@ -1,10 +1,10 @@
 -- ─────────────────────────────────────────────────────────────
--- MySQL init.sql (Local & Docker)
+-- PostgreSQL init.sql (Render)
 -- ─────────────────────────────────────────────────────────────
 
 -- DDL: Users
 CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE users (
 
 -- DDL: Locations
 CREATE TABLE locations (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     client_id VARCHAR(20) UNIQUE,          -- matches LOCATIONS_DB ids e.g. 'l-tok-01'
     title VARCHAR(100) NOT NULL,
     prefecture VARCHAR(50) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE locations (
 
 -- DDL: Bookmarks
 CREATE TABLE bookmarks (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
     location_id VARCHAR(20) NOT NULL,      -- client-side ID e.g. 'l-tok-01'
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -35,7 +35,7 @@ CREATE TABLE bookmarks (
 
 -- DDL: Reviews
 CREATE TABLE reviews (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
     location_id VARCHAR(20) NOT NULL,      -- client-side ID e.g. 'l-tok-01'
     rating SMALLINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
@@ -46,13 +46,13 @@ CREATE TABLE reviews (
     CONSTRAINT unique_review UNIQUE (user_id, location_id)
 );
 
--- DDL: Saved Tours 
+-- DDL: Saved Tours
 CREATE TABLE saved_tours (
-    id          INT AUTO_INCREMENT PRIMARY KEY,
+    id          SERIAL PRIMARY KEY,
     user_id     INT          NOT NULL,
     name        VARCHAR(150) NOT NULL,
     duration    VARCHAR(100) NOT NULL,
-    price       VARCHAR(50)  DEFAULT NULL, 
+    price       VARCHAR(50)  DEFAULT NULL,
     share_token VARCHAR(64)  UNIQUE DEFAULT NULL,
     created_at  TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
     updated_at  TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
@@ -60,13 +60,13 @@ CREATE TABLE saved_tours (
     CONSTRAINT unique_saved_tour UNIQUE (user_id, name)
 );
 
--- DDL: Saved Tour Activities 
+-- DDL: Saved Tour Activities
 CREATE TABLE saved_tour_activities (
-    id          INT AUTO_INCREMENT PRIMARY KEY,
+    id          SERIAL PRIMARY KEY,
     tour_id     INT          NOT NULL,
     step_index  SMALLINT     NOT NULL,
-    loc_id      VARCHAR(20)  DEFAULT NULL, 
-    time        VARCHAR(20)  NOT NULL, 
+    loc_id      VARCHAR(20)  DEFAULT NULL,
+    time        VARCHAR(20)  NOT NULL,
     title       VARCHAR(150) NOT NULL,
     description TEXT         DEFAULT NULL,
     created_at  TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
@@ -77,10 +77,7 @@ CREATE TABLE saved_tour_activities (
 -- DML: Seed Data
 -- ─────────────────────────────────────────────────────────────
 
--- WARNING: This hash is bcrypt('secret') — a well-known test value that appears
--- in public rainbow tables. For local dev only. DELETE this user before any
--- production deployment, or replace the hash with a strong unique password.
-INSERT INTO users (username, email, password_hash) 
+INSERT INTO users (username, email, password_hash)
 VALUES ('komorebi_explorer', 'explorer@komorebi.jp', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW');
 
 INSERT INTO locations (client_id, title, prefecture, description, category, image_url) VALUES
