@@ -3611,7 +3611,7 @@ body.modal-lock {
   top: 4px;
   bottom: 4px;
   left: 4px;
-  width: calc((100% - 8px) / 3);
+  width: calc((100% - 5px) / 3);
   background: var(--accent);
   border-radius: 8px;
   box-shadow: 0 4px 20px var(--accent-glow);
@@ -3622,7 +3622,7 @@ body.modal-lock {
 
 /* JS adds data-active to #dashTabs to slide the pill */
 #dashTabs[data-active="locations"] .tab-indicator {
-  transform: translateX(100%);
+  transform: translateX(105%);
 }
 #dashTabs[data-active="custom"] .tab-indicator {
   transform: translateX(200%);
