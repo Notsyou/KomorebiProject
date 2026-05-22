@@ -254,7 +254,7 @@ app.post('/api/signup', authLimiter, async (req, res) => {
       // DATABASE_URL; if that env var is misconfigured this will throw, which is
       // the correct fail-fast behaviour.
       const [rows] = await query(
-        'INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?) RETURNING id',
+        'INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING id',
         [username, email, hash]
       );
       newUserId = rows[0].id;
@@ -509,7 +509,7 @@ app.post('/api/reviews', authenticateToken, async (req, res) => {
     if (IS_POSTGRES) {
       // RETURNING id — Postgres only. Must never execute against MySQL.
       const [rows] = await query(
-        'INSERT INTO reviews (user_id, location_id, rating, text) VALUES (?, ?, ?, ?) RETURNING id',
+        'INSERT INTO reviews (user_id, location_id, rating, text) VALUES ($1, $2, $3, $4) RETURNING id',
         [req.user.id, locationId, rating, text]
       );
       newReviewId = rows[0].id;
@@ -894,7 +894,7 @@ app.post('/api/itineraries', itineraryLimiter, authenticateToken, async (req, re
     let newId;
     if (IS_POSTGRES) {
       const [rows] = await query(
-        'INSERT INTO itineraries (user_id, name, start_date) VALUES (?, ?, ?) RETURNING id',
+        'INSERT INTO itineraries (user_id, name, start_date) VALUES ($1, $2, $3) RETURNING id',
         [req.user.id, name.trim(), start_date]
       );
       newId = rows[0].id;
@@ -966,7 +966,7 @@ app.post('/api/itineraries/:id/items', itineraryLimiter, authenticateToken, asyn
     let newId;
     if (IS_POSTGRES) {
       const [result] = await query(
-        'INSERT INTO itinerary_items (itinerary_id, loc_id, item_date, item_time, notes) VALUES (?, ?, ?, ?, ?) RETURNING id',
+        'INSERT INTO itinerary_items (itinerary_id, loc_id, item_date, item_time, notes) VALUES ($1, $2, $3, $4, $5) RETURNING id',
         [id, loc_id, item_date, item_time, notes || null]
       );
       newId = result[0].id;
