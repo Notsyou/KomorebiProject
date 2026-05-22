@@ -3678,7 +3678,7 @@ body.modal-lock {
 
 /* JS adds data-active to #dashTabs to slide the pill */
 #dashTabs[data-active="locations"] .tab-indicator {
-  transform: translateX(calc(100% + 0px));
+  transform: translateX(calc(105% + 0px));
 }
 #dashTabs[data-active="custom"] .tab-indicator {
   transform: translateX(calc(200% + 0px));

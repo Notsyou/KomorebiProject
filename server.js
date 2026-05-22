@@ -108,11 +108,13 @@ const limiter = rateLimit({
 
 /* Itinerary limiter — generous limit for normal trip-planning activity.
    Each "add stop" fires ~2 DB round-trips (ownership check + insert), so
-   we budget 200 requests / 15 min to cover a session of heavy editing
-   without ever throttling a legitimate user.                              */
+   we budget 500 requests / 30 min to comfortably cover even the heaviest
+   editing sessions (reorders, deletes, re-adds) without throttling users.
+   A bot would need to sustain >16 req/min for 30 min to hit this — well
+   above any realistic human usage pattern.                                */
 const itineraryLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 200,
+  windowMs: 30 * 60 * 1000,
+  max: 500,
   standardHeaders: true,
   legacyHeaders: false,
   skip: (req) => isLocalRequest(req),
