@@ -95,15 +95,29 @@ const LOCAL_ORIGINS = [
 /* Skip rate limiting entirely for local development origins */
 const isLocalRequest = (req) => LOCAL_ORIGINS.includes(req.headers.origin);
 
-/* General API limiter — 100 requests per 15 minutes per IP */
+/* General API limiter — 300 requests per 15 minutes per IP */
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: 300,
   standardHeaders: true,
   legacyHeaders: false,
   skip: (req) => isLocalRequest(req),
   handler: (req, res) =>
     res.status(429).json({ error: 'Too many requests, please try again later.' })
+});
+
+/* Itinerary limiter — generous limit for normal trip-planning activity.
+   Each "add stop" fires ~2 DB round-trips (ownership check + insert), so
+   we budget 200 requests / 15 min to cover a session of heavy editing
+   without ever throttling a legitimate user.                              */
+const itineraryLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: (req) => isLocalRequest(req),
+  handler: (req, res) =>
+    res.status(429).json({ error: 'Itinerary rate limit reached. Please wait a moment before adding more stops.' })
 });
 
 /* Auth limiter — 10 attempts per hour per IP (brute-force protection) */
@@ -869,7 +883,7 @@ app.delete('/api/tours', authenticateToken, async (req, res) => {
 ═══════════════════════════════════════════ */
 
 /* POST /api/itineraries — create a new itinerary */
-app.post('/api/itineraries', authenticateToken, async (req, res) => {
+app.post('/api/itineraries', itineraryLimiter, authenticateToken, async (req, res) => {
   const { name, start_date } = req.body;
   if (!name || !start_date)
     return res.status(400).json({ error: 'name and start_date are required.' });
@@ -933,7 +947,7 @@ app.delete('/api/itineraries/:id', authenticateToken, async (req, res) => {
 });
 
 /* POST /api/itineraries/:id/items — add an item to an itinerary */
-app.post('/api/itineraries/:id/items', authenticateToken, async (req, res) => {
+app.post('/api/itineraries/:id/items', itineraryLimiter, authenticateToken, async (req, res) => {
   const { id } = req.params;
   const { loc_id, item_date, item_time, notes } = req.body;
   if (!loc_id || !item_date || !item_time)
@@ -1042,37 +1056,21 @@ app.patch('/api/itineraries/:id', authenticateToken, async (req, res) => {
   }
 
   try {
-    // Build dynamic SET clause
+    // Build dynamic SET clause using unified query() wrapper (works on both MySQL and PG)
     const fields = [];
     const vals   = [];
     if (name)       { fields.push('name = ?');       vals.push(name.trim()); }
     if (start_date) { fields.push('start_date = ?'); vals.push(start_date); }
     vals.push(itinId, userId);
 
-    const [result] = await pool.execute(
+    const [result, meta] = await query(
       `UPDATE itineraries SET ${fields.join(', ')} WHERE id = ? AND user_id = ?`,
       vals
     );
-    if (result.affectedRows === 0) return res.status(404).json({ error: 'Itinerary not found.' });
+    const affected = IS_POSTGRES ? (meta?.rowCount ?? 0) : (result?.affectedRows ?? 0);
+    if (affected === 0) return res.status(404).json({ error: 'Itinerary not found.' });
     return res.json({ message: 'Itinerary updated.' });
   } catch (err) {
-    if (err.code === 'ER_NO_SUCH_TABLE' || err.message?.includes('syntax')) {
-      // PostgreSQL fallback
-      try {
-        const fields = [];
-        const vals   = [];
-        if (name)       { fields.push(`name = $${vals.length + 1}`);       vals.push(name.trim()); }
-        if (start_date) { fields.push(`start_date = $${vals.length + 1}`); vals.push(start_date); }
-        vals.push(itinId, userId);
-        await query(
-          `UPDATE itineraries SET ${fields.join(', ')} WHERE id = $${vals.length - 1} AND user_id = $${vals.length}`,
-          vals
-        );
-        return res.json({ message: 'Itinerary updated.' });
-      } catch (pgErr) {
-        console.error('Itinerary patch error (PG):', pgErr);
-      }
-    }
     console.error('Itinerary patch error:', err);
     res.status(500).json({ error: 'Database operation failed.' });
   }
@@ -1090,30 +1088,26 @@ app.patch('/api/itineraries/:id/items/:itemId', authenticateToken, async (req, r
   }
 
   try {
-    const [result] = await pool.execute(
-      `UPDATE itinerary_items ii
-         JOIN itineraries i ON ii.itinerary_id = i.id
-       SET ii.sort_order = ?
-       WHERE ii.id = ? AND i.id = ? AND i.user_id = ?`,
-      [sort_order, itemId, itinId, userId]
-    );
-    if (result.affectedRows === 0) return res.status(404).json({ error: 'Item not found.' });
+    if (IS_POSTGRES) {
+      // PG doesn't support multi-table UPDATE; check ownership then update separately
+      const [checkRows] = await query(
+        'SELECT ii.id FROM itinerary_items ii JOIN itineraries i ON ii.itinerary_id = i.id WHERE ii.id = ? AND i.id = ? AND i.user_id = ?',
+        [itemId, itinId, userId]
+      );
+      if (checkRows.length === 0) return res.status(404).json({ error: 'Item not found.' });
+      await query('UPDATE itinerary_items SET sort_order = ? WHERE id = ?', [sort_order, itemId]);
+    } else {
+      const [result] = await query(
+        `UPDATE itinerary_items ii
+           JOIN itineraries i ON ii.itinerary_id = i.id
+         SET ii.sort_order = ?
+         WHERE ii.id = ? AND i.id = ? AND i.user_id = ?`,
+        [sort_order, itemId, itinId, userId]
+      );
+      if (result?.affectedRows === 0) return res.status(404).json({ error: 'Item not found.' });
+    }
     return res.json({ message: 'Item reordered.' });
   } catch (err) {
-    // PostgreSQL fallback
-    if (err.code === 'ER_NO_SUCH_TABLE' || err.message?.includes('syntax')) {
-      try {
-        const checkRows = await query(
-          'SELECT ii.id FROM itinerary_items ii JOIN itineraries i ON ii.itinerary_id = i.id WHERE ii.id = $1 AND i.id = $2 AND i.user_id = $3',
-          [itemId, itinId, userId]
-        );
-        if (checkRows.length === 0) return res.status(404).json({ error: 'Item not found.' });
-        await query('UPDATE itinerary_items SET sort_order = $1 WHERE id = $2', [sort_order, itemId]);
-        return res.json({ message: 'Item reordered.' });
-      } catch (pgErr) {
-        console.error('Item reorder error (PG):', pgErr);
-      }
-    }
     console.error('Item reorder error:', err);
     res.status(500).json({ error: 'Database operation failed.' });
   }
