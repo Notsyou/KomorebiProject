@@ -1847,6 +1847,8 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
       tab.addEventListener('click', () => {
         tabsEl.querySelectorAll('.city-gallery-tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
+        // Always close any open lightbox before loading new gallery
+        closeCityModalLightbox();
         loadCityModalGalleryForLoc(tab.dataset.locId);
       });
     });

@@ -1004,6 +1004,8 @@ body::before {
   align-items: center;
   gap: 12px;
   margin-left: auto;
+  flex-shrink: 0;
+  min-width: 0;
 }
 
 .nav-auth-btn {
@@ -1022,6 +1024,15 @@ body::before {
   cursor: pointer;
   transition: all 0.2s var(--ease-smooth);
   white-space: nowrap;
+  max-width: 160px;        /* prevent long usernames from blowing out the row */
+  overflow: hidden;
+}
+
+.nav-auth-btn__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 }
 
 .nav-auth-btn:hover,
@@ -1050,6 +1061,7 @@ body::before {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  flex-shrink: 0;  /* never let this get pushed away */
 }
 
 .nav-saves-btn:hover {
@@ -1925,6 +1937,49 @@ body.modal-lock {
   .grid-section__header { flex-direction: column; gap: 16px; }
   .saves-drawer { width: 100%; }
 }
+
+/* ── Fix 5: global-nav collapses on small screens ── */
+/* At 600px and below: hide "KOMOREBI" text, keep just the ◆ diamond */
+@media (max-width: 600px) {
+  .global-nav {
+    padding: 14px 16px;
+    gap: 0;
+  }
+
+  /* Collapse font-size to zero hides the " KOMOREBI" text node without
+     touching the .logo-mark span which gets its own size restored below */
+  .global-nav__logo {
+    font-size: 0;
+    gap: 0;
+    flex-shrink: 0;
+  }
+
+  .global-nav__logo .logo-mark {
+    font-size: 1rem;  /* restore the diamond icon */
+  }
+
+  .global-nav__actions {
+    gap: 6px;
+  }
+
+  /* Tighten the auth button further — only icon + short label */
+  .nav-auth-btn {
+    max-width: 120px;
+    padding: 7px 11px;
+    gap: 5px;
+  }
+
+  .nav-saves-btn {
+    padding: 6px 10px;
+  }
+}
+
+/* At 420px: also tighten the auth btn label to a short username cap */
+@media (max-width: 420px) {
+  .nav-auth-btn {
+    max-width: 90px;
+  }
+}
 /* ═══════════════════════════════════════════
    LOCATION DETAIL MODAL — Gallery / Map / Reviews
 ═══════════════════════════════════════════ */
@@ -2394,6 +2449,7 @@ body.modal-lock {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;   /* breathing room between stars and submit button */
   margin-top: 10px;
 }
 
@@ -3611,7 +3667,7 @@ body.modal-lock {
   top: 4px;
   bottom: 4px;
   left: 4px;
-  width: calc((100% - 5px) / 3);
+  width: calc((100% - 8px) / 3);
   background: var(--accent);
   border-radius: 8px;
   box-shadow: 0 4px 20px var(--accent-glow);
@@ -3622,10 +3678,44 @@ body.modal-lock {
 
 /* JS adds data-active to #dashTabs to slide the pill */
 #dashTabs[data-active="locations"] .tab-indicator {
-  transform: translateX(105%);
+  transform: translateX(calc(100% + 0px));
 }
 #dashTabs[data-active="custom"] .tab-indicator {
-  transform: translateX(200%);
+  transform: translateX(calc(200% + 0px));
+}
+
+/* On very small screens the pill maths go wrong — switch to a simple underline */
+@media (max-width: 371px) {
+  .tab-indicator {
+    display: none;
+  }
+
+  .dash-tabs {
+    gap: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+  }
+
+  .dash-tab {
+    flex: 1;
+    padding: 10px 6px;
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    margin-bottom: -1px;
+    background: none;
+  }
+
+  .dash-tab.active {
+    border-bottom-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .dash-tab span { display: none; }  /* hide count badges — too cramped */
 }
 
 
