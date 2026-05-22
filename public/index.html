@@ -368,6 +368,12 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
       </button>
 
+      <!-- Add to Itinerary button — logged-in only, shown by JS -->
+      <!-- Add-to-Itinerary button (logged-in only, opens loc picker overlay) -->
+      <button id="locModalAddToItin" aria-label="Add to itinerary" style="position:absolute;top:16px;right:143px;display:none;background:transparent;border:none;color:#fff;cursor:pointer;padding:8px;transition:color 0.2s;" onmouseover="this.style.color='#FF4F00'" onmouseout="this.style.color='#fff'" title="Add to itinerary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="12" y1="14" x2="12" y2="18"/><line x1="10" y1="16" x2="14" y2="16"/></svg>
+      </button>
+
       <!-- Header -->
       <div class="modal-header">
         <span class="modal-eyebrow" id="modal-loc-sub">Category · Region</span>
@@ -712,6 +718,9 @@
       <button class="dash-tab" data-tab="locations" role="tab" aria-selected="false" id="tabLocations">
         Locations <span id="tabLocCount">0</span>
       </button>
+      <button class="dash-tab" data-tab="custom" role="tab" aria-selected="false" id="tabCustom">
+        Custom <span id="tabCustomCount">0</span>
+      </button>
       <!-- Sliding pill indicator -->
       <div class="tab-indicator" id="tabIndicator" aria-hidden="true"></div>
     </div>
@@ -728,12 +737,24 @@
 
     <!-- ITINERARIES PANEL -->
     <div class="dash-panel" id="panelItineraries" role="tabpanel">
-      <div class="itineraries-grid" id="itinerariesGrid"></div>
+      <div class="itineraries-grid" id="savedToursGrid"></div>
     </div>
 
     <!-- LOCATIONS PANEL -->
     <div class="dash-panel dash-panel--hidden" id="panelLocations" role="tabpanel">
       <div class="itineraries-grid" id="locationsGrid"></div>
+    </div>
+
+    <!-- CUSTOM ITINERARIES PANEL -->
+    <div class="dash-panel dash-panel--hidden" id="panelCustom" role="tabpanel">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:0 0 16px 0;">
+        <span style="font-size:0.72rem;text-transform:uppercase;letter-spacing:1.5px;color:rgba(240,237,232,0.4);">Your custom trip plans</span>
+        <button id="newItinBtn" style="display:flex;align-items:center;gap:6px;background:#FF4F00;color:#fff;border:none;border-radius:6px;padding:7px 14px;font-size:0.8rem;font-weight:600;cursor:pointer;letter-spacing:0.5px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          New Itinerary
+        </button>
+      </div>
+      <div class="itineraries-grid" id="itinerariesGrid"></div>
     </div>
 
   </div>
@@ -777,7 +798,129 @@
 </div>
 
 
+<!-- Create Itinerary Modal -->
+<div id="createItinBackdrop" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;">
+  <div style="background:#22262C;border:1px solid rgba(255,79,0,0.35);border-radius:12px;padding:28px 24px;width:340px;max-width:90vw;box-shadow:0 16px 48px rgba(0,0,0,0.6);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <div>
+        <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:1.5px;color:#FF4F00;margin-bottom:4px;">◆ NEW ITINERARY</div>
+        <h3 style="margin:0;font-size:1.1rem;color:#F0EDE8;">Plan Your Journey</h3>
+      </div>
+      <button id="createItinClose" style="background:none;border:none;color:rgba(240,237,232,0.5);cursor:pointer;font-size:1.2rem;line-height:1;padding:4px;">✕</button>
+    </div>
+    <label style="display:block;font-size:0.75rem;color:rgba(240,237,232,0.6);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">Itinerary Name</label>
+    <input id="createItinName" type="text" placeholder="e.g. Tokyo Spring Trip" maxlength="120" style="width:100%;background:#2A2F38;border:1px solid rgba(255,255,255,0.12);border-radius:6px;color:#F0EDE8;padding:9px 12px;font-size:0.9rem;margin-bottom:14px;box-sizing:border-box;outline:none;" />
+    <label style="display:block;font-size:0.75rem;color:rgba(240,237,232,0.6);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">Start Date</label>
+    <input id="createItinDate" type="date" style="width:100%;background:#2A2F38;border:1px solid rgba(255,255,255,0.12);border-radius:6px;color:#F0EDE8;padding:9px 12px;font-size:0.9rem;margin-bottom:20px;box-sizing:border-box;outline:none;" />
+    <button id="createItinSubmit" style="width:100%;background:#FF4F00;color:#fff;border:none;border-radius:6px;padding:11px;font-size:0.9rem;font-weight:600;cursor:pointer;letter-spacing:0.5px;">Create Itinerary</button>
+    <p id="createItinError" style="margin:10px 0 0;font-size:0.78rem;color:#FF4F00;min-height:1em;text-align:center;"></p>
+  </div>
+</div>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="script.js"></script>
-</body>
+
+<!-- ═══════════════════════════════════════════════════════
+     LOC PICKER OVERLAY — full-screen location selector
+     Opens from: itinerary card "Add Stop" button OR loc-modal calendar button
+     Flow: pick city → filter/search → click loc → date/time/notes form
+     ══════════════════════════════════════════════════════════ -->
+<div id="locPickerOverlay" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(15,17,20,0.96);flex-direction:column;overflow:hidden;">
+
+  <!-- Header bar -->
+  <div style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:18px 24px 14px;border-bottom:1px solid rgba(255,255,255,0.07);">
+    <div>
+      <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:2px;color:#FF4F00;margin-bottom:2px;">◆ ADD STOP</div>
+      <h2 id="locPickerItinLabel" style="margin:0;font-size:1rem;color:#F0EDE8;font-weight:600;">Select a Location</h2>
+    </div>
+    <button id="locPickerClose" style="background:none;border:none;color:rgba(240,237,232,0.5);cursor:pointer;font-size:1.4rem;line-height:1;padding:6px;transition:color 0.2s;" onmouseover="this.style.color='#F0EDE8'" onmouseout="this.style.color='rgba(240,237,232,0.5)'">✕</button>
+  </div>
+
+  <!-- City tabs + search -->
+  <div style="flex-shrink:0;padding:14px 24px 10px;border-bottom:1px solid rgba(255,255,255,0.07);">
+    <!-- City tab pills -->
+    <div id="locPickerCityTabs" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+      <button class="lp-city-tab is-active" data-city="all">All</button>
+      <button class="lp-city-tab" data-city="tokyo">Tokyo</button>
+      <button class="lp-city-tab" data-city="osaka">Osaka</button>
+      <button class="lp-city-tab" data-city="nagoya">Nagoya</button>
+      <button class="lp-city-tab" data-city="okinawa">Okinawa</button>
+      <button class="lp-city-tab" data-city="sapporo">Sapporo</button>
+    </div>
+    <!-- Search -->
+    <div style="position:relative;">
+      <svg style="position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:0.4;pointer-events:none;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F0EDE8" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="locPickerSearch" type="text" placeholder="Search locations…" autocomplete="off"
+        style="width:100%;box-sizing:border-box;background:#2A2F38;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#F0EDE8;padding:8px 12px 8px 34px;font-size:0.85rem;outline:none;" />
+    </div>
+  </div>
+
+  <!-- Scrollable location grid -->
+  <div id="locPickerGrid" style="flex:1;overflow-y:auto;padding:16px 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;align-content:start;scrollbar-width:thin;scrollbar-color:rgba(255,79,0,0.4) transparent;">
+    <!-- populated by JS -->
+  </div>
+
+  <!-- Date/time/notes form — centered modal card after loc is chosen -->
+  <div id="locPickerForm" style="display:none;position:absolute;inset:0;z-index:10;background:rgba(10,12,15,0.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
+    <div style="background:#16191E;border:1px solid rgba(255,79,0,0.25);border-radius:16px;padding:28px 28px 24px;width:100%;max-width:400px;margin:0 24px;box-shadow:0 24px 60px rgba(0,0,0,0.6);">
+
+      <!-- Selected location header -->
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,0.07);">
+        <span id="locPickerChosenIcon" style="font-size:1.6rem;"></span>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:0.62rem;text-transform:uppercase;letter-spacing:2px;color:#FF4F00;margin-bottom:3px;">Adding Stop</div>
+          <div id="locPickerChosenName" style="font-size:1rem;color:#F0EDE8;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div>
+        </div>
+        <button id="locPickerFormBack" class="lp-back-btn">← Back</button>
+      </div>
+
+      <!-- Day + Time row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+        <div>
+          <label class="lp-label">Day</label>
+          <div style="display:flex;align-items:center;gap:0;border:1px solid rgba(255,255,255,0.12);border-radius:8px;overflow:hidden;height:42px;">
+            <button type="button" id="locPickerDayDec" style="width:38px;height:100%;background:rgba(255,255,255,0.04);color:#F0EDE8;border:none;border-right:1px solid rgba(255,255,255,0.08);font-size:1.1rem;cursor:pointer;flex-shrink:0;">−</button>
+            <span id="locPickerDayVal" style="flex:1;text-align:center;color:#F0EDE8;font-size:0.95rem;font-weight:600;user-select:none;">1</span>
+            <button type="button" id="locPickerDayInc" style="width:38px;height:100%;background:rgba(255,255,255,0.04);color:#F0EDE8;border:none;border-left:1px solid rgba(255,255,255,0.08);font-size:1.1rem;cursor:pointer;flex-shrink:0;">+</button>
+          </div>
+        </div>
+        <div>
+          <label class="lp-label">Time</label>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <input id="locPickerFormTime" type="time" class="lp-input" value="09:00" style="flex:1;" />
+            <button type="button" id="locPickerFormTimeSet" style="background:rgba(255,79,0,0.15);color:#FF4F00;border:1px solid rgba(255,79,0,0.35);border-radius:7px;padding:8px 10px;font-size:0.75rem;font-weight:700;cursor:pointer;white-space:nowrap;letter-spacing:0.3px;">Set ✓</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div style="margin-bottom:20px;">
+        <label class="lp-label">Notes <span style="opacity:0.45;font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
+        <textarea id="locPickerFormNotes" rows="2" placeholder="e.g. Book in advance, meet at entrance…" class="lp-input" style="resize:none;"></textarea>
+      </div>
+
+      <!-- Actions -->
+      <div style="display:flex;gap:10px;">
+        <button id="locPickerFormSave" style="flex:1;background:#FF4F00;color:#fff;border:none;border-radius:8px;padding:12px;font-size:0.88rem;font-weight:700;cursor:pointer;letter-spacing:0.5px;transition:opacity 0.18s;">Add Stop</button>
+      </div>
+      <p id="locPickerFormMsg" style="margin:8px 0 0;font-size:0.78rem;color:#FF4F00;min-height:1em;text-align:center;"></p>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Premium Confirm Modal ── -->
+<div id="confirmModal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(10,12,15,0.85);backdrop-filter:blur(8px);align-items:center;justify-content:center;">
+  <div style="background:#16191E;border:1px solid rgba(255,79,0,0.2);border-radius:16px;padding:32px 28px 24px;width:100%;max-width:360px;margin:0 24px;box-shadow:0 32px 80px rgba(0,0,0,0.7);">
+    <div style="font-size:0.62rem;text-transform:uppercase;letter-spacing:2px;color:#FF4F00;margin-bottom:10px;">◆ Confirm Action</div>
+    <h3 id="confirmModalTitle" style="margin:0 0 8px;font-size:1.15rem;color:#F0EDE8;font-weight:600;"></h3>
+    <p id="confirmModalMsg" style="margin:0 0 24px;font-size:0.88rem;color:rgba(240,237,232,0.55);line-height:1.5;"></p>
+    <div style="display:flex;gap:10px;">
+      <button id="confirmModalCancel" style="flex:1;background:transparent;border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:rgba(240,237,232,0.6);padding:11px;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.18s;">Cancel</button>
+      <button id="confirmModalOk" style="flex:1;background:#FF4F00;border:none;border-radius:8px;color:#fff;padding:11px;font-size:0.85rem;font-weight:700;cursor:pointer;letter-spacing:0.5px;transition:opacity 0.18s;">Delete</button>
+    </div>
+  </div>
+</div>
+
 </html>

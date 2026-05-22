@@ -815,6 +815,10 @@ body {
   font-weight: 300;
   color: var(--text-secondary);
   line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* TOURS LIST */
@@ -3607,7 +3611,7 @@ body.modal-lock {
   top: 4px;
   bottom: 4px;
   left: 4px;
-  width: calc(50% - 4px);
+  width: calc((100% - 8px) / 3);
   background: var(--accent);
   border-radius: 8px;
   box-shadow: 0 4px 20px var(--accent-glow);
@@ -3616,9 +3620,12 @@ body.modal-lock {
   pointer-events: none;
 }
 
-/* JS adds data-active="locations" to #dashTabs to slide the pill */
+/* JS adds data-active to #dashTabs to slide the pill */
 #dashTabs[data-active="locations"] .tab-indicator {
   transform: translateX(100%);
+}
+#dashTabs[data-active="custom"] .tab-indicator {
+  transform: translateX(200%);
 }
 
 
@@ -4200,4 +4207,438 @@ body.modal-lock {
   .profile-divider {
     margin: 1.75rem 0;
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   USER ITINERARY CARDS & STOPS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── User itinerary card (inside #panelItineraries) ── */
+.u-itin-card {
+  background: var(--bg-surface, #22262C);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+
+.u-itin-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.u-itin-card__eyebrow {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--accent, #FF4F00);
+  margin-bottom: 3px;
+}
+
+.u-itin-card__title {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-primary, #F0EDE8);
+  font-weight: 600;
+}
+
+.u-itin-card__date {
+  font-size: 0.78rem;
+  color: rgba(240, 237, 232, 0.5);
+}
+
+.u-itin-card__actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* "+ Stop" button */
+.itin-add-stop-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 79, 0, 0.12);
+  border: 1px solid rgba(255, 79, 0, 0.35);
+  border-radius: 6px;
+  color: var(--accent, #FF4F00);
+  cursor: pointer;
+  padding: 5px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  transition: background 0.18s, border-color 0.18s;
+}
+
+.itin-add-stop-btn:hover {
+  background: rgba(255, 79, 0, 0.22);
+}
+
+/* Trash / delete itinerary button */
+.itin-delete-btn {
+  background: none;
+  border: none;
+  color: rgba(240, 237, 232, 0.35);
+  cursor: pointer;
+  padding: 4px;
+  font-size: 1rem;
+  transition: color 0.2s;
+  line-height: 1;
+}
+
+.itin-delete-btn:hover {
+  color: var(--accent, #FF4F00);
+}
+
+/* Loading / empty state line inside items container */
+.itin-items-loading,
+.itin-items-empty {
+  font-size: 0.78rem;
+  color: rgba(240, 237, 232, 0.35);
+  padding: 6px 0;
+}
+
+/* ── Day group heading ── */
+.itin-day-group {
+  margin-bottom: 8px;
+}
+
+.itin-day-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: rgba(255, 79, 0, 0.8);
+  margin-bottom: 5px;
+  padding-top: 4px;
+}
+
+/* ── Individual stop row ── */
+.itin-item-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.itin-item-row__icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.itin-item-row__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.itin-item-row__name {
+  font-size: 0.85rem;
+  color: var(--text-primary, #F0EDE8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itin-item-row__notes {
+  font-size: 0.72rem;
+  color: rgba(240, 237, 232, 0.45);
+  margin-top: 1px;
+}
+
+.itin-item-row__time {
+  font-size: 0.72rem;
+  color: rgba(240, 237, 232, 0.4);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Remove-stop button */
+.itin-item-del {
+  background: none;
+  border: none;
+  color: rgba(240, 237, 232, 0.25);
+  cursor: pointer;
+  padding: 2px;
+  font-size: 0.8rem;
+  transition: color 0.2s;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.itin-item-del:hover {
+  color: var(--accent, #FF4F00);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LOC PICKER OVERLAY — location cards & itinerary picker cards
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Location card button in the picker grid */
+.lp-loc-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--bg-surface, #22262C);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  padding: 12px 13px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.18s, background 0.18s;
+}
+
+.lp-loc-card:hover {
+  border-color: rgba(255, 79, 0, 0.5);
+  background: var(--bg-elevated, #2A2F38);
+}
+
+.lp-loc-card__icon {
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+}
+
+.lp-loc-card__name {
+  font-size: 0.85rem;
+  color: var(--text-primary, #F0EDE8);
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lp-loc-card__meta {
+  font-size: 0.7rem;
+  color: rgba(240, 237, 232, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+/* Itinerary picker card (shown when user has 2+ itineraries) */
+.lp-itin-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--bg-surface, #22262C);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  padding: 14px 16px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.18s, background 0.18s;
+}
+
+.lp-itin-card:hover {
+  border-color: rgba(255, 79, 0, 0.5);
+  background: var(--bg-elevated, #2A2F38);
+}
+
+.lp-itin-card__eyebrow {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--accent, #FF4F00);
+  margin-bottom: 2px;
+}
+
+.lp-itin-card__name {
+  font-size: 0.9rem;
+  color: var(--text-primary, #F0EDE8);
+  font-weight: 600;
+}
+
+.lp-itin-card__date {
+  font-size: 0.72rem;
+  color: rgba(240, 237, 232, 0.4);
+}
+
+/* City tab active state (replaces JS inline style toggling) */
+.lp-city-tab {
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: rgba(240, 237, 232, 0.6);
+  font-size: 0.78rem;
+  font-weight: 400;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: border-color 0.18s, background 0.18s, color 0.18s;
+}
+
+.lp-city-tab.is-active {
+  border-color: rgba(255, 79, 0, 0.6);
+  background: rgba(255, 79, 0, 0.15);
+  color: var(--accent, #FF4F00);
+  font-weight: 600;
+}
+
+.lp-label {
+  display: block;
+  font-size: 0.68rem;
+  color: rgba(240, 237, 232, 0.45);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+
+.lp-input {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #F0EDE8;
+  padding: 10px 12px;
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.18s;
+  font-family: inherit;
+}
+
+.lp-input:focus {
+  border-color: rgba(255, 79, 0, 0.5);
+}
+
+.lp-back-btn {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  color: rgba(240, 237, 232, 0.55);
+  cursor: pointer;
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  font-family: inherit;
+  transition: border-color 0.18s, color 0.18s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.lp-back-btn:hover {
+  border-color: #FF4F00;
+  color: #FF4F00;
+}
+
+/* Picker grid empty state */
+.lp-grid-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px 0;
+  color: rgba(240, 237, 232, 0.35);
+  font-size: 0.88rem;
+}
+
+/* ── Reorder buttons inside stop rows ── */
+.itin-item-row__reorder {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex-shrink: 0;
+}
+
+.itin-reorder-btn {
+  background: none;
+  border: none;
+  color: rgba(240, 237, 232, 0.2);
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.55rem;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.itin-reorder-btn:hover:not(:disabled) {
+  color: var(--accent, #FF4F00);
+}
+
+.itin-reorder-btn:disabled {
+  cursor: default;
+  opacity: 0;
+}
+
+/* ── Inline edit form on itinerary card ── */
+.u-itin-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.u-itin-edit-name,
+.u-itin-edit-date {
+  background: var(--bg-elevated, #2A2F38);
+  border: 1px solid rgba(255, 79, 0, 0.35);
+  border-radius: 6px;
+  color: var(--text-primary, #F0EDE8);
+  font-size: 0.85rem;
+  font-family: var(--font-sans, 'Inter', sans-serif);
+  padding: 6px 10px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.18s;
+}
+
+.u-itin-edit-name:focus,
+.u-itin-edit-date:focus {
+  border-color: var(--accent, #FF4F00);
+}
+
+.u-itin-edit-date::-webkit-calendar-picker-indicator {
+  filter: invert(0.6);
+  cursor: pointer;
+}
+
+.u-itin-edit-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.u-itin-save-btn,
+.u-itin-cancel-btn {
+  flex: 1;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 6px 0;
+  transition: background 0.18s;
+}
+
+.u-itin-save-btn {
+  background: var(--accent, #FF4F00);
+  color: #fff;
+}
+
+.u-itin-save-btn:hover {
+  background: #e04400;
+}
+
+.u-itin-cancel-btn {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text-secondary, rgba(240, 237, 232, 0.7));
+}
+
+.u-itin-cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Edit pencil button */
+.itin-edit-btn {
+  background: none;
+  border: none;
+  color: rgba(240, 237, 232, 0.35);
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.itin-edit-btn:hover {
+  color: var(--accent, #FF4F00);
 }

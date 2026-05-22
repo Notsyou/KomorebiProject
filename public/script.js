@@ -2098,6 +2098,7 @@ toursListEl.querySelectorAll('.tour-item').forEach(item => {
       await syncToursToServer();
       await syncToursFromDB();
       if (typeof renderFullItinerariesPage === 'function') renderFullItinerariesPage();
+      if (typeof loadItineraries === 'function') loadItineraries();
 
       closeAuthModal();
       updateNavAuth();
@@ -2199,6 +2200,7 @@ navAuthBtn.addEventListener('click', () => {
     updateSavesBadge();
     renderSavesDrawer();
     renderLocationGrid();
+    if (typeof loadItineraries === "function") loadItineraries();
     showToast('Signed out');
   });
   logoutBackdrop.addEventListener('click', e => { if (e.target === logoutBackdrop) closeLogoutConfirm(); });
@@ -2258,6 +2260,32 @@ navAuthBtn.addEventListener('click', () => {
     t.textContent = msg;
     t.classList.add('visible');
     toastTimer = setTimeout(() => t.classList.remove('visible'), 2800);
+  }
+
+  /* ── Premium confirm modal ── */
+  function showConfirm(title, msg, okLabel = 'Delete') {
+    return new Promise(resolve => {
+      const modal  = document.getElementById('confirmModal');
+      const titleEl = document.getElementById('confirmModalTitle');
+      const msgEl   = document.getElementById('confirmModalMsg');
+      const okBtn   = document.getElementById('confirmModalOk');
+      const cancelBtn = document.getElementById('confirmModalCancel');
+      if (!modal) { resolve(window.confirm(msg)); return; }
+      titleEl.textContent = title;
+      msgEl.textContent   = msg;
+      okBtn.textContent   = okLabel;
+      modal.style.display = 'flex';
+      const cleanup = (result) => {
+        modal.style.display = 'none';
+        okBtn.removeEventListener('click', onOk);
+        cancelBtn.removeEventListener('click', onCancel);
+        resolve(result);
+      };
+      const onOk     = () => cleanup(true);
+      const onCancel = () => cleanup(false);
+      okBtn.addEventListener('click', onOk);
+      cancelBtn.addEventListener('click', onCancel);
+    });
   }
 
   /* ═══════════════════════════════════════════
@@ -2649,11 +2677,14 @@ const itinsDashboard   = document.getElementById('itinerariesDashboard');
 const dashTabs         = document.getElementById('dashTabs');
 const tabItineraries   = document.getElementById('tabItineraries');
 const tabLocations     = document.getElementById('tabLocations');
+const tabCustom        = document.getElementById('tabCustom');
 const tabIndicator     = document.getElementById('tabIndicator');
 const tabItinCount     = document.getElementById('tabItinCount');
 const tabLocCount      = document.getElementById('tabLocCount');
+const tabCustomCount   = document.getElementById('tabCustomCount');
 const panelItineraries = document.getElementById('panelItineraries');
 const panelLocations   = document.getElementById('panelLocations');
+const panelCustom      = document.getElementById('panelCustom');
 
 let activeDashTab = 'itineraries';
 
@@ -2701,7 +2732,7 @@ function _syncTabUI() {
   if (dashTabs) dashTabs.dataset.active = activeDashTab;
 
   // Active class on buttons
-  [tabItineraries, tabLocations].forEach(btn => {
+  [tabItineraries, tabLocations, tabCustom].forEach(btn => {
     if (!btn) return;
     const isActive = btn.dataset.tab === activeDashTab;
     btn.classList.toggle('active', isActive);
@@ -2709,7 +2740,7 @@ function _syncTabUI() {
   });
 
   // Panel visibility with re-entrance animation
-  [panelItineraries, panelLocations].forEach(panel => {
+  [panelItineraries, panelLocations, panelCustom].forEach(panel => {
     if (!panel) return;
     const isVisible = panel.id === `panel${activeDashTab.charAt(0).toUpperCase() + activeDashTab.slice(1)}`;
     if (isVisible) {
@@ -2730,12 +2761,14 @@ function _switchTab(tab) {
   if (activeDashTab === tab) return;
   activeDashTab = tab;
   _syncTabUI();
-  if (tab === 'itineraries') renderFullItinerariesPage();
-  else                        renderSavedLocationsPanel();
+  if (tab === 'itineraries')    renderFullItinerariesPage();
+  else if (tab === 'locations') renderSavedLocationsPanel();
+  else if (tab === 'custom')    window.loadItineraries && window.loadItineraries();
 }
 
 if (tabItineraries) tabItineraries.addEventListener('click', () => _switchTab('itineraries'));
 if (tabLocations)   tabLocations.addEventListener('click',   () => _switchTab('locations'));
+if (tabCustom)      tabCustom.addEventListener('click',      () => _switchTab('custom'));
 
 
 /* ─────────────────────────────────────────
@@ -2752,7 +2785,7 @@ function _makeCardWrapper(index) {
    ITINERARIES PANEL
 ───────────────────────────────────────── */
 function renderFullItinerariesPage() {
-  const grid = document.getElementById('itinerariesGrid');
+  const grid = document.getElementById('savedToursGrid');
   if (!grid) return;
 
   const savedTours = JSON.parse(localStorage.getItem('komorebi_saved_tours') || '[]');
@@ -3041,7 +3074,7 @@ function _refreshDashIfOpen() {
   // Delete Account
   if (document.getElementById('profDeleteBtn')) {
     document.getElementById('profDeleteBtn').addEventListener('click', async () => {
-      if (!confirm('Are you absolutely sure? This cannot be undone and will permanently delete all your itineraries, reviews, and saves.')) return;
+      if (!await showConfirm('Delete Account', 'This cannot be undone and will permanently delete all your itineraries, reviews, and saves.', 'Delete My Account')) return;
       
       try {
         const res = await fetch(`${API_BASE}/user/profile`, {
@@ -3067,6 +3100,7 @@ function _refreshDashIfOpen() {
           updateSavesBadge();
           updateNavAuth();
           renderFullItinerariesPage();
+          if (typeof loadItineraries === "function") loadItineraries();
           
         } else {
           showToast('Failed to delete account.');
@@ -3206,8 +3240,673 @@ function _refreshDashIfOpen() {
     syncBookmarksFromDB().then(() => syncToursFromDB());
   }
 
+  /* ═══════════════════════════════════════════
+     ITINERARY FEATURE — frontend JS
+  ═══════════════════════════════════════════ */
+
+  /* ── State ── */
+  let userItineraries = []; // cache from GET /api/itineraries
+
+  /* ── Load itineraries from server ── */
+  async function loadItineraries() {
+    if (!authState.isLoggedIn()) {
+      userItineraries = [];
+      renderItinerariesGrid();
+      return;
+    }
+    try {
+      const res = await fetch(`${API_BASE}/itineraries`, {
+        headers: { "Authorization": "Bearer " + authState.getToken() }
+      });
+      if (!res.ok) return;
+      userItineraries = await res.json();
+      renderItinerariesGrid();
+    } catch (err) {
+      console.error("loadItineraries error:", err);
+    }
+  }
+  window.loadItineraries = loadItineraries;
+
+  /* ── Render the itineraries grid in dashboard ── */
+  async function renderItinerariesGrid() {
+    const grid = document.getElementById("itinerariesGrid");
+    if (!grid) return;
+
+    // Update count badge
+    const countEl = document.getElementById("tabCustomCount");
+    if (countEl) countEl.textContent = userItineraries.length;
+
+    if (!authState.isLoggedIn()) {
+      grid.innerHTML = _emptyState("🗓️", "Sign In to Plan Trips", "Create day-by-day itineraries and add locations from anywhere in the app.");
+      return;
+    }
+
+    if (userItineraries.length === 0) {
+      grid.innerHTML = _emptyState("🗓️", "No Itineraries Yet", "Hit New Itinerary to start planning your first trip.");
+      return;
+    }
+
+    grid.innerHTML = "";
+
+    for (let idx = 0; idx < userItineraries.length; idx++) {
+      const itin = userItineraries[idx];
+      const wrapper = _makeCardWrapper(idx);
+      wrapper.innerHTML = _buildItinCardHtml(itin);
+      grid.appendChild(wrapper);
+
+      // Lazy-load items for this itinerary
+      const itemsEl = wrapper.querySelector(".itin-items-container");
+      loadItinItems(itin.id, itin.start_date, itemsEl);
+
+      wrapper.querySelector(".itin-add-stop-btn").addEventListener("click", (e) => {
+        e.stopPropagation();
+        const btn = e.currentTarget;
+        openLocPicker(btn.dataset.itinId, btn.dataset.itinName, btn.dataset.itinStart);
+      });
+
+      wrapper.querySelector(".itin-edit-btn").addEventListener("click", (e) => {
+        e.stopPropagation();
+        const card = wrapper.querySelector(".u-itin-card");
+        const header = card.querySelector(".u-itin-card__header");
+        // Toggle inline edit form
+        if (card.dataset.editing === "1") return;
+        card.dataset.editing = "1";
+        const origHtml = header.innerHTML;
+        header.innerHTML = `
+          <div class="u-itin-edit-form">
+            <input class="u-itin-edit-name" type="text" value="${_esc(itin.name)}" maxlength="120" placeholder="Trip name">
+            <input class="u-itin-edit-date" type="date" value="${(itin.start_date || "").slice(0, 10)}">
+            <div class="u-itin-edit-actions">
+              <button class="u-itin-save-btn">Save</button>
+              <button class="u-itin-cancel-btn">Cancel</button>
+            </div>
+          </div>`;
+        header.querySelector(".u-itin-cancel-btn").addEventListener("click", (ev) => {
+          ev.stopPropagation();
+          header.innerHTML = origHtml;
+          delete card.dataset.editing;
+          // Re-attach original handlers by re-running renderItinerariesGrid won't work
+          // Instead just restore by reloading the full grid
+          loadItineraries();
+        });
+        header.querySelector(".u-itin-save-btn").addEventListener("click", async (ev) => {
+          ev.stopPropagation();
+          const newName = header.querySelector(".u-itin-edit-name").value.trim();
+          const newDate = header.querySelector(".u-itin-edit-date").value;
+          if (!newName) { showToast("Name cannot be empty."); return; }
+          if (!newDate) { showToast("Start date required."); return; }
+          const res = await fetch(`${API_BASE}/itineraries/${itin.id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + authState.getToken() },
+            body: JSON.stringify({ name: newName, start_date: newDate })
+          });
+          if (res.ok) {
+            showToast("Itinerary updated.");
+            await loadItineraries();
+          } else {
+            showToast("Failed to save changes.");
+          }
+        });
+      });
+
+      wrapper.querySelector(".itin-delete-btn").addEventListener("click", async (e) => {
+        e.stopPropagation();
+        const confirmed = await showConfirm('Delete Itinerary', 'This will permanently delete the itinerary and all its stops. This cannot be undone.');
+        if (!confirmed) return;
+        const res = await fetch(`${API_BASE}/itineraries/${itin.id}`, {
+          method: "DELETE",
+          headers: { "Authorization": "Bearer " + authState.getToken() }
+        });
+        if (res.ok) {
+          showToast("Itinerary deleted.");
+          await loadItineraries();
+        } else {
+          showToast("Failed to delete.");
+        }
+      });
+    }
+  }
+
+  function _buildItinCardHtml(itin) {
+    const dateStr = new Date(itin.start_date + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+    return `
+      <div class="u-itin-card">
+        <div class="u-itin-card__header">
+          <div>
+            <div class="u-itin-card__eyebrow">◆ ITINERARY</div>
+            <h3 class="u-itin-card__title">${_esc(itin.name)}</h3>
+            <span class="u-itin-card__date">Starts ${_esc(dateStr)}</span>
+          </div>
+          <div class="u-itin-card__actions">
+            <button class="itin-add-stop-btn" data-itin-id="${itin.id}" data-itin-name="${_esc(itin.name)}" data-itin-start="${_esc(itin.start_date || '')}" title="Add a stop">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Stop
+            </button>
+            <button class="itin-edit-btn" title="Edit itinerary">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="itin-delete-btn" title="Delete itinerary">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="itin-items-container" data-itin-id="${itin.id}">
+          <div class="itin-items-loading">Loading stops…</div>
+        </div>
+      </div>`;
+  }
+
+  /* ── Load and render items for one itinerary ── */
+  async function loadItinItems(itinId, startDate, containerEl) {
+    if (!authState.isLoggedIn()) return;
+    try {
+      const res = await fetch(`${API_BASE}/itineraries/${itinId}/items`, {
+        headers: { "Authorization": "Bearer " + authState.getToken() }
+      });
+      if (!res.ok) { containerEl.innerHTML = ""; return; }
+      const items = await res.json();
+
+      if (items.length === 0) {
+        containerEl.innerHTML = '<div class="itin-items-empty">No stops yet — add locations from any location card.</div>';
+        return;
+      }
+
+      // Group by day number relative to start_date
+      const start = new Date(startDate + "T00:00:00");
+      const byDay = {};
+      items.forEach(item => {
+        const d = new Date(item.item_date + "T00:00:00");
+        const dayNum = Math.round((d - start) / 86400000) + 1;
+        if (!byDay[dayNum]) byDay[dayNum] = [];
+        byDay[dayNum].push(item);
+      });
+
+      let html = "";
+      Object.keys(byDay).sort((a, b) => a - b).forEach(day => {
+        html += `<div class="itin-day-group">
+          <div class="itin-day-label">Day ${day}</div>`;
+        byDay[day].forEach((item, idx) => {
+          const dayItems = byDay[day];
+          const loc = ALL_LOCATIONS.find(l => l.id === item.loc_id);
+          const locName = loc ? loc.name : item.loc_id;
+          const locIcon = loc ? loc.icon : "📍";
+          const timeStr = item.item_time ? item.item_time.slice(0, 5) : "";
+          html += `<div class="itin-item-row" data-item-id="${item.id}" data-itin-id="${itinId}" data-loc-id="${item.loc_id}" style="cursor:pointer;">
+            <span class="itin-item-row__icon">${locIcon}</span>
+            <div class="itin-item-row__body">
+              <div class="itin-item-row__name">${_esc(locName)}</div>
+              ${item.notes ? `<div class="itin-item-row__notes">${_esc(item.notes)}</div>` : ""}
+            </div>
+            <span class="itin-item-row__time">${_esc(timeStr)}</span>
+            <button class="itin-item-del" data-item-id="${item.id}" data-itin-id="${itinId}" title="Remove">✕</button>
+          </div>`;
+        });
+        html += "</div>";
+      });
+
+      containerEl.innerHTML = html;
+
+      // Row click → open location modal
+      containerEl.querySelectorAll(".itin-item-row").forEach(row => {
+        row.addEventListener("click", () => {
+          const loc = ALL_LOCATIONS.find(l => l.id === row.dataset.locId);
+          if (loc && typeof openLocationModal === "function") openLocationModal(loc);
+        });
+      });
+
+      containerEl.querySelectorAll(".itin-item-del").forEach(btn => {
+        btn.addEventListener("click", async (e) => {
+          e.stopPropagation();
+          const iId = btn.dataset.itinId;
+          const itemId = btn.dataset.itemId;
+          const res = await fetch(`${API_BASE}/itineraries/${iId}/items/${itemId}`, {
+            method: "DELETE",
+            headers: { "Authorization": "Bearer " + authState.getToken() }
+          });
+          if (res.ok) {
+            showToast("Stop removed.");
+            loadItinItems(iId, startDate, containerEl);
+          } else {
+            showToast("Failed to remove stop.");
+          }
+        });
+      });
+    } catch (err) {
+      console.error("loadItinItems error:", err);
+      containerEl.innerHTML = "";
+    }
+  }
+
+  /* ── Create Itinerary Modal ── */
+  const createItinBackdrop = document.getElementById("createItinBackdrop");
+  const createItinClose    = document.getElementById("createItinClose");
+  const createItinSubmit   = document.getElementById("createItinSubmit");
+  const createItinError    = document.getElementById("createItinError");
+
+  function openCreateItinModal() {
+    if (!authState.isLoggedIn()) { openAuthModal("login"); return; }
+    document.getElementById("createItinName").value = "";
+    document.getElementById("createItinDate").value = "";
+    createItinError.textContent = "";
+    createItinBackdrop.style.display = "flex";
+    document.body.classList.add("modal-lock");
+    setTimeout(() => document.getElementById("createItinName").focus(), 80);
+  }
+
+  function closeCreateItinModal() {
+    createItinBackdrop.style.display = "none";
+    document.body.classList.remove("modal-lock");
+  }
+
+  if (createItinClose) createItinClose.addEventListener("click", closeCreateItinModal);
+  if (createItinBackdrop) createItinBackdrop.addEventListener("click", e => { if (e.target === createItinBackdrop) closeCreateItinModal(); });
+
+  const newItinBtn = document.getElementById("newItinBtn");
+  if (newItinBtn) newItinBtn.addEventListener("click", openCreateItinModal);
+
+  if (createItinSubmit) {
+    createItinSubmit.addEventListener("click", async () => {
+      const name = document.getElementById("createItinName").value.trim();
+      const date = document.getElementById("createItinDate").value;
+      if (!name) { createItinError.textContent = "Please enter a name."; return; }
+      if (!date) { createItinError.textContent = "Please pick a start date."; return; }
+
+      createItinSubmit.textContent = "Creating…";
+      createItinSubmit.disabled = true;
+
+      try {
+        const res = await fetch(`${API_BASE}/itineraries`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + authState.getToken()
+          },
+          body: JSON.stringify({ name, start_date: date })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          closeCreateItinModal();
+          showToast("Itinerary created!");
+          await loadItineraries();
+        } else {
+          createItinError.textContent = data.error || "Failed to create.";
+        }
+      } catch (err) {
+        createItinError.textContent = "Network error.";
+      }
+
+      createItinSubmit.textContent = "Create Itinerary";
+      createItinSubmit.disabled = false;
+    });
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     LOC PICKER OVERLAY
+     State: _lpItinId, _lpItinName, _lpItinStartDate, _lpChosenLoc, _lpCityFilter
+     Entry points:
+       openLocPicker(itinId, itinName, startDate)          — from dashboard card
+       openLocPickerForCurrent(itinId, itinName, startDate) — from loc-modal button (pre-selects currentLocModalLoc)
+     ════════════════════════════════════════════════════════════ */
+
+  let _lpItinId   = null;
+  let _lpItinName = "";
+  let _lpItinStartDate = null;   // YYYY-MM-DD string from the parent itinerary
+  let _lpChosenLoc = null;
+  let _lpCityFilter = "all";
+
+  const _lpOverlay    = document.getElementById("locPickerOverlay");
+  const _lpClose      = document.getElementById("locPickerClose");
+  const _lpLabel      = document.getElementById("locPickerItinLabel");
+  const _lpGrid       = document.getElementById("locPickerGrid");
+  const _lpSearch     = document.getElementById("locPickerSearch");
+  const _lpCityTabsEl = document.getElementById("locPickerCityTabs");
+  const _lpForm       = document.getElementById("locPickerForm");
+  const _lpChosenIcon = document.getElementById("locPickerChosenIcon");
+  const _lpChosenName = document.getElementById("locPickerChosenName");
+  const _lpFormBack   = document.getElementById("locPickerFormBack");
+  const _lpDayDec     = document.getElementById("locPickerDayDec");
+  const _lpDayVal     = document.getElementById("locPickerDayVal");
+  const _lpDayInc     = document.getElementById("locPickerDayInc");
+  let   _lpDayNum     = 1;   // current selected day number
+  const _lpFormTime   = document.getElementById("locPickerFormTime");
+  const _lpFormNotes  = document.getElementById("locPickerFormNotes");
+  const _lpFormSave   = document.getElementById("locPickerFormSave");
+  const _lpFormMsg    = document.getElementById("locPickerFormMsg");
+
+  function openLocPicker(itinId, itinName, startDate) {
+    if (!authState.isLoggedIn()) { openAuthModal("login"); return; }
+    _lpItinId        = itinId;
+    _lpItinName      = itinName || "Itinerary";
+    _lpItinStartDate = startDate || null;
+    _lpChosenLoc = null;
+    _lpCityFilter = "all";
+    if (_lpLabel) _lpLabel.textContent = "Add stop to: " + _lpItinName;
+    if (_lpSearch) _lpSearch.value = "";
+
+    // Inject Bookmarked tab once if not already present
+    if (_lpCityTabsEl && !_lpCityTabsEl.querySelector('[data-city="bookmarked"]')) {
+      const bmTab = document.createElement("button");
+      bmTab.className = "lp-city-tab";
+      bmTab.dataset.city = "bookmarked";
+      bmTab.textContent = "⭐ Bookmarked";
+      _lpCityTabsEl.appendChild(bmTab);
+    }
+
+    _lpShowGrid();
+    _lpSetCityTabActive("all");
+    if (_lpOverlay) {
+      _lpOverlay.style.display = "flex";
+      document.body.classList.add("modal-lock");
+    }
+    // Render the grid
+    _lpRenderGrid();
+  }
+
+  function openLocPickerForCurrent(itinId, itinName, startDate) {
+    // Opens picker but immediately jumps to the date/time form with currentLocModalLoc pre-selected
+    if (!authState.isLoggedIn()) { openAuthModal("login"); return; }
+    if (!currentLocModalLoc) { openLocPicker(itinId, itinName, startDate); return; }
+    _lpItinId        = itinId;
+    _lpItinName      = itinName || "Itinerary";
+    _lpItinStartDate = startDate || null;
+    _lpChosenLoc = currentLocModalLoc;
+    if (_lpLabel) _lpLabel.textContent = "Add stop to: " + _lpItinName;
+    if (_lpOverlay) {
+      _lpOverlay.style.display = "flex";
+      document.body.classList.add("modal-lock");
+    }
+    _lpShowForm(_lpChosenLoc);
+  }
+
+  function _closeLocPicker() {
+    if (_lpOverlay) _lpOverlay.style.display = "none";
+    document.body.classList.remove("modal-lock");
+    _lpChosenLoc = null;
+  }
+
+  function _lpShowGrid() {
+    if (_lpGrid)  _lpGrid.style.display  = "grid";
+    if (_lpForm)  _lpForm.style.display  = "none";
+  }
+
+  function _lpShowForm(loc) {
+    
+    if (_lpForm)  _lpForm.style.display  = "flex";
+    if (_lpChosenIcon) _lpChosenIcon.textContent = loc.icon || "📍";
+    if (_lpChosenName) _lpChosenName.textContent = loc.name;
+    // Reset day stepper to day 1
+    _lpDayNum = 1;
+    if (_lpDayVal) _lpDayVal.textContent = "1";
+    if (_lpFormTime)  _lpFormTime.value  = "09:00";
+    if (_lpFormNotes) _lpFormNotes.value = "";
+    if (_lpFormMsg)   { _lpFormMsg.textContent = ""; _lpFormMsg.style.color = "#FF4F00"; }
+  }
+
+  function _lpRenderGrid() {
+    if (!_lpGrid) return;
+    const query = _lpSearch ? _lpSearch.value.toLowerCase().trim() : "";
+    const filtered = ALL_LOCATIONS.filter(loc => {
+      const cityMatch = _lpCityFilter === "all"
+        ? true
+        : _lpCityFilter === "bookmarked"
+          ? bookmarks.has(loc.id)
+          : loc.city === _lpCityFilter;
+      const searchMatch = !query ||
+        loc.name.toLowerCase().includes(query) ||
+        (loc.cat  && loc.cat.toLowerCase().includes(query)) ||
+        (loc.cityLabel && loc.cityLabel.toLowerCase().includes(query));
+      return cityMatch && searchMatch;
+    });
+
+    if (filtered.length === 0) {
+      _lpGrid.innerHTML = '<div class="lp-grid-empty">No locations found.</div>';
+      return;
+    }
+
+    _lpGrid.innerHTML = "";
+    filtered.forEach(loc => {
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "lp-loc-card";
+      card.innerHTML = `
+        <div class="lp-loc-card__icon">${loc.icon || "📍"}</div>
+        <div class="lp-loc-card__name">${_esc(loc.name)}</div>
+        <div class="lp-loc-card__meta">${_esc(loc.cityLabel || "")}${loc.cat ? " · " + loc.cat : ""}</div>`;
+      card.addEventListener("click", () => {
+        _lpChosenLoc = loc;
+        _lpShowForm(loc);
+      });
+      _lpGrid.appendChild(card);
+    });
+  }
+
+  function _lpSetCityTabActive(city) {
+    _lpCityFilter = city;
+    if (!_lpCityTabsEl) return;
+    _lpCityTabsEl.querySelectorAll(".lp-city-tab").forEach(btn => {
+      const isActive = btn.dataset.city === city;
+      btn.classList.toggle("is-active", isActive);
+    });
+  }
+
+  // City tab clicks
+  if (_lpCityTabsEl) {
+    _lpCityTabsEl.addEventListener("click", e => {
+      const btn = e.target.closest(".lp-city-tab");
+      if (!btn) return;
+      _lpSetCityTabActive(btn.dataset.city);
+      _lpRenderGrid();
+    });
+  }
+
+  // Search input
+  if (_lpSearch) {
+    _lpSearch.addEventListener("input", () => _lpRenderGrid());
+  }
+
+  // Day stepper buttons
+  if (_lpDayDec) {
+    _lpDayDec.addEventListener("click", () => {
+      if (_lpDayNum > 1) {
+        _lpDayNum--;
+        if (_lpDayVal) _lpDayVal.textContent = _lpDayNum;
+      }
+    });
+  }
+  if (_lpDayInc) {
+    _lpDayInc.addEventListener("click", () => {
+      _lpDayNum++;
+      if (_lpDayVal) _lpDayVal.textContent = _lpDayNum;
+    });
+  }
+
+  // "Set ✓" button beside time input — blurs the native picker to confirm selection
+  const _lpFormTimeSet = document.getElementById("locPickerFormTimeSet");
+  if (_lpFormTimeSet && _lpFormTime) {
+    _lpFormTimeSet.addEventListener("click", () => {
+      _lpFormTime.blur();
+    });
+  }
+
+  // Back button — returns to grid
+  if (_lpFormBack) {
+    _lpFormBack.addEventListener("click", () => {
+      _lpChosenLoc = null;
+      _lpShowGrid();
+    });
+  }
+
+  // Close button + backdrop click
+  if (_lpClose) _lpClose.addEventListener("click", _closeLocPicker);
+  if (_lpOverlay) {
+    _lpOverlay.addEventListener("click", e => {
+      if (e.target === _lpOverlay && (!_lpForm || _lpForm.style.display === "none")) _closeLocPicker();
+    });
+  }
+
+  // Save button — POST item to API
+  if (_lpFormSave) {
+    _lpFormSave.addEventListener("click", async () => {
+      if (!_lpChosenLoc) return;
+
+      // Compute item_date from itinerary start_date + (dayNum - 1) days
+      // Build purely from the date parts to avoid UTC offset shifting the day
+      if (!_lpItinStartDate) { if (_lpFormMsg) { _lpFormMsg.textContent = "Itinerary has no start date."; } return; }
+      const [sy, sm, sd] = _lpItinStartDate.split("-").map(Number);
+      const dateObj = new Date(sy, sm - 1, sd + (_lpDayNum - 1));
+      const date = [
+        dateObj.getFullYear(),
+        String(dateObj.getMonth() + 1).padStart(2, "0"),
+        String(dateObj.getDate()).padStart(2, "0")
+      ].join("-");
+
+      const time  = _lpFormTime  ? _lpFormTime.value.trim()  : "";
+      const notes = _lpFormNotes ? _lpFormNotes.value.trim() : "";
+
+      if (!time)  { if (_lpFormMsg) { _lpFormMsg.textContent = "Please pick a time."; } return; }
+      if (!_lpItinId) { if (_lpFormMsg) { _lpFormMsg.textContent = "No itinerary selected."; } return; }
+
+      _lpFormSave.textContent = "Adding…";
+      _lpFormSave.disabled = true;
+
+      try {
+        const res = await fetch(`${API_BASE}/itineraries/${_lpItinId}/items`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + authState.getToken()
+          },
+          body: JSON.stringify({
+            loc_id:    _lpChosenLoc.id,
+            item_date: date,
+            item_time: time,
+            notes:     notes || null
+          })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showToast(_lpChosenLoc.name + " added to " + _lpItinName + ".");
+          _closeLocPicker();
+          // Refresh grid if dashboard custom tab is open
+          if (itinsDashboard && itinsDashboard.classList.contains("open") && activeDashTab === "custom") {
+            await loadItineraries();
+          }
+        } else {
+          if (_lpFormMsg) { _lpFormMsg.textContent = data.error || "Failed to add."; }
+        }
+      } catch (err) {
+        if (_lpFormMsg) _lpFormMsg.textContent = "Network error.";
+      }
+
+      _lpFormSave.textContent = "Add Stop";
+      _lpFormSave.disabled = false;
+    });
+  }
+
+  /* ── Add-to-Itinerary button in loc-modal ── */
+  const addToItinBtn = document.getElementById("locModalAddToItin");
+
+  function _syncAddToItinVisibility() {
+    if (!addToItinBtn) return;
+    addToItinBtn.style.display = authState.isLoggedIn() ? "block" : "none";
+  }
+
+  if (addToItinBtn) {
+    addToItinBtn.addEventListener("click", async (e) => {
+      e.stopPropagation();
+      if (!authState.isLoggedIn()) { openAuthModal("login"); return; }
+      if (!currentLocModalLoc) return;
+
+      // Need at least one itinerary to add to — ensure list is fresh
+      await loadItineraries();
+
+      if (userItineraries.length === 0) {
+        // No itineraries yet — open create modal, then user can re-click calendar
+        showToast("Create an itinerary first.");
+        openCreateItinModal();
+        return;
+      }
+
+      if (userItineraries.length === 1) {
+        // Exactly one — skip the picker and jump straight to the form
+        openLocPickerForCurrent(userItineraries[0].id, userItineraries[0].name, userItineraries[0].start_date);
+        return;
+      }
+
+      // Multiple itineraries — show a small overlay to pick which one
+      _lpOpenItinPicker();
+    });
+  }
+
+  /* ── Mini itinerary selector (shown when user clicks calendar button in loc-modal
+         and has 2+ itineraries) ── */
+  function _lpOpenItinPicker() {
+    // Reuse locPickerOverlay: show grid=hidden, form=hidden, show an inline list of itineraries
+    if (!_lpOverlay) return;
+    _lpItinId   = null;
+    _lpItinName = "";
+    _lpChosenLoc = currentLocModalLoc;
+
+    if (_lpLabel) _lpLabel.textContent = "Add to which itinerary?";
+    if (_lpGrid)  {
+      _lpGrid.style.display = "grid";
+      // Replace grid content with itinerary cards temporarily
+      _lpGrid.innerHTML = "";
+      // Hide city tabs and search for this view
+      const ctabs = document.getElementById("locPickerCityTabs");
+      const srch  = document.getElementById("locPickerSearch");
+      if (ctabs) ctabs.style.display = "none";
+      if (srch)  srch.closest("div").style.display = "none";
+
+      userItineraries.forEach(itin => {
+        const card = document.createElement("button");
+        card.type = "button";
+        const dateStr = new Date(itin.start_date + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+        card.className = "lp-itin-card";
+        card.innerHTML = `
+          <div class="lp-itin-card__eyebrow">◆ ITINERARY</div>
+          <div class="lp-itin-card__name">${_esc(itin.name)}</div>
+          <div class="lp-itin-card__date">Starts ${_esc(dateStr)}</div>`;
+          _lpItinName = itin.name;
+        card.addEventListener("click", () => {
+          // Restore city tabs + search visibility for future use
+          if (ctabs) ctabs.style.display = "";
+          if (srch)  srch.closest("div").style.display = "";
+          _lpItinId        = itin.id;
+          _lpItinStartDate = itin.start_date || null;
+          if (_lpLabel) _lpLabel.textContent = "Add stop to: " + _lpItinName;
+          _lpShowForm(_lpChosenLoc);
+        });
+        _lpGrid.appendChild(card);
+      });
+    }
+    if (_lpForm) _lpForm.style.display = "none";
+    _lpOverlay.style.display = "flex";
+    document.body.classList.add("modal-lock");
+  }
+
+  /* ── Patch openLocationModal to show/hide the add-to-itin button ── */
+  const _origOpenLocationModal = openLocationModal;
+  window.openLocationModal = function(loc) {
+    _origOpenLocationModal(loc);
+    _syncAddToItinVisibility();
+  };
+  window._syncAddToItinVisibility = _syncAddToItinVisibility;
+
+  /* ── Patch openItinerariesDashboard to also load itineraries from API ── */
+  const _origOpenDash = window.openItinerariesDashboard;
+  window.openItinerariesDashboard = function() {
+    _origOpenDash();
+    loadItineraries();
+  };
+
+  // Ensure itineraries load on init if already logged in
+  if (authState.isLoggedIn()) {
+    loadItineraries();
+  }
+
   }); // end DOMContentLoaded
 
-  
+
 
 })();

@@ -156,7 +156,7 @@ app.use(cors({
     }
   },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
@@ -860,6 +860,261 @@ app.delete('/api/tours', authenticateToken, async (req, res) => {
     res.json({ message: 'Tour deleted.' });
   } catch (err) {
     console.error('Tour delete error:', err);
+    res.status(500).json({ error: 'Database operation failed.' });
+  }
+});
+
+/* ═══════════════════════════════════════════
+   ITINERARY ROUTES
+═══════════════════════════════════════════ */
+
+/* POST /api/itineraries — create a new itinerary */
+app.post('/api/itineraries', authenticateToken, async (req, res) => {
+  const { name, start_date } = req.body;
+  if (!name || !start_date)
+    return res.status(400).json({ error: 'name and start_date are required.' });
+
+  try {
+    let newId;
+    if (IS_POSTGRES) {
+      const [rows] = await query(
+        'INSERT INTO itineraries (user_id, name, start_date) VALUES (?, ?, ?) RETURNING id',
+        [req.user.id, name.trim(), start_date]
+      );
+      newId = rows[0].id;
+    } else {
+      const [result] = await query(
+        'INSERT INTO itineraries (user_id, name, start_date) VALUES (?, ?, ?)',
+        [req.user.id, name.trim(), start_date]
+      );
+      newId = result.insertId;
+    }
+    res.status(201).json({ id: newId, name: name.trim(), start_date, message: 'Itinerary created.' });
+  } catch (err) {
+    console.error('Itinerary create error:', err);
+    res.status(500).json({ error: 'Database operation failed.' });
+  }
+});
+
+/* GET /api/itineraries — get all itineraries for the user */
+app.get('/api/itineraries', authenticateToken, async (req, res) => {
+  try {
+    const [rows] = await query(
+      'SELECT id, name, start_date, created_at FROM itineraries WHERE user_id = ? ORDER BY created_at DESC',
+      [req.user.id]
+    );
+    res.json(rows.map(r => ({
+      ...r,
+      start_date: r.start_date instanceof Date
+        ? r.start_date.toISOString().slice(0, 10)
+        : r.start_date
+    })));
+  } catch (err) {
+    console.error('Itineraries fetch error:', err);
+    res.status(500).json({ error: 'Database query failed.' });
+  }
+});
+
+/* DELETE /api/itineraries/:id — delete an itinerary (cascade removes items) */
+app.delete('/api/itineraries/:id', authenticateToken, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [result, meta] = await query(
+      'DELETE FROM itineraries WHERE id = ? AND user_id = ?',
+      [id, req.user.id]
+    );
+    const affected = IS_POSTGRES ? (meta?.rowCount ?? 0) : (result?.affectedRows ?? 0);
+    if (affected === 0) return res.status(404).json({ error: 'Itinerary not found.' });
+    res.json({ message: 'Itinerary deleted.' });
+  } catch (err) {
+    console.error('Itinerary delete error:', err);
+    res.status(500).json({ error: 'Database operation failed.' });
+  }
+});
+
+/* POST /api/itineraries/:id/items — add an item to an itinerary */
+app.post('/api/itineraries/:id/items', authenticateToken, async (req, res) => {
+  const { id } = req.params;
+  const { loc_id, item_date, item_time, notes } = req.body;
+  if (!loc_id || !item_date || !item_time)
+    return res.status(400).json({ error: 'loc_id, item_date, and item_time are required.' });
+
+  try {
+    // Verify itinerary belongs to user
+    const [rows] = await query(
+      'SELECT id FROM itineraries WHERE id = ? AND user_id = ?',
+      [id, req.user.id]
+    );
+    if (rows.length === 0) return res.status(404).json({ error: 'Itinerary not found.' });
+
+    let newId;
+    if (IS_POSTGRES) {
+      const [result] = await query(
+        'INSERT INTO itinerary_items (itinerary_id, loc_id, item_date, item_time, notes) VALUES (?, ?, ?, ?, ?) RETURNING id',
+        [id, loc_id, item_date, item_time, notes || null]
+      );
+      newId = result[0].id;
+    } else {
+      const [result] = await query(
+        'INSERT INTO itinerary_items (itinerary_id, loc_id, item_date, item_time, notes) VALUES (?, ?, ?, ?, ?)',
+        [id, loc_id, item_date, item_time, notes || null]
+      );
+      newId = result.insertId;
+    }
+    res.status(201).json({ id: newId, message: 'Item added.' });
+  } catch (err) {
+    console.error('Itinerary item add error:', err);
+    res.status(500).json({ error: 'Database operation failed.' });
+  }
+});
+
+/* GET /api/itineraries/:id/items — get all items for an itinerary */
+app.get('/api/itineraries/:id/items', authenticateToken, async (req, res) => {
+  const { id } = req.params;
+  try {
+    // Verify ownership
+    const [itin] = await query(
+      'SELECT id FROM itineraries WHERE id = ? AND user_id = ?',
+      [id, req.user.id]
+    );
+    if (itin.length === 0) return res.status(404).json({ error: 'Itinerary not found.' });
+
+    const [rows] = await query(
+      'SELECT id, loc_id, item_date, item_time, notes, sort_order, created_at FROM itinerary_items WHERE itinerary_id = ? ORDER BY item_date ASC, sort_order ASC, item_time ASC',
+      [id]
+    );
+    res.json(rows.map(r => ({
+      ...r,
+      item_date: r.item_date instanceof Date
+        ? r.item_date.toISOString().slice(0, 10)
+        : r.item_date
+    })));
+  } catch (err) {
+    console.error('Itinerary items fetch error:', err);
+    res.status(500).json({ error: 'Database query failed.' });
+  }
+});
+
+/* DELETE /api/itineraries/:id/items/:itemId — remove an item */
+app.delete('/api/itineraries/:id/items/:itemId', authenticateToken, async (req, res) => {
+  const { id, itemId } = req.params;
+  try {
+    // Join to verify ownership via parent itinerary
+    const [result, meta] = await query(
+      `DELETE ii FROM itinerary_items ii
+       JOIN itineraries i ON ii.itinerary_id = i.id
+       WHERE ii.id = ? AND i.id = ? AND i.user_id = ?`,
+      [itemId, id, req.user.id]
+    );
+    // Postgres path: use a subquery approach
+    const affected = IS_POSTGRES ? (meta?.rowCount ?? 0) : (result?.affectedRows ?? 0);
+    if (affected === 0) return res.status(404).json({ error: 'Item not found.' });
+    res.json({ message: 'Item removed.' });
+  } catch (err) {
+    // Fallback for Postgres (no multi-table DELETE syntax)
+    if (IS_POSTGRES) {
+      try {
+        const [checkRows] = await query(
+          'SELECT ii.id FROM itinerary_items ii JOIN itineraries i ON ii.itinerary_id = i.id WHERE ii.id = ? AND i.id = ? AND i.user_id = ?',
+          [itemId, id, req.user.id]
+        );
+        if (checkRows.length === 0) return res.status(404).json({ error: 'Item not found.' });
+        await query('DELETE FROM itinerary_items WHERE id = ?', [itemId]);
+        return res.json({ message: 'Item removed.' });
+      } catch (pgErr) {
+        console.error('Itinerary item delete error (PG):', pgErr);
+      }
+    }
+    console.error('Itinerary item delete error:', err);
+    res.status(500).json({ error: 'Database operation failed.' });
+  }
+});
+
+
+/* PATCH /api/itineraries/:id — rename or change start date */
+app.patch('/api/itineraries/:id', authenticateToken, async (req, res) => {
+  const itinId = parseInt(req.params.id, 10);
+  const userId = req.user.id;
+  const { name, start_date } = req.body;
+
+  if (!name && !start_date) {
+    return res.status(400).json({ error: 'Provide name and/or start_date to update.' });
+  }
+
+  try {
+    // Build dynamic SET clause
+    const fields = [];
+    const vals   = [];
+    if (name)       { fields.push('name = ?');       vals.push(name.trim()); }
+    if (start_date) { fields.push('start_date = ?'); vals.push(start_date); }
+    vals.push(itinId, userId);
+
+    const [result] = await pool.execute(
+      `UPDATE itineraries SET ${fields.join(', ')} WHERE id = ? AND user_id = ?`,
+      vals
+    );
+    if (result.affectedRows === 0) return res.status(404).json({ error: 'Itinerary not found.' });
+    return res.json({ message: 'Itinerary updated.' });
+  } catch (err) {
+    if (err.code === 'ER_NO_SUCH_TABLE' || err.message?.includes('syntax')) {
+      // PostgreSQL fallback
+      try {
+        const fields = [];
+        const vals   = [];
+        if (name)       { fields.push(`name = $${vals.length + 1}`);       vals.push(name.trim()); }
+        if (start_date) { fields.push(`start_date = $${vals.length + 1}`); vals.push(start_date); }
+        vals.push(itinId, userId);
+        await query(
+          `UPDATE itineraries SET ${fields.join(', ')} WHERE id = $${vals.length - 1} AND user_id = $${vals.length}`,
+          vals
+        );
+        return res.json({ message: 'Itinerary updated.' });
+      } catch (pgErr) {
+        console.error('Itinerary patch error (PG):', pgErr);
+      }
+    }
+    console.error('Itinerary patch error:', err);
+    res.status(500).json({ error: 'Database operation failed.' });
+  }
+});
+
+/* PATCH /api/itineraries/:id/items/:itemId — update sort_order (reorder) */
+app.patch('/api/itineraries/:id/items/:itemId', authenticateToken, async (req, res) => {
+  const itinId  = parseInt(req.params.id,     10);
+  const itemId  = parseInt(req.params.itemId, 10);
+  const userId  = req.user.id;
+  const { sort_order } = req.body;
+
+  if (sort_order === undefined || sort_order === null) {
+    return res.status(400).json({ error: 'Provide sort_order.' });
+  }
+
+  try {
+    const [result] = await pool.execute(
+      `UPDATE itinerary_items ii
+         JOIN itineraries i ON ii.itinerary_id = i.id
+       SET ii.sort_order = ?
+       WHERE ii.id = ? AND i.id = ? AND i.user_id = ?`,
+      [sort_order, itemId, itinId, userId]
+    );
+    if (result.affectedRows === 0) return res.status(404).json({ error: 'Item not found.' });
+    return res.json({ message: 'Item reordered.' });
+  } catch (err) {
+    // PostgreSQL fallback
+    if (err.code === 'ER_NO_SUCH_TABLE' || err.message?.includes('syntax')) {
+      try {
+        const checkRows = await query(
+          'SELECT ii.id FROM itinerary_items ii JOIN itineraries i ON ii.itinerary_id = i.id WHERE ii.id = $1 AND i.id = $2 AND i.user_id = $3',
+          [itemId, itinId, userId]
+        );
+        if (checkRows.length === 0) return res.status(404).json({ error: 'Item not found.' });
+        await query('UPDATE itinerary_items SET sort_order = $1 WHERE id = $2', [sort_order, itemId]);
+        return res.json({ message: 'Item reordered.' });
+      } catch (pgErr) {
+        console.error('Item reorder error (PG):', pgErr);
+      }
+    }
+    console.error('Item reorder error:', err);
     res.status(500).json({ error: 'Database operation failed.' });
   }
 });

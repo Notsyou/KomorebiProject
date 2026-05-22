@@ -73,6 +73,27 @@ CREATE TABLE saved_tour_activities (
     FOREIGN KEY (tour_id) REFERENCES saved_tours(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS itineraries (
+  id         INT AUTO_INCREMENT PRIMARY KEY,
+  user_id    INT NOT NULL,
+  name       VARCHAR(120) NOT NULL,
+  start_date DATE NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+ 
+CREATE TABLE IF NOT EXISTS itinerary_items (
+  id             INT AUTO_INCREMENT PRIMARY KEY,
+  itinerary_id   INT NOT NULL,
+  loc_id         VARCHAR(20) NOT NULL,
+  item_date      DATE NOT NULL,
+  item_time      TIME NOT NULL,
+  notes          TEXT DEFAULT NULL,
+  sort_order     SMALLINT NOT NULL DEFAULT 0,
+  created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (itinerary_id) REFERENCES itineraries(id) ON DELETE CASCADE
+);
+
 -- ─────────────────────────────────────────────────────────────
 -- DML: Seed Data
 -- ─────────────────────────────────────────────────────────────
