@@ -1317,7 +1317,11 @@ body::before {
   font-weight: 300;
   color: var(--text-secondary);
   line-height: 1.55;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .loc-card__cat {
@@ -2018,6 +2022,7 @@ body.modal-lock {
 .modal-header {
   padding: 36px 40px 20px;
   border-bottom: 1px solid var(--border);
+  gap: 20px;
   flex-shrink: 0;
 }
 
@@ -2253,6 +2258,31 @@ body.modal-lock {
 .map-info-bar__link:hover { opacity: 0.75; }
 
 /* Reviews */
+
+/* Add this right above .review-item */
+.reviews-scroll-container {
+  max-height: 250px; /* Forces the wall of text to stop growing */
+  overflow-y: auto;  /* Turns on the vertical scrollbar */
+  padding-right: 12px; /* Leaves room for the neon scrollbar */
+  margin-bottom: 20px; /* Space between the reviews and the input box */
+  
+  /* Neon Scrollbar Styling just for the reviews */
+  scrollbar-width: thin;
+  scrollbar-color: #FF4F00 rgba(20, 20, 20, 0.5);
+}
+
+.reviews-scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+.reviews-scroll-container::-webkit-scrollbar-track {
+  background: rgba(20, 20, 20, 0.5);
+  border-radius: 4px;
+}
+.reviews-scroll-container::-webkit-scrollbar-thumb {
+  background: #FF4F00;
+  border-radius: 4px;
+}
+
 .review-item {
   padding: 18px 0;
   border-bottom: 1px solid var(--border);
@@ -3087,6 +3117,8 @@ body.modal-lock {
   color: var(--text-secondary);
   line-height: 1.6;
   margin-top: 8px;
+  margin-bottom: 8px;
+  text-align: justify;
 }
 
 /* ═══════════════════════════════════════════
@@ -4037,7 +4069,58 @@ body.modal-lock {
   transform: none !important;
 }
 
+/* ── Dynamic Star Rating UI ── */
+.star-rating-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+}
 
+.stars-wrapper {
+  display: flex;
+  gap: 1px;
+  font-size: 0.65rem;
+  line-height: 1;
+}
+
+.star.filled {
+  color: #FF4F00;
+  text-shadow: 0 0 4px rgba(255, 79, 0, 0.5);
+}
+
+.star.empty {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+/* Half-star via gradient clip */
+.star.half {
+  background: linear-gradient(90deg, #FF4F00 50%, rgba(255, 255, 255, 0.15) 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.review-text {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+}
+
+.review-text.no-reviews {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  font-style: italic;
+}
+.modal-loc-rating{
+  display: flex;
+  align-items: center;
+}
 /* ─────────────────────────────────────────────
    MOBILE
 ───────────────────────────────────────────── */

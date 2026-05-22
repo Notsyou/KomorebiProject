@@ -15,112 +15,112 @@
       {
         id: 'l-tok-01', icon: '⛩️', name: 'Senso-ji Temple', cat: 'ritual',
         city: 'tokyo', cityLabel: 'Tokyo',
-        desc: "Tokyo's oldest temple in Asakusa, glowing gold at dusk.",
+        desc: "Tokyo's oldest temple, founded in 628 AD in the heart of Asakusa, glows a deep amber-gold at dusk when the stone lanterns ignite. Pass beneath the iconic Kaminarimon gate — its enormous red paper lantern a symbol recognised across all of Japan. The Nakamise-dori shopping street leading to the main hall has sold traditional crafts and street snacks for over 200 years. Arrive before 7 AM to experience it in near silence before the crowds descend.",
         lat: 35.7148, lng: 139.7967,
         address: '2-3-1 Asakusa, Taito, Tokyo'
       },
       {
         id: 'l-tok-02', icon: '🗼', name: 'Tokyo Tower', cat: 'culture',
         city: 'tokyo', cityLabel: 'Tokyo',
-        desc: 'The iron icon that defines the city silhouette since 1958.',
+        desc: 'Standing 333 metres tall, Tokyo Tower has defined the city\'s silhouette since its completion in 1958 — a deliberate nod to the Eiffel Tower, painted vermillion and white per aviation safety regulations. The main and top decks offer striking views of Tokyo Bay and, on clear winter days, a perfect frame of Mount Fuji. The surrounding Shiba Park is equally worth a wander, with Zojo-ji temple sitting directly in the tower\'s shadow.',
         lat: 35.6586, lng: 139.7454,
         address: '4-2-8 Shibakoen, Minato, Tokyo'
       },
       {
         id: 'l-tok-03', icon: '🌸', name: 'Shinjuku Gyoen', cat: 'nature',
         city: 'tokyo', cityLabel: 'Tokyo',
-        desc: 'Urban oasis with 1,500 cherry trees — perfection in April.',
+        desc: 'A 58-hectare urban oasis built as an imperial garden in 1906, now Tokyo\'s most beloved park and the finest spot in the city for cherry blossom season. Over 1,500 trees representing 65 varieties bloom in succession from late March through April, giving hanami enthusiasts multiple windows across the season. Three distinct garden styles — French formal, English landscape, and Japanese traditional — sit side by side in a rare feat of horticultural diplomacy.',
         lat: 35.6852, lng: 139.7100,
         address: '11 Naitomachi, Shinjuku, Tokyo'
       },
       {
         id: 'l-tok-04', icon: '🎮', name: 'Akihabara', cat: 'culture',
         city: 'tokyo', cityLabel: 'Tokyo',
-        desc: "Electric Town: the world's capital of gaming and anime culture.",
+        desc: "Known as Electric Town, Akihabara evolved from a postwar black market for radio parts into the undisputed world capital of gaming, anime, and otaku culture. Multi-storey arcades stack crane machines and rhythm games alongside floor-to-ceiling walls of manga and limited-edition figurines. Maid cafés, retro Famicom carts, and the latest GPU releases coexist in the same block — a sensory overload that somehow still feels cohesive.",
         lat: 35.6986, lng: 139.7731,
         address: 'Akihabara, Chiyoda, Tokyo'
       },
       {
         id: 'l-tok-05', icon: '🏯', name: 'Imperial Palace', cat: 'culture',
         city: 'tokyo', cityLabel: 'Tokyo',
-        desc: "Heart of Japan's history surrounded by moat gardens.",
+        desc: "The seat of Japan's Imperial Family occupies the grounds of the former Edo Castle at the heart of the city, ringed by a broad stone moat and ancient pine trees. The East Gardens are open to the public and offer a rare glimpse inside the outer walls — manicured lawns, reconstructed watchtowers, and the silence of a city that somehow doesn't intrude. The full palace grounds open twice a year: January 2nd and the Emperor's birthday.",
         lat: 35.6852, lng: 139.7528,
         address: '1-1 Chiyoda, Chiyoda, Tokyo'
       },
       {
         id: 'l-tok-06', icon: '⛩️', name: 'Meiji Jingu', cat: 'ritual',
         city: 'tokyo', cityLabel: 'Tokyo',
-        desc: 'A serene Shinto shrine dedicated to Emperor Meiji, hidden within a massive 170-acre evergreen forest.',
+        desc: 'A serene Shinto shrine dedicated to Emperor Meiji and Empress Shoken, hidden within a massive 170-acre evergreen forest planted entirely by hand in the 1920s using 100,000 trees donated from across Japan. The long gravel approach lined with towering camphor trees feels worlds removed from the Harajuku crowds just outside the gates. Early Sunday mornings occasionally reveal traditional wedding processions crossing the inner courtyard.',
         lat: 35.6764, lng: 139.6993,
         address: '1-1 Yoyogikamizonocho, Shibuya, Tokyo'
       },
       {
         id: 'l-tok-07', icon: '🚥', name: 'Shibuya Crossing', cat: 'culture',
         city: 'tokyo', cityLabel: 'Tokyo',
-        desc: 'The famed scramble intersection. A mesmerizing pulse of Tokyo’s relentless energy.',
+        desc: "The famed scramble intersection — claimed to be the busiest pedestrian crossing on earth — sends up to 3,000 people surging from all directions simultaneously when the lights change. A mesmerising pulse of Tokyo's relentless energy, best viewed from the second-floor window of the corner Starbucks or the Mag's Park rooftop terrace. After dark, surrounding neon signs and giant video screens turn the intersection into an electric amphitheatre.",
         lat: 35.6595, lng: 139.7005,
         address: 'Dogenzaka, Shibuya, Tokyo'
       },
       {
         id: 'l-tok-08', icon: '🍣', name: 'Sukiyabashi Jiro', cat: 'cuisine',
         city: 'tokyo', cityLabel: 'Tokyo',
-        desc: 'The legendary Michelin-starred sushi counter in a Ginza subway station.',
+        desc: 'The legendary Michelin three-star sushi counter tucked inside a Ginza subway station, helmed by Jiro Ono — who earned global recognition after the documentary Jiro Dreams of Sushi. Reservations require a hotel concierge and months of advance planning; the omakase lasts approximately 20 minutes and costs upwards of ¥40,000. Every piece of nigiri is served at the precise moment of optimal temperature, pressed by hands that have practiced the same motion for over 70 years.',
         lat: 35.6713, lng: 139.7641,
         address: 'Tsukamoto Sogyo Building B1, 2-15 Ginza, Chuo, Tokyo'
       },
       {
         id: 'l-tok-09', icon: '🐟', name: 'Toyosu Market', cat: 'cuisine',
         city: 'tokyo', cityLabel: 'Tokyo',
-        desc: "The world's largest wholesale fish market. Freshest breakfast sushi from 5 AM.",
+        desc: "The world's largest wholesale fish market relocated here from Tsukiji in 2018, processing over 400 species of seafood daily across its climate-controlled halls. The tuna auction — where a single bluefin can sell for millions of yen — is viewable from glass-enclosed observation decks, though lottery entry is required. Arrive before 6 AM to line up at one of the in-market sushi counters, where the same fish auctioned hours earlier becomes your breakfast.",
         lat: 35.6451, lng: 139.7855,
         address: '6-6-1 Toyosu, Koto, Tokyo'
       },
       {
         id: 'l-tok-10', icon: '🍡', name: 'Yanaka Ginza', cat: 'culture',
         city: 'tokyo', cityLabel: 'Tokyo',
-        desc: 'Wander the retro street food alleys and experience old Tokyo vibes.',
+        desc: 'A rare surviving shitamachi shopping street that escaped both the 1923 earthquake and WWII firebombing, preserving the texture of old Tokyo in an otherwise modern city. Browse independent butchers, tofu shops, and pottery stalls before grabbing a skewer of grilled mochi from a street vendor. The surrounding Yanaka cemetery is lined with enormous cherry trees and dotted with the graves of 7,000 Tokyoites, including the last Tokugawa shogun.',
         lat: 35.7275, lng: 139.7667,
         address: '3-13-1 Yanaka, Taito, Tokyo'
       },
       {
         id: 'l-tok-11', icon: '🏛️', name: 'Ueno Park', cat: 'culture',
         city: 'tokyo', cityLabel: 'Tokyo',
-        desc: 'Explore the national museum mile and surrounding cherry blossom gardens.',
+        desc: "Tokyo's oldest public park hosts Japan's densest concentration of world-class cultural institutions — the Tokyo National Museum, the National Museum of Nature and Science, the National Museum of Western Art, and Ueno Zoo all sit within a 15-minute walk of each other. Come spring, over 1,200 cherry trees line the central avenue, turning the park into the city's most raucous and joyful hanami ground. The shinobazu pond hosts lotus flowers in summer and migratory ducks in winter.",
         lat: 35.7141, lng: 139.7736,
         address: 'Uenokoen, Taito, Tokyo'
       },
       {
         id: 'l-tok-12', icon: '🍜', name: 'Tokyo Ramen Street', cat: 'cuisine',
         city: 'tokyo', cityLabel: 'Tokyo',
-        desc: 'Finish the day with dinner at a legendary hidden noodle shop in Tokyo Station.',
+        desc: 'Eight of Tokyo\'s most celebrated ramen shops line this basement corridor inside Tokyo Station\'s First Avenue mall — each representing a different regional style, from rich tonkotsu to delicate shio broth. Queues form from opening, but move quickly, and the vending machine ticket system keeps things efficient. End a long day of sightseeing here: a steaming bowl, a cold Sapporo from the counter, and the rumble of Shinkansen overhead.',
         lat: 35.6812, lng: 139.7671,
         address: '1-9-1 Marunouchi, Chiyoda, Tokyo (First Avenue)'
       },
       {
         id: 'l-tok-13', icon: '🍣', name: 'Tsukiji Outer Market', cat: 'cuisine',
         city: 'tokyo', cityLabel: 'Tokyo',
-        desc: 'Graze on fresh tamagoyaki, wagyu skewers, and fresh breakfast sushi.',
+        desc: 'While the inner wholesale market moved to Toyosu, the outer market remains very much alive — a dense grid of 400-plus stalls and restaurants serving the freshest morning street food in the city. Graze on thick-cut tamagoyaki straight from the pan, marbled wagyu skewers, scallop-on-the-half-shell, and warm-from-the-knife otoro sashimi. Arrive between 7 and 9 AM when the vendors are at full energy and the fish is at peak freshness.',
         lat: 35.6655, lng: 139.7707,
         address: '4-16-2 Tsukiji, Chuo, Tokyo'
       },
       {
         id: 'l-tok-14', icon: '🍻', name: 'Shinjuku Golden Gai', cat: 'culture',
         city: 'tokyo', cityLabel: 'Tokyo',
-        desc: 'Late-night drinks in a sprawling network of tiny, nostalgic bars.',
+        desc: 'A labyrinthine network of roughly 200 micro-bars — most seating only six to eight people — that has survived multiple demolition threats since the 1940s to become one of the most characterful drinking districts in Asia. Each bar has its own theme, playlist, and cast of regulars; some welcome foreigners warmly, others are regulars-only by unspoken rule. Go at midnight, duck through a curtain at random, and order whatever the bartender is already making.',
         lat: 35.6940, lng: 139.7046,
         address: '1-1-6 Kabukicho, Shinjuku, Tokyo'
       },
       {
         id: 'l-tok-15', icon: '🍸', name: 'Bar High Five', cat: 'culture',
         city: 'tokyo', cityLabel: 'Tokyo',
-        desc: 'A legendary Ginza cocktail institution known for bespoke, menu-less creations.',
+        desc: "A legendary Ginza cocktail institution helmed by Hidetsugu Ueno — widely considered one of the world's greatest bartenders — known for entirely bespoke, menu-less creations tailored to each guest. You describe a mood, a flavour memory, or simply your evening so far, and a drink appears that somehow answers it. The bar seats around 10 people, so arrive at opening or expect a queue that moves slowly and pleasurably.",
         lat: 35.6713, lng: 139.7629,
         address: 'Efflore Ginza 5 Bldg. BF, 5-4-15 Ginza, Tokyo'
       },
       {
         id: 'l-tok-16', icon: '🏮', name: 'Kabukicho', cat: 'culture',
         city: 'tokyo', cityLabel: 'Tokyo',
-        desc: 'The neon-lit heart of Shinjuku’s entertainment district.',
+        desc: "The neon-lit epicentre of Shinjuku's entertainment district pulses hardest after 10 PM, when hostess clubs, multi-level game arcades, izakayas, and karaoke complexes all compete for attention simultaneously. The Kabukicho Tower added a hotel, theatres, and rooftop experiences to what was already Tokyo's most theatrically lit square kilometre. Walk the main boulevard with no particular destination — the spectacle is the point.",
         lat: 35.6944, lng: 139.7027,
         address: 'Kabukicho, Shinjuku, Tokyo'
       },
@@ -133,84 +133,84 @@
       {
         id: 'l-osa-01', icon: '🏯', name: 'Osaka Castle', cat: 'culture',
         city: 'osaka', cityLabel: 'Osaka',
-        desc: 'A 16th-century fortress surrounded by pristine gardens and moat.',
+        desc: "Originally built in 1583 by Toyotomi Hideyoshi to unify a fractured Japan, the castle's five-storey main tower rises above a double moat and massive stone walls assembled without mortar from boulders transported across the country. The interior houses a museum chronicling Hideyoshi's life and the castle's dramatic history of sieges and fires. Cherry blossom season transforms the surrounding 106-hectare park into one of Kansai's most spectacular hanami grounds.",
         lat: 34.6873, lng: 135.5262,
         address: '1-1 Osakajo, Chuo Ward, Osaka'
       },
       {
         id: 'l-osa-02', icon: '🦀', name: 'Kuromon Ichiba Market', cat: 'cuisine',
         city: 'osaka', cityLabel: 'Osaka',
-        desc: '190-year-old public market: raw, vibrant, delicious.',
+        desc: "Nicknamed 'Osaka's Kitchen', this 190-year-old covered market stretches 580 metres and houses nearly 200 stalls piled high with the Kansai region's finest produce. Vendors grill crab legs, slice through otoro tuna blocks, and skewer fresh oysters right in front of you — the entire market is designed to be eaten on foot. Weekday mornings before 10 AM are the sweet spot: chefs shopping for the day's restaurants, prices sharp, and crowds manageable.",
         lat: 34.6686, lng: 135.5073,
         address: '2-4-1 Nipponbashi, Chuo Ward, Osaka'
       },
       {
         id: 'l-osa-03', icon: '🎡', name: 'Umeda Sky Building', cat: 'culture',
         city: 'osaka', cityLabel: 'Osaka',
-        desc: 'Floating garden observatory linked by a dramatic aerial corridor.',
+        desc: "Two 40-storey towers connected at the top by a dramatic aerial corridor and Floating Garden Observatory, designed by architect Hiroshi Hara and completed in 1993. The open-air rooftop deck sits 173 metres above the city and offers sweeping 360-degree views of the Osaka plain all the way to the Rokko mountains on clear days. The underground level houses Takimi-koji — a recreation of a 1920s Osaka market street lined with restaurants.",
         lat: 34.7056, lng: 135.4904,
         address: '1-1-88 Oyodonaka, Kita Ward, Osaka'
       },
       {
         id: 'l-osa-04', icon: '🏮', name: 'Hozenji Yokocho', cat: 'cuisine',
         city: 'osaka', cityLabel: 'Osaka',
-        desc: 'A narrow, stone-paved alleyway offering a glimpse into Edo-period Osaka and incredible traditional dining.',
+        desc: "A narrow, stone-paved alleyway tucked just behind the Dotonbori strip, offering a rare glimpse into Edo-period Osaka amid the modern neon city. The moss-covered Fudo Myoo statue at the alley's heart is splashed with water by visitors seeking luck — centuries of offerings have turned it entirely green. The restaurants lining both walls serve traditional kaiseki and kappo cuisine in an atmosphere unchanged since the Meiji era.",
         lat: 34.6678, lng: 135.5019,
         address: '1 Namba, Chuo Ward, Osaka'
       },
       {
         id: 'l-osa-05', icon: '🏙️', name: 'Abeno Harukas', cat: 'culture',
         city: 'osaka', cityLabel: 'Osaka',
-        desc: 'Japan’s tallest skyscraper, offering breathtaking 360-degree views of the Kansai region.',
+        desc: "Japan's tallest skyscraper at 300 metres combines a department store, hotel, art museum, and sky observatory in a single sleek tower dominating the southern Osaka skyline. The Harukas 300 observatory on floors 58-60 offers unobstructed views stretching to Kyoto and Kobe on clear days. The name derives from an archaic Japanese verb meaning to brighten the mood — the building glows like a beacon after dark.",
         lat: 34.6458, lng: 135.5140,
         address: '1-1-43 Abenosuji, Abeno Ward, Osaka'
       },
       {
         id: 'l-osa-06', icon: '🛒', name: 'Don Quijote Dotonbori', cat: 'culture',
         city: 'osaka', cityLabel: 'Osaka',
-        desc: 'Massive multi-story shop with a dedicated wall of regional KitKats.',
+        desc: "The flagship Dotonbori branch of Japan's most chaotic retail institution spans multiple floors of snacks, cosmetics, electronics, and souvenirs at prices that justify a dedicated bag. The confectionery floor is its own pilgrimage — a dedicated wall of regional KitKat flavours exclusive to Kansai alongside Osaka-only snack varieties unavailable anywhere else. Open until 5 AM, it absorbs the overflow from every nearby izakaya and club without breaking stride.",
         lat: 34.6687, lng: 135.5014,
         address: '7-13 Soemoncho, Chuo Ward, Osaka'
       },
       {
         id: 'l-osa-07', icon: '✈️', name: 'Kansai Airport Duty Free', cat: 'culture',
         city: 'osaka', cityLabel: 'Osaka',
-        desc: 'Last stop for Kansai-exclusive KitKat flavours before flying home.',
+        desc: "Built on an artificial island in Osaka Bay and designed by Renzo Piano, Kansai International Airport is an architectural marvel as much as a transit hub. The duty-free zone is among the finest in Asia — stocked with Kansai-exclusive KitKat flavours, Yamazaki whisky vintages unavailable at retail, and a premium wagyu beef corner for refrigerated carry-on. Budget extra time here; many travellers miss boarding calls mid-browse.",
         lat: 34.4347, lng: 135.2441,
         address: 'Senshu-kuko Kita, Izumisano, Osaka'
       },
       {
         id: 'l-osa-08', icon: '🏭', name: 'Suntory Yamazaki Distillery', cat: 'culture',
         city: 'osaka', cityLabel: 'Osaka',
-        desc: 'The birthplace of Japanese whisky. Guided tours spanning over a century.',
+        desc: "Japan's first malt whisky distillery, established in 1923 by Shinjiro Torii at the precise confluence of the Katsura, Uji, and Kizu rivers — a location chosen for its exceptionally soft water and misty microclimate ideal for aging. Guided tours explain over a century of distilling history before depositing you in a tasting room with expressions unavailable outside these walls. Reserve in advance; tours sell out weeks ahead on peak weekends.",
         lat: 34.8831, lng: 135.6647,
         address: '5-2-1 Yamazaki, Shimamoto, Mishima District, Osaka'
       },
       {
         id: 'l-osa-09', icon: '🐙', name: 'Takoyaki Dotonbori', cat: 'cuisine',
         city: 'osaka', cityLabel: 'Osaka',
-        desc: 'Sample the famous piping-hot octopus balls along the neon canal.',
+        desc: "Osaka invented takoyaki and Dotonbori perfected them — golf-ball-sized spheres of dashi batter poured into cast-iron moulds, flipped with practiced precision every 90 seconds, and filled with chopped octopus, tenkasu, and pickled ginger. The canal-side stalls serve them piping hot under a storm of bonito flakes and mayonnaise, steam rising dramatically. Debate over Aizuya vs Kukuru vs Wanaka is a serious local conversation.",
         lat: 34.6687, lng: 135.5013,
         address: 'Dotonbori, Chuo Ward, Osaka'
       },
       {
         id: 'l-osa-10', icon: '🗼', name: 'Shinsekai District', cat: 'culture',
         city: 'osaka', cityLabel: 'Osaka',
-        desc: 'Step back into retro Osaka beneath the glowing Tsutenkaku Tower.',
+        desc: "Built in 1912 as a utopian 'New World' district modelled half on Paris and half on New York's Coney Island, Shinsekai retains a glorious retro character that most of Osaka has long since redeveloped away. Beneath the glowing Tsutenkaku Tower — Osaka's Eiffel — kushikatsu restaurants line every street, their hand-painted signs and red lanterns unchanged for decades. The strict no-double-dipping rule for the communal tonkatsu sauce is enforced with genuine passion.",
         lat: 34.6525, lng: 135.5063,
         address: 'Ebisuhigashi, Naniwa Ward, Osaka'
       },
       {
         id: 'l-osa-11', icon: '🍳', name: 'Okonomiyaki District', cat: 'cuisine',
         city: 'osaka', cityLabel: 'Osaka',
-        desc: 'Savor savory cabbage pancakes cooked right in front of you on a hot iron griddle.',
+        desc: "Osaka-style okonomiyaki is a world apart from the Hiroshima version — all ingredients mixed directly into a thick batter of cabbage, egg, and dashi, then cooked on a teppan griddle right at your table. The Namba area is dense with restaurants where chefs cook each pancake to order and slide it in front of you to finish with brushed okonomiyaki sauce, kewpie mayo, and a blizzard of katsuobushi. Order the seafood mix and a cold draft beer.",
         lat: 34.6678, lng: 135.5019,
         address: 'Namba, Chuo Ward, Osaka'
       },
       {
         id: 'l-osa-12', icon: '🥃', name: 'Yamazaki Tasting Library', cat: 'cuisine',
         city: 'osaka', cityLabel: 'Osaka',
-        desc: 'A wall of thousands of whisky bottles available for exclusive dram tastings.',
+        desc: "Within the distillery grounds sits one of the most extraordinary whisky rooms on earth — floor-to-ceiling shelves holding thousands of bottles spanning every Yamazaki expression and vintage produced since 1923. Visitors can self-pour exclusive single-cask drams unavailable anywhere in the world at retail, using a pre-loaded tasting card. Allow at least two hours; the oldest vintages are poured in small measures and demand the full attention they deserve.",
         lat: 34.8831, lng: 135.6647,
         address: '5-2-1 Yamazaki, Shimamoto, Osaka'
       },
@@ -221,77 +221,77 @@
       {
         id: 'l-nag-01', icon: '🏯', name: 'Nagoya Castle', cat: 'culture',
         city: 'nagoya', cityLabel: 'Nagoya',
-        desc: 'Gold shachihoko dolphin ornaments gleam atop this historic fortress.',
+        desc: "One of Japan's most celebrated feudal fortresses, built by Tokugawa Ieyasu between 1610 and 1612 using craftsmen poached from across the country. The pair of gold shachihoko — mythical dolphin-tigers — that crown the tower are Nagoya's most enduring symbol, cast in pure gold and weighing 88 kg each. The adjacent Honmaru Goten palace complex, painstakingly restored using traditional techniques over two decades, is a masterpiece of Edo-period interior design.",
         lat: 35.1856, lng: 136.8996,
         address: '1-1 Honmaru, Naka Ward, Nagoya'
       },
       {
         id: 'l-nag-02', icon: '🚗', name: 'Toyota Commemorative Museum', cat: 'culture',
         city: 'nagoya', cityLabel: 'Nagoya',
-        desc: "The birthplace of Japan's industrial revolution, interactive and vast.",
+        desc: "Housed in the original red-brick spinning mill where Sakichi Toyoda invented the automatic loom in 1894 — before the family pivoted to automobiles — this vast industrial museum traces the full arc from textile machinery to the global car giant. Working looms thunder through demonstrations on the hour, and the automotive pavilion shows every vehicle Toyota has produced from 1935 to the present. Genuinely interactive and surprisingly moving for anyone interested in manufacturing history.",
         lat: 35.1760, lng: 136.8820,
         address: '4-1-35 Noritakeshinmachi, Nishi Ward, Nagoya'
       },
       {
         id: 'l-nag-03', icon: '🎍', name: 'Atsuta Shrine', cat: 'ritual',
         city: 'nagoya', cityLabel: 'Nagoya',
-        desc: "One of Japan's most sacred Shinto shrines, over 1,900 years old.",
+        desc: "Founded over 1,900 years ago, Atsuta Jingu ranks among the three most sacred Shinto sites in Japan alongside Ise and Izumo, revered as the guardian shrine of Nagoya and keeper of the Kusanagi-no-Tsurugi — one of the three Imperial Treasures. Ancient camphor trees, some over 1,000 years old, shade the gravel paths between prayer halls and auxiliary shrines. Visit on a weekday morning to experience the solemn ritual atmosphere at its most undiluted.",
         lat: 35.1269, lng: 136.9079,
         address: '1-1-1 Jingu, Atsuta Ward, Nagoya'
       },
       {
         id: 'l-nag-04', icon: '🍗', name: 'Nagoya Meshi District', cat: 'cuisine',
         city: 'nagoya', cityLabel: 'Nagoya',
-        desc: 'Unique local cuisine: miso katsu, hitsumabushi, and tebasaki wings.',
+        desc: "Nagoya has one of Japan's most fiercely independent food cultures — Nagoya-meshi refers to the distinctive local cuisine that Nagoyans take considerable civic pride in. Must-eat dishes include miso katsu (pork cutlet drenched in rich hatcho miso), hitsumabushi (grilled eel over rice eaten three ways), tebasaki (sweet-spicy chicken wings), and kishimen (flat wheat noodles in dark dashi). The Sakae entertainment district concentrates the best of it all within walking distance.",
         lat: 35.1710, lng: 136.8815,
         address: 'Sakae, Naka Ward, Nagoya'
       },
       {
         id: 'l-nag-05', icon: '🎨', name: 'Tokugawa Art Museum', cat: 'culture',
         city: 'nagoya', cityLabel: 'Nagoya',
-        desc: 'Priceless samurai artifacts and Edo-period scrolls.',
+        desc: "Houses the personal collection of the Owari Tokugawa clan — 10,000 artefacts accumulated over 250 years of Edo-period rule, including swords, armour, tea ceremony implements, and Noh costumes. The prized possession is a 12th-century illustrated handscroll of The Tale of Genji, considered the oldest surviving painting of the world's first novel and displayed only for brief periods each November. The adjacent Tokugawa-en garden is among Nagoya's finest traditional landscapes.",
         lat: 35.1855, lng: 136.9308,
         address: '1017 Tokugawacho, Higashi Ward, Nagoya'
       },
       {
         id: 'l-nag-06', icon: '📿', name: 'Osu Kannon', cat: 'ritual',
         city: 'nagoya', cityLabel: 'Nagoya',
-        desc: 'A vibrant Buddhist temple alongside a bustling shopping arcade blending the sacred and the retro.',
+        desc: "A vibrant Buddhist temple originally founded in 1333 in Gifu Prefecture and relocated to Nagoya by Tokugawa Ieyasu in 1612, now sitting at the gateway of one of Japan's most eclectic shopping arcades. Worshippers burn incense before the gilded Kannon statue while cosplay teenagers and vintage shop hunters stream past on both sides. The monthly flea market on the 18th and 28th of each month draws antique dealers from across Chubu.",
         lat: 35.1596, lng: 136.8998,
         address: '2-21-47 Osu, Naka Ward, Nagoya'
       },
       {
         id: 'l-nag-07', icon: '🛸', name: 'Oasis 21', cat: 'culture',
         city: 'nagoya', cityLabel: 'Nagoya',
-        desc: 'A futuristic eco-complex featuring a spectacular "Spaceship Aqua" glass roof that glows beautifully at night.',
+        desc: "A futuristic urban complex opened in 2002 featuring the spectacular 'Galaxy Platform' — a vast elliptical glass roof filled with a shallow water pool that glows a vivid aquamarine at night, floating above the Sakae bus terminal below. The surrounding open-air shopping and dining levels sit between Nagoya TV Tower and the Hisakata garden, making it a natural gathering point. At its most dramatic on winter evenings when illuminations reflect across the water surface.",
         lat: 35.1709, lng: 136.9093,
         address: '1-11-1 Higashisakura, Higashi Ward, Nagoya'
       },
       {
         id: 'l-nag-08', icon: '🛍️', name: 'Osu Shopping District', cat: 'culture',
         city: 'nagoya', cityLabel: 'Nagoya',
-        desc: 'A bustling arcade blending vintage thrifting, electronics, and global street food.',
+        desc: "Over 1,200 shops line 1.7 kilometres of covered arcades, creating one of Japan's most eclectic and genuinely local shopping districts. Vintage thrift stores burst with 1980s Japanese sportswear alongside specialist electronics dealers, imported snack shops, cosplay costume suppliers, and ramen counters operating from former storefronts. The density of independent businesses here puts any mall in the region to shame — budget a full afternoon and arrive hungry.",
         lat: 35.1594, lng: 136.9015,
         address: 'Osu, Naka Ward, Nagoya'
       },
       {
         id: 'l-nag-09', icon: '🍽️', name: 'Noritake Garden', cat: 'culture',
         city: 'nagoya', cityLabel: 'Nagoya',
-        desc: 'A beautiful red-brick complex celebrating Japan’s famous ceramics manufacturer.',
+        desc: "The beautifully preserved red-brick factory complex of the Noritake Company — Japan's most celebrated porcelain maker since 1904 — transformed into a cultural campus with museum, craft centre, and gardens. The Craft Centre lets visitors watch master painters apply gold leaf designs to dinnerware by hand, and a dedicated shop sells factory-direct pieces unavailable elsewhere. The Welcome Centre traces 120 years of ceramic design evolution through rare pieces loaned from private collectors worldwide.",
         lat: 35.1783, lng: 136.8817,
         address: '3-1-36 Noritakeshinmachi, Nishi Ward, Nagoya'
       },
       {
         id: 'l-nag-10', icon: '🍲', name: 'Hitsumabushi Dining', cat: 'cuisine',
         city: 'nagoya', cityLabel: 'Nagoya',
-        desc: 'Experience Nagoya’s signature grilled eel over rice, served three different ways.',
+        desc: "Hitsumabushi is Nagoya's most beloved signature dish — grilled unagi (eel) lacquered in a sweet-savory tare sauce, served over a wooden cask of rice and eaten three ways: plain, with condiments, then dissolved into a delicate dashi broth as ochazuke. The Sakae district has the densest concentration of specialist hitsumabushi restaurants, many with queues from opening. Budget ¥3,500-5,000 and savour each of the three rounds slowly.",
         lat: 35.1709, lng: 136.9080,
         address: 'Sakae, Naka Ward, Nagoya'
       },
       {
         id: 'l-nag-11', icon: '🏮', name: 'Sakae Izakaya', cat: 'cuisine',
         city: 'nagoya', cityLabel: 'Nagoya',
-        desc: 'Late-night drinks and regional pub food in Nagoya’s entertainment hub.',
+        desc: "Nagoya's entertainment hub concentrates its finest izakayas, yakitori counters, and late-night ramen shops in the Sakae district, where salarymen and students share long communal tables until the last train and beyond. Order tebasaki — the city's iconic peppery chicken wings, double-fried and glazed — alongside cold Nagoya Akamiso beer. The strip between Hisakata Park and Nishiki is the sweet spot: dense, local, and mercifully free of tourist markup.",
         lat: 35.1691, lng: 136.9069,
         address: 'Sakae, Naka Ward, Nagoya'
       },
@@ -303,84 +303,84 @@
       {
         id: 'l-oki-01', icon: '🌊', name: 'Kerama Islands', cat: 'nature',
         city: 'okinawa', cityLabel: 'Okinawa',
-        desc: 'World-class snorkeling ranked among the finest waters on Earth.',
+        desc: "The Kerama Islands sit 40 kilometres west of Naha and are consistently ranked among the finest snorkelling and diving waters on earth — visibility regularly exceeds 40 metres in the cobalt-blue sea. Hard coral coverage here is among the highest remaining in Japan, supporting manta rays, hawksbill sea turtles, and over 200 species of tropical fish. High-speed ferries from Tomari Port make the islands a manageable day trip, though one night on Zamami Island changes everything.",
         lat: 26.2031, lng: 127.3528,
         address: 'Zamami, Shimajiri District, Okinawa'
       },
       {
         id: 'l-oki-02', icon: '🏯', name: 'Shuri Castle', cat: 'culture',
         city: 'okinawa', cityLabel: 'Okinawa',
-        desc: "Ryukyuan Kingdom's crimson fortress — UNESCO World Heritage site.",
+        desc: "The heart of the ancient Ryukyu Kingdom, Shuri Castle has dominated the hills above Naha for over 600 years, its brilliant vermillion lacquer walls and distinctive Ryukyuan architectural style unlike anything on the Japanese mainland. Designated a UNESCO World Heritage site in 2000, the main Seiden hall burned in 2019 and is currently undergoing full restoration — the reconstruction process itself is on public display. The surrounding stone-paved approaches and secondary halls remain fully intact and stunning.",
         lat: 26.2172, lng: 127.7190,
         address: '1-2 Kinjocho, Naha, Okinawa'
       },
       {
         id: 'l-oki-03', icon: '🐢', name: 'Cape Maeda Blue Cave', cat: 'nature',
         city: 'okinawa', cityLabel: 'Okinawa',
-        desc: 'Blue Cave diving with sea turtles and tropical fish.',
+        desc: "Cape Maeda on Okinawa's west coast conceals one of the island's great natural secrets — a sea cave accessible only by water, where refracted sunlight turns the interior an otherworldly electric blue. Snorkellers enter through a gap in the coral shelf and find themselves in a cathedral of light, surrounded by parrotfish, clownfish, and the occasional sea turtle resting on the sandy floor. Guided dive operators run morning tours before the current shifts; arrive before 9 AM for calmest conditions.",
         lat: 26.6338, lng: 127.8609,
         address: 'Maeda, Okinawa City, Okinawa'
       },
       {
         id: 'l-oki-04', icon: '🐠', name: 'Churaumi Aquarium', cat: 'nature',
         city: 'okinawa', cityLabel: 'Okinawa',
-        desc: "One of the world's largest, home to whale sharks and mantas.",
+        desc: "The Churaumi Aquarium in northern Okinawa is one of the largest in the world, most famous for its Kuroshio Sea tank — a 7.5-million-litre main exhibit housing whale sharks and manta rays in open water alongside hundreds of reef species. The whale sharks are fed by divers from inside the tank at scheduled times, drawing crowds to the floor-to-ceiling acrylic panels. Surrounding Ocean Expo Park includes beaches, dolphin shows, and a traditional Ryukyuan village reconstruction.",
         lat: 26.6938, lng: 127.8783,
         address: '424 Ishikawa, Motobu, Kunigami, Okinawa'
       },
       {
         id: 'l-oki-05', icon: '🎵', name: 'Kokusai Street', cat: 'culture',
         city: 'okinawa', cityLabel: 'Okinawa',
-        desc: 'Pulsing heart of Naha with craft shops and sanshin music.',
+        desc: "Kokusai-dori — International Street — stretches nearly two kilometres through central Naha and pulses with the full breadth of Okinawan culture: sanshin music drifting from open doorways, stalls selling bingata fabric and shisa lion-dog figurines, awamori distilleries offering tastings, and restaurants grilling rafute pork belly and champuru stir-fries under paper lanterns. The Sunday pedestrian zone fills with folk dance performances. Hiccup off any side street to find where the real locals eat.",
         lat: 26.2169, lng: 127.6872,
         address: 'Makishi, Naha, Okinawa'
       },
       {
         id: 'l-oki-06', icon: '🌅', name: 'Cape Manzamo', cat: 'nature',
         city: 'okinawa', cityLabel: 'Okinawa',
-        desc: 'A stunning elephant-trunk-shaped rock formation offering dramatic sunset views over the East China Sea.',
+        desc: "Rising dramatically from the Onna coastline, Cape Manzamo's elephant-trunk rock arch over the churning East China Sea is perhaps Okinawa's most photographed natural landmark. The surrounding limestone plateau is carpeted with wild sea daffodils in spring, and the viewing promenade traces the cliff edge as the sun sinks toward the China Sea horizon in a blaze of orange and pink. Local vendors sell taco rice and fresh coconut from stalls that materialise at dusk.",
         lat: 26.5048, lng: 127.8502,
         address: 'Onna, Kunigami District, Okinawa'
       },
       {
         id: 'l-oki-07', icon: '🎡', name: 'American Village', cat: 'culture',
         city: 'okinawa', cityLabel: 'Okinawa',
-        desc: 'A vibrant, seaside entertainment complex blending Okinawan island vibes with retro Americana.',
+        desc: "A sprawling waterfront entertainment complex in Chatan, American Village reflects the unique hybrid culture born from decades of US military presence in Okinawa — Ferris wheel, boardwalk, craft beer bars, and vintage American diners sit alongside Okinawan soba shops and ryukyu glass studios. The area is liveliest from late afternoon into the evening, when the sunset over the East China Sea turns the entire beachfront golden. Sunset Beach directly adjacent is one of Okinawa's best swimming spots.",
         lat: 26.3163, lng: 127.7577,
         address: 'Mihama, Chatan, Nakagami District, Okinawa'
       },
       {
         id: 'l-oki-08', icon: '🚢', name: 'Tomari Port', cat: 'culture',
         city: 'okinawa', cityLabel: 'Okinawa',
-        desc: 'The gateway terminal for high-speed ferries departing to the Kerama Islands.',
+        desc: "Tomari Port in northern Naha serves as the primary gateway to the Kerama Islands and more remote Okinawan outer islands, with multiple daily high-speed ferry departures across the turquoise harbour. The ferry terminal itself is an experience — stacked cooler boxes, diving gear, and island-bound families create a relaxed chaos unique to Okinawa. Ferries to Zamami take around 50 minutes on the Queen Zamami express; the slower car ferry is cheaper and allows you to stand on deck the whole way.",
         lat: 26.2259, lng: 127.6836,
         address: '3-25-1 Maejima, Naha, Okinawa'
       },
       {
         id: 'l-oki-09', icon: '🏖️', name: 'Zamami Beach', cat: 'nature',
         city: 'okinawa', cityLabel: 'Okinawa',
-        desc: 'Pristine white sands and crystal clear waters perfect for a beachside lunch.',
+        desc: "Zamami Beach on Zamami Island in the Kerama archipelago sets the standard for what an Okinawan beach should be — 700 metres of white coral sand, water so clear you can count the fish from the shoreline, and a near-total absence of the development that has compromised most of the main island. Rent a kayak to explore the surrounding coves, or simply stay in the water until the last ferry whistle. The island population is under 600; restaurants close early, and the stars at night are extraordinary.",
         lat: 26.2238, lng: 127.3009,
         address: 'Zamami, Shimajiri District, Okinawa'
       },
       {
         id: 'l-oki-10', icon: '⛩️', name: 'Shuri Castle Gates', cat: 'culture',
         city: 'okinawa', cityLabel: 'Okinawa',
-        desc: 'The iconic crimson gates leading into the ancient Ryukyuan palace grounds.',
+        desc: "The stone gates of Shuri Castle — Kankaimon, Zuisenmon, and the innermost Keiimon — are architectural monuments in their own right, each constructed in a different era and style of Ryukyuan stonework. Passing through them in sequence traces 500 years of the kingdom's defensive ingenuity, with massive coral limestone walls fitted without mortar following techniques brought by craftsmen from China. Even during the main hall's restoration period, the gate circuit alone is a profoundly atmospheric walk.",
         lat: 26.2170, lng: 127.7195,
         address: '1-2 Kinjocho, Naha, Okinawa'
       },
       {
         id: 'l-oki-11', icon: '🪦', name: 'Tamaudun Mausoleum', cat: 'ritual',
         city: 'okinawa', cityLabel: 'Okinawa',
-        desc: 'The stone royal mausoleum of the Ryukyu Kingdom, a UNESCO World Heritage site.',
+        desc: "The royal mausoleum of the Ryukyu Kingdom, built in 1501 to house the remains of King Sho En and his descendants, is one of Okinawa's six UNESCO World Heritage sites and one of the most architecturally unusual burial structures in East Asia. The tri-chambered limestone vault blends Chinese and Ryukyuan design elements, its carved stone facade furred with centuries of moss. The adjacent garden of Imuzu-Utaki, a sacred grove, adds a hushed spiritual weight to the site.",
         lat: 26.2167, lng: 127.7144,
         address: '1-3 Kinjocho, Naha, Okinawa'
       },
       {
         id: 'l-oki-12', icon: '🪕', name: 'Folk Music Tavern', cat: 'culture',
         city: 'okinawa', cityLabel: 'Okinawa',
-        desc: 'A lively izakaya featuring traditional Okinawan dishes and live sanshin music.',
+        desc: "Okinawan izakaya culture diverges sharply from the mainland — evenings here begin with awamori, the island's potent distilled spirit made from Thai indica rice, poured over ice with a splash of water as the table fills with rafute (braised pork belly), goya champuru (bitter melon stir-fry), and tofuyo (fermented tofu that tastes nothing like what the name suggests). A live sanshin player working through traditional Ryukyuan folk songs completes the picture. Reserve at least one evening here.",
         lat: 26.2150, lng: 127.6845,
         address: 'Makishi, Naha, Okinawa'
       },
@@ -391,112 +391,112 @@
       {
         id: 'l-sap-01', icon: '⛷️', name: 'Niseko Ski Resort', cat: 'nature',
         city: 'sapporo', cityLabel: 'Hokkaido',
-        desc: 'Powder capital of the world — 15m annual snowfall, world-class runs.',
+        desc: "Niseko on Hokkaido's Shakotan Peninsula receives an average of 15 metres of snowfall annually — among the highest of any ski resort on earth — producing the light, dry champagne powder that has drawn skiers from Australia, Europe, and North America in numbers that have transformed the town into a genuinely international village. Four interconnected ski areas cover 30 linked runs, with backcountry access routes for those with guides. The season runs December through April; February delivers peak conditions.",
         lat: 42.8041, lng: 140.6875,
         address: 'Niseko, Abuta District, Hokkaido'
       },
       {
         id: 'l-sap-02', icon: '🏔️', name: 'Odori Ice Festival', cat: 'culture',
         city: 'sapporo', cityLabel: 'Hokkaido',
-        desc: 'Monumental ice sculptures transforming the city every February.',
+        desc: "Every February, Odori Park in the heart of Sapporo is transformed by the Sapporo Snow Festival into one of the world's great winter spectacles — monumental ice and snow sculptures spanning 12 city blocks, some reaching 15 metres tall, lit dramatically after dark. International teams compete in the snow sculpture contest, producing intricate works that last only as long as the cold does. The festival draws over two million visitors in seven days; book accommodation months in advance.",
         lat: 43.0618, lng: 141.3545,
         address: 'Odori Park, Chuo Ward, Sapporo'
       },
       {
         id: 'l-sap-03', icon: '🍺', name: 'Sapporo Beer Museum', cat: 'culture',
         city: 'sapporo', cityLabel: 'Hokkaido',
-        desc: "Historic red brick brewery and Japan's first and finest lager.",
+        desc: "Japan's first and most historic brewery, founded in 1876 when Seibei Nakagawa returned from Berlin with German lager-making techniques and chose Hokkaido's abundant pure water and barley for his experiment. The iconic red-brick building complex is now a museum and tasting hall where guided tours explain the full brewing process before depositing you in the Star Hall for flights of Sapporo Classic — the draft lager unavailable outside Hokkaido. The garden beer hall in summer seats 4,000 people under the Sapporo sky.",
         lat: 43.0782, lng: 141.3564,
         address: '9-2-10 Kita, Higashi Ward, Sapporo'
       },
       {
         id: 'l-sap-04', icon: '🦌', name: 'Shiretoko Peninsula', cat: 'nature',
         city: 'sapporo', cityLabel: 'Hokkaido',
-        desc: 'UNESCO wilderness where brown bears fish for salmon in autumn.',
+        desc: "The Shiretoko Peninsula on Hokkaido's northeast tip is one of Japan's most remote and ecologically pristine UNESCO World Heritage sites — a 70-kilometre finger of volcanic mountains plunging into the Sea of Okhotsk, accessible only by boat or foot. Brown bears fish for salmon in the rivers each autumn in plain sight from the hiking trails, and Steller's sea eagles patrol the ice floes in winter. The five Shiretoko Lakes trail in summer offers the most accessible contact with the wilderness.",
         lat: 44.0767, lng: 145.0118,
         address: 'Shari, Shari District, Hokkaido'
       },
       {
         id: 'l-sap-05', icon: '🍜', name: 'Ramen Yokocho', cat: 'cuisine',
         city: 'sapporo', cityLabel: 'Hokkaido',
-        desc: 'Noodle alley where miso ramen was invented and perfected.',
+        desc: "Ramen Yokocho — Noodle Alley — is a narrow atmospheric lane in the Susukino entertainment district lined with small ramen shops that have been here since the 1950s, most seating fewer than a dozen people at a counter. Sapporo is credited with inventing miso ramen in the 1960s, and these shops have been refining the recipe ever since — rich pork bone broth sharpened with fermented red or white miso, topped with corn, butter, and bamboo shoots. Go late; the best shops fill by 9 PM.",
         lat: 43.0604, lng: 141.3504,
         address: 'Susukino, Chuo Ward, Sapporo'
       },
       {
         id: 'l-sap-06', icon: '🚠', name: 'Mount Moiwa', cat: 'nature',
         city: 'sapporo', cityLabel: 'Hokkaido',
-        desc: 'Take the ropeway to the summit for one of Japan’s top three most spectacular night city views.',
+        desc: "Mount Moiwa rises 531 metres above the southwestern edge of Sapporo and is reached by a two-stage ropeway and mini cable car that deposits you at a summit observatory recognised as one of Japan's top three most spectacular city night views. On clear winter evenings, the entire Sapporo plain glitters below like a circuit board stretching to the mountains, with the Pacific Ocean occasionally visible at the horizon. The summit restaurant serves Hokkaido crab and venison; the view makes the prices reasonable.",
         lat: 43.0215, lng: 141.3283,
         address: 'Fushimi 5-chome, Chuo Ward, Sapporo'
       },
       {
         id: 'l-sap-07', icon: '📐', name: 'Moerenuma Park', cat: 'nature',
         city: 'sapporo', cityLabel: 'Hokkaido',
-        desc: 'A massive, striking park designed by sculptor Isamu Noguchi, merging geometric land art with Hokkaido nature.',
+        desc: "Moerenuma Park is the final masterwork of sculptor Isamu Noguchi, conceived shortly before his death in 1988 and built over 13 years on the site of a former landfill. The 189-hectare park is itself a single integrated sculpture — pyramid, mount, fountain, glass pyramid, and play mountain arranged in precise geometric relationship across flat Hokkaido terrain. In summer the glass pyramid houses exhibitions and a café; in winter the slopes fill with Sapporo families sledding down Noguchi's carefully graded earthworks.",
         lat: 43.1189, lng: 141.4239,
         address: '1-1 Moerenumakoen, Higashi Ward, Sapporo'
       },
       {
         id: 'l-sap-08', icon: '🏔️', name: 'Nikka Yoichi Distillery', cat: 'culture',
         city: 'sapporo', cityLabel: 'Hokkaido',
-        desc: 'Historic stone buildings with traditional coal-fired pot stills in coastal Hokkaido.',
+        desc: "The Nikka Whisky Yoichi Distillery was founded in 1934 by Masataka Taketsuru — who had trained in Scotland and married a Scottish woman — specifically choosing this coastal Hokkaido location for its cold, damp climate resembling the Scottish Highlands. The stone buildings and direct coal-fired pot stills remain in near-original condition, and the free museum traces Taketsuru's remarkable story with genuine affection. The distillery shop stocks expressions and vintages not available anywhere in retail.",
         lat: 43.2022, lng: 140.7876,
         address: '7-6 Kurokawa-cho, Yoichi, Hokkaido'
       },
       {
         id: 'l-sap-09', icon: '🚌', name: 'Niseko Transfer', cat: 'nature',
         city: 'sapporo', cityLabel: 'Sapporo',
-        desc: 'The scenic winter ride from Sapporo out to the powder capital of the world.',
+        desc: "The highway bus route from Sapporo Station south through the mountains to Niseko takes roughly two hours in winter conditions and passes through increasingly dramatic Hokkaido snowscapes — rice paddies buried under white, volcanic peaks emerging through clouds, roadside onsen steam visible from the highway. Book the window seat on the left side for the best mountain views as you approach Niseko's ski area peaks. Transfer to the local loop bus at Niseko Station for the final run to the resort base.",
         lat: 42.8040, lng: 140.6870,
         address: 'Sapporo Station to Niseko'
       },
       {
         id: 'l-sap-10', icon: '🏂', name: 'First Tracks', cat: 'nature',
         city: 'sapporo', cityLabel: 'Hokkaido',
-        desc: 'Carving through untouched, knee-deep Hokkaido powder snow first thing in the morning.',
+        desc: "The singular pleasure of Niseko — arriving before the lifts open, riding the first gondola of the day with a handful of other early risers, and dropping into a run whose surface has been touched by no one since the previous night's snowfall. Knee-deep Hokkaido powder, the consistency of talcum, produces a sensation of floating rather than skiing. Go straight to the ungroomed off-piste areas immediately after the gates open; within 90 minutes of lift start the best lines will be tracked out.",
         lat: 42.8633, lng: 140.6980,
         address: 'Grand Hirafu, Niseko, Hokkaido'
       },
       {
         id: 'l-sap-11', icon: '🍜', name: 'Mountain Lodge Ramen', cat: 'cuisine',
         city: 'sapporo', cityLabel: 'Hokkaido',
-        desc: 'Warm up mid-mountain with a steaming bowl of rich, buttery miso ramen.',
+        desc: "Skiing on Hokkaido powder works up an appetite that only a proper bowl of Sapporo miso ramen can satisfy, and Niseko's mountain lodges have obligingly placed bowls of the real thing within reach of every major lift base. The local variant uses a butter-rich tonkotsu-miso blend with corn and sliced pork, served in ceramic bowls so hot they steam continuously. Eat it at the counter window looking out over the ski runs with your gloves still on.",
         lat: 42.8600, lng: 140.7000,
         address: 'Niseko Mountain Lodge, Hokkaido'
       },
       {
         id: 'l-sap-12', icon: '♨️', name: 'Après-Ski Onsen', cat: 'ritual',
         city: 'sapporo', cityLabel: 'Hokkaido',
-        desc: 'Soak tired muscles in a natural volcanic hot spring surrounded by snowbanks.',
+        desc: "Niseko Onsen Village clusters a dozen natural hot spring baths around the base of the ski area, fed by geothermal water from Mount Yotei's volcanic system. Soaking in an outdoor rotenburo while snowflakes fall silently around you, your body radiating the accumulated warmth of a full day's skiing — there is almost nothing comparable in the world. Many onsen are attached to ryokan and open to non-guests for a small fee; Yukemuri-no-Sato and Niseko Grand Hotel are two of the finest.",
         lat: 42.8465, lng: 140.6310,
         address: 'Niseko Onsen Village, Hokkaido'
       },
       {
         id: 'l-sap-13', icon: '🏭', name: 'Historic Brewery', cat: 'culture',
         city: 'sapporo', cityLabel: 'Sapporo',
-        desc: 'Explore the beautifully preserved red-brick buildings of Japan’s oldest beer brand.',
+        desc: "The Sapporo Beer Museum occupies the original 1890 red-brick brewery building that gave the company its visual identity, now a heritage site combining exhibition space and the legendary Star Hall beer restaurant. Floors trace the full history of Japan's oldest beer brand from Meiji-era founding through wartime requisition to global export. The permanent exhibit is free; the Star Hall charges for tasting flights of Hokkaido-exclusive brews including the beloved Sapporo Classic draft, unavailable outside the prefecture.",
         lat: 43.0782, lng: 141.3565,
         address: '9-2-10 Kita, Higashi Ward, Sapporo'
       },
       {
         id: 'l-sap-14', icon: '🍺', name: 'Tasting Flight', cat: 'cuisine',
         city: 'sapporo', cityLabel: 'Sapporo',
-        desc: 'Sample a flight of exclusive Hokkaido brews straight from the source.',
+        desc: "The Star Hall at Sapporo Beer Museum offers the definitive Hokkaido beer experience — a flight of four to five Sapporo brews including Sapporo Classic, Black Label, and seasonal experimental batches produced specifically for the brewery. Pair with the jingisukan mutton set: raw lamb and vegetables you grill yourself on the dome-shaped iron skillet at your table. The combination of outdoor Hokkaido air, fresh beer, and charcoal smoke is a near-perfect sensory alignment.",
         lat: 43.0783, lng: 141.3566,
         address: 'Sapporo Beer Museum Star Hall'
       },
       {
         id: 'l-sap-15', icon: '🥩', name: 'Jingisukan Dinner', cat: 'cuisine',
         city: 'sapporo', cityLabel: 'Sapporo',
-        desc: 'Hokkaido’s famous Genghis Khan BBQ—succulent lamb grilled over a dome skillet.',
+        desc: "Jingisukan — named after Genghis Khan, referencing the dome-shaped helmet-skillet the dish is cooked on — is Hokkaido's most beloved culinary tradition: marinated lamb and vegetables grilled at the table over a convex iron dome that drains excess fat into a moat of vegetables below. The Susukino district has the best concentration of specialist jingisukan restaurants, many operating since the 1950s. Order the raw lamb rather than pre-marinated for the cleaner, sweeter Hokkaido meat flavour.",
         lat: 43.0554, lng: 141.3533,
         address: 'Susukino, Chuo Ward, Sapporo'
       },
       {
         id: 'l-sap-16', icon: '🧊', name: 'Ice Bar', cat: 'culture',
         city: 'sapporo', cityLabel: 'Sapporo',
-        desc: 'Grab a cocktail served in a glass made entirely of solid ice.',
+        desc: "One of Sapporo's more theatrical winter attractions — a bar in Susukino where every surface, stool, and drinking vessel is carved from blocks of natural Hokkaido ice harvested from a nearby lake. Temperatures inside hold at around -10°C, so insulated ponchos are provided at the door. The cocktails, served in whisky glasses sculpted from solid ice, are simple and strong — the point is the cold, the translucent blue light, and the strange intimacy of drinking in a room that will melt come April.",
         lat: 43.0550, lng: 141.3530,
         address: 'Susukino Ice Pavilion, Sapporo'
       }
@@ -591,179 +591,104 @@
     { src: 'https://www.agoda.com/wp-content/uploads/2018/10/City-guides_things-to-do-in-Osaka_Japan_Umeda-Sky-Building_floating-garden.jpg%20', cap: 'Floating garden observatory' },
   ],
   'l-osa-04': [ // Hozenji Yokocho
-    { src: '', cap: 'Lantern-lit Hozenji alley' },
-    { src: '', cap: 'Moss-covered Mizukake Fudo statue' },
   ],
   'l-osa-05': [ // Abeno Harukas
-    { src: '', cap: 'Abeno Harukas skyline view' },
   ],
   'l-osa-06': [ // Don Quijote (Formerly l-c01-a)
-    { src: '', cap: 'Dotonbori neon at night' },
-    { src: '', cap: 'Don Quijote storefront' },
   ],
   'l-osa-07': [ // Kansai Airport (Formerly l-c01-c)
-    { src: '', cap: 'Kansai airport terminal' },
   ],
   'l-osa-08': [ // Suntory Yamazaki (Formerly l-c03-a)
-    { src: '', cap: 'Whisky barrels in the warehouse' },
-    { src: '', cap: 'Yamazaki distillery grounds' },
   ],
   'l-osa-09': [// Takoyaki Dotonbori
-    { src: '', cap: 'Takoyaki tasting' }
 
   ],
   'l-osa-10': [// Shinsekai District
-    { src: '', cap: 'Shinsekai retro vibes' }
 
   ],
   'l-osa-11': [// Okonomiyaki District
-    { src: '', cap: 'Hot iron okonomiyaki' }
 
   ],
   'l-osa-12': [// Yamazaki Tasting Library
-    { src: '', cap: 'Whisky tasting library' }
 
   ],
 
   // NAGOYA
   'l-nag-01': [ // Nagoya Castle
-    { src: '', cap: 'Nagoya Castle golden shachihoko' },
-    { src: '', cap: 'Castle keep in summer' },
   ],
  'l-nag-02': [ // Toyota Museum
-    { src: '', cap: 'Classic Toyota on display' },
-    { src: '', cap: 'Loom technology exhibit' },
   ],
   'l-nag-03': [ // Atsuta Shrine
-    { src: '', cap: 'Ancient forest at Atsuta Shrine' },
-    { src: '', cap: 'Shrine lanterns at dusk' },
   ],
   'l-nag-04': [ // Nagoya Meshi
-    { src: '', cap: 'Miso katsu, Nagoya style' },
-    { src: '', cap: 'Tebasaki chicken wings' },
   ],
   'l-nag-05': [ // Tokugawa Museum
-    { src: '', cap: 'Samurai armour collection' },
-    { src: '', cap: 'Edo-period scroll painting' },
   ],
   'l-nag-06': [ // Osu Kannon
-    { src: '', cap: 'Osu Kannon temple grounds' },
   ],
   'l-nag-07': [ // Oasis 21
-    { src: '', cap: 'Spaceship Aqua illuminated' },
   ],
   'l-nag-08': [// Osu Shopping District
-    { src: '', cap: 'Osu shopping arcade' }
   ],
   'l-nag-09': [// Noritake Garden
-    { src: '', cap: 'Noritake garden grounds' }
   ],
   'l-nag-10': [// Hitsumabushi Dining
-    { src: '', cap: 'Hitsumabushi eel dinner' }
   ],
   'l-nag-11': [// Sakae Izakaya
-    { src: '', cap: 'Sakae izakaya drinks' }
   ],
 
   // OKINAWA
   'l-oki-01': [ // Kerama Islands
-    { src: '', cap: 'Kerama Islands turquoise water' },
-    { src: '', cap: 'Coral reef snorkeling' },
-    { src: '', cap: 'Sea turtle at Kerama' },
   ],
   'l-oki-02': [ // Shuri Castle
-    { src: '', cap: 'Shuri Castle crimson gate' },
-    { src: '', cap: 'Ryukyuan palace interior' },
   ],
   'l-oki-03': [ // Blue Cave
-    { src: '', cap: 'Blue Cave, Cape Maeda' },
-    { src: '', cap: 'Tropical fish in the cave' },
   ],
   'l-oki-04': [ // Churaumi Aquarium
-    { src: '', cap: 'Whale shark at Churaumi' },
-    { src: '', cap: 'Giant manta ray exhibit' },
   ],
   'l-oki-05': [ // Kokusai Street
-    { src: '', cap: 'Kokusai Street nightlife' },
-    { src: '', cap: 'Traditional craft shops' },
   ],
   'l-oki-06': [ // Cape Manzamo
-    { src: '', cap: 'Sunset over Cape Manzamo' },
   ],
   'l-oki-07': [ // American Village
-    { src: '', cap: 'Mihama American Village Ferris Wheel' },
   ],
   'l-oki-08': [// Tomari Port
-    { src: '', cap: 'Tomari Port departure' }
   ],
   'l-oki-09': [// Zamami Beach
-    { src: '', cap: 'Zamami Beach sands' }
-  ],
-  'l-oki-10': [
-    { src: '', cap: 'Crimson gates of Shuri' }
-  ],
-  'l-oki-11': [
-    { src: '', cap: 'Tamaudun stone walls' }
-  ],
-  'l-oki-12': [
-    { src: '', cap: 'Live sanshin music tavern' }
   ],
 
   // SAPPORO
   'l-sap-01': [ // Niseko
-    { src: '', cap: 'Niseko powder runs' },
-    { src: '', cap: 'Hokkaido winter landscape' },
-    { src: '', cap: 'Deep powder skiing' },
   ],
   'l-sap-02': [ // Odori Ice Festival
-    { src: '', cap: 'Ice sculpture festival, Odori' },
-    { src: '', cap: 'Snow lanterns at night' },
   ],
   'l-sap-03': [ // Sapporo Beer Museum
-    { src: '', cap: 'Historic red brick brewery' },
-    { src: '', cap: 'Sapporo lager tasting' },
   ],
   'l-sap-04': [ // Shiretoko Peninsula
-    { src: '', cap: 'Shiretoko wilderness' },
-    { src: '', cap: 'Brown bear spotting' },
   ],
   'l-sap-05': [ // Ramen Yokocho
-    { src: '', cap: 'Sapporo miso ramen' },
-    { src: '', cap: 'Ramen Yokocho alley at night' },
   ],
   'l-sap-06': [ // Mount Moiwa
-    { src: '', cap: 'Night view from Mount Moiwa' },
   ],
   'l-sap-07': [ // Moerenuma Park
-    { src: '', cap: 'Glass pyramid at Moerenuma' },
   ],
   'l-sap-08': [ // Nikka Yoichi
-    { src: '', cap: 'Nikka Yoichi stone distillery' },
-    { src: '', cap: 'Coal-fired pot stills' },
   ],
   'l-sap-09': [// Niseko Transfer
-    { src: '', cap: 'Winter road to Niseko' }
   ],
   'l-sap-10': [// First Tracks
-    { src: '', cap: 'Fresh morning tracks' }
   ],
   'l-sap-11': [// Mountain Lodge Ramen
-    { src: '', cap: 'Steaming mountain ramen' }
   ],
   'l-sap-12': [// Apres-Ski Onsen
-    { src: '', cap: 'Outdoor snow onsen' }
   ],
   'l-sap-13': [// Historic Brewery
-    { src: '', cap: 'Historic red brick brewery' }
   ],
   'l-sap-14': [// Tasting Flight
-    { src: '', cap: 'Sapporo tasting flight' }
   ],
   'l-sap-15': [// Jingisukan Dinner
-    { src: '', cap: 'Jingisukan lamb BBQ' }
   ],
   'l-sap-16': [// IceBar
-    { src: '', cap: 'Ice bar cocktails' }
   ],
 };
 
@@ -1188,6 +1113,7 @@ sapporo: {
   ═══════════════════════════════════════════ */
   document.addEventListener('DOMContentLoaded', function onDOMReady() {
 
+  syncRatingsFromDB();    
   /* ═══════════════════════════════════════════
      SLIDE ENGINE (untouched from prototype)
   ═══════════════════════════════════════════ */
@@ -1306,12 +1232,19 @@ sapporo: {
     const filtered = ALL_LOCATIONS.filter(loc =>
       bkFilter === 'all' || loc.cat === bkFilter
     );
+    
     if (filtered.length === 0) {
       grid.innerHTML = `<p class="grid-empty">No locations match this filter.</p>`;
       return;
     }
+    
     filtered.forEach(loc => {
       const saved = bookmarks.has(loc.id);
+      
+      // 👇 NEW LOGIC: Look up the pre-calculated math, or default to 0
+      const ratingData = locationRatings[loc.id] || { average: 0, count: 0 }; 
+      const starDisplayHtml = renderStarsHtml(ratingData.average, ratingData.count);
+  
       const card = document.createElement('article');
       card.className = 'loc-card';
       card.dataset.cat = loc.cat;
@@ -1324,11 +1257,15 @@ sapporo: {
         <h3 class="loc-card__name">${loc.name}</h3>
         <p class="loc-card__desc">${loc.desc}</p>
         <span class="loc-card__cat">${loc.cat}</span>
+        <div class="star-rating-container">${starDisplayHtml}</div>
       `;
+      // ... rest of the card event listeners stay the same
+      
       card.querySelector('.loc-card__heart').addEventListener('click', (e) => {
         e.stopPropagation();
         toggleBookmarkOptimistic(loc, e.currentTarget);
       });
+      
       card.addEventListener('click', () => openLocationModal(loc));
       grid.appendChild(card);
     });
@@ -1440,6 +1377,9 @@ sapporo: {
 
   async function loadReviews(locationId) {
     const reviewsList = document.getElementById('reviews-list');
+
+    reviewsList.classList.add('reviews-scroll-container');
+
     reviewsList.innerHTML = `<p class="reviews-empty-msg" style="opacity:.5;">Loading reviews…</p>`;
     try {
       const res = await fetch(`${API_BASE}/reviews/${locationId}`);
@@ -1492,6 +1432,11 @@ sapporo: {
     document.getElementById('modal-loc-sub').textContent = `${loc.cat} · ${loc.cityLabel}`;
     document.getElementById('modal-loc-title').textContent = loc.name;
     document.getElementById('modal-loc-desc').textContent = loc.desc || '';
+    const ratingEl = document.getElementById('modal-loc-rating');
+    if (ratingEl) {
+      const r = locationRatings[loc.id] || { average: 0, count: 0 };
+      ratingEl.innerHTML = renderStarsHtml(r.average, r.count);
+    }
 
     // Sync modal heart button to current bookmark state
     const locHeart = document.getElementById('locModalHeart');
@@ -1724,6 +1669,14 @@ function activateLocModalTab(targetId) {
 
       // Reload the reviews list from the server so the new entry appears with real data
       await loadReviews(currentLocModalLoc.id);
+
+      // Re-sync the aggregate ratings so grid cards and modal header update immediately
+      await syncRatingsFromDB();
+      const ratingEl = document.getElementById('modal-loc-rating');
+      if (ratingEl && currentLocModalLoc) {
+        const r = locationRatings[currentLocModalLoc.id] || { average: 0, count: 0 };
+        ratingEl.innerHTML = renderStarsHtml(r.average, r.count);
+      }
 
     } catch (err) {
       console.error('Review submit error:', err);
@@ -3112,7 +3065,7 @@ function _refreshDashIfOpen() {
           });
           
           updateSavesBadge();
-          updateNavAuth(); // Fix: Was previously calling the non-existent updateAuthUI()
+          updateNavAuth();
           renderFullItinerariesPage();
           
         } else {
@@ -3199,6 +3152,48 @@ function _refreshDashIfOpen() {
     }
   }
 
+  /* ── Star Rating Renderer ── */
+  function renderStarsHtml(average, count) {
+    if (count === 0) {
+      return `<span class="review-text no-reviews">No reviews yet</span>`;
+    }
+    const rounded = Math.round(average * 2) / 2;
+    let starsHtml = '';
+    for (let i = 1; i <= 5; i++) {
+      if (i <= rounded) {
+        starsHtml += `<span class="star filled">★</span>`;
+      } else if (i === Math.ceil(rounded) && rounded % 1 !== 0) {
+        starsHtml += `<span class="star half">★</span>`;
+      } else {
+        starsHtml += `<span class="star empty">★</span>`;
+      }
+    }
+    return `
+      <div class="stars-wrapper">${starsHtml}</div>
+      <span class="review-text">${parseFloat(average).toFixed(1)} (${count})</span>
+    `;
+  }
+
+  /* ── Global Rating Store ── */
+  const locationRatings = {};
+
+  async function syncRatingsFromDB() {
+    try {
+      const res = await fetch(`${API_BASE}/reviews/summary`);
+      if (!res.ok) return;
+      const summaries = await res.json();
+      summaries.forEach(s => {
+        locationRatings[s.location_id] = {
+          average: parseFloat(s.average_rating),
+          count: parseInt(s.review_count)
+        };
+      });
+      if (typeof renderLocationGrid === 'function') renderLocationGrid();
+    } catch (err) {
+      console.error('Failed to fetch rating summaries:', err);
+    }
+  }
+
   /* ── INIT calls ── */
   // Clear any is-active classes baked into the HTML for location modal panels/tabs
   document.querySelectorAll('#location-modal .modal-panel').forEach(p => p.classList.remove('is-active'));
@@ -3206,6 +3201,7 @@ function _refreshDashIfOpen() {
   updateNavAuth();
   updateSavesBadge();
   goTo(0, true);
+  syncRatingsFromDB();
   if (authState.isLoggedIn()) {
     syncBookmarksFromDB().then(() => syncToursFromDB());
   }

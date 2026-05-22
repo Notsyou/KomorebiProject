@@ -84,12 +84,24 @@ app.set('trust proxy', 1);
    RATE LIMITING
 ═══════════════════════════════════════════ */
 
+const LOCAL_ORIGINS = [
+  'http://localhost:5500',
+  'http://127.0.0.1:5500',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  'null'
+];
+
+/* Skip rate limiting entirely for local development origins */
+const isLocalRequest = (req) => LOCAL_ORIGINS.includes(req.headers.origin);
+
 /* General API limiter — 100 requests per 15 minutes per IP */
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
-  standardHeaders: true,   // sends RateLimit-* headers (RFC 6585)
+  standardHeaders: true,
   legacyHeaders: false,
+  skip: (req) => isLocalRequest(req),
   handler: (req, res) =>
     res.status(429).json({ error: 'Too many requests, please try again later.' })
 });
@@ -100,6 +112,7 @@ const authLimiter = rateLimit({
   max: 10,
   standardHeaders: true,
   legacyHeaders: false,
+  skip: (req) => isLocalRequest(req),
   handler: (req, res) =>
     res.status(429).json({ error: 'Too many requests, please try again later.' })
 });
@@ -402,7 +415,24 @@ app.post('/api/bookmarks/sync', authenticateToken, async (req, res) => {
    REVIEW ROUTES
 ═══════════════════════════════════════════ */
 
-/* GET /api/reviews/:locationId — public */
+/* GET /api/reviews/summary — public */
+app.get('/api/reviews/summary', async (req, res) => {
+  try {
+    const [rows] = await query(`
+      SELECT 
+        location_id, 
+        AVG(rating) AS average_rating, 
+        COUNT(id) AS review_count 
+      FROM reviews 
+      GROUP BY location_id
+    `);
+    res.json(rows);
+  } catch (err) {
+    console.error('Reviews summary fetch error:', err);
+    res.status(500).json({ error: 'Database query failed.' });
+  }
+});
+
 app.get('/api/reviews/:locationId', async (req, res) => {
   const { locationId } = req.params;
   try {
@@ -844,7 +874,7 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () =>
-  console.log(`Komorebi API running on port ${PORT} [${IS_POSTGRES ? 'PostgreSQL' : 'MySQL'}]`)
-);
+const port = process.env.PORT || 3000;
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Komorebi API running on port ${port} [MySQL] - Bound to 0.0.0.0`);
+});
